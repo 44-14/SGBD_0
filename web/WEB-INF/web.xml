@@ -4,3 +4,14 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 </web-app>
+
+
+
+<!--
+Pas de mapping de servlet ici
+=>  A la creation de chacune des servlets, on coche "Create Java EE 8 annotated class
+Cela ajoutera une annotation @WebServlet(name="") qui remplace le mapping d'ici
+
+Dans le cas où on fait les 2 par erreur, c'est le web.xml qui sera prioritaire par rapport aux annotations.
+-->
+
