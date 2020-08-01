@@ -24,7 +24,17 @@
     <!-- url: The JDBC connection url for connecting to your MySQL dB. -->
 
 
-    <Resource url="jdbc:mysql://localhost:3306/schoolux?autoReconnect=true" driverClassName="com.mysql.jdbc.Driver" password="" username="root" maxWait="10000" maxIdle="30" maxActive="100" type="javax.sql.DataSource" auth="Container" name="jdbc/DBschoolUX"/>
+    <Resource name="jdbc/schoolux"
+
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/schoolux?autoReconnect=true"
+              username="root"
+            password=""
+            maxWait="10000"
+            maxIdle="30"
+            maxActive="100"
+            type="javax.sql.DataSource"
+            auth="Container"/>
 
     <!-- pour corriger l'erreur suivante obtenue lors du test de connection vers la database : The specified database user/password combination is rejected: com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zone value 'Paris, Madrid (heure d��t�)' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the 'serverTimezone' configuration property) to use a more specifc time zone value if you want to utilize time zone support Solution : On ajoute à la fin de la connection string url dans la pop-up "Data Sources and drivers" ce qui suit : "?useTimezone=true&serverTimezone=UTC" accès à la pop-up en question via Database tout à droite => click sur croix New => Data Source => MySQL l'url de connexion devient : jdbc:mysql://localhost:3306/schoolUX?useTimezone=true&serverTimezone=UTC&autoReconnect=true Voir les images DataSourceConnectionTest_x.png dans dossier Screenshots -->
 
