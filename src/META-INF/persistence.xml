@@ -10,7 +10,7 @@
 
 	<!--<persistence-unit name="test"  transaction-type="JTA"> -->
 	<!-- mettre nom du projet ou de la base de données en attribut name -->
-	<persistence-unit name="schoolUX"  transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="PersistUnit_schoolUX"  transaction-type="RESOURCE_LOCAL">
 
 
 
