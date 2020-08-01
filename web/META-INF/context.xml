@@ -23,7 +23,7 @@
     -->
     <!-- url: The JDBC connection url for connecting to your MySQL dB.
     -->
-    <Resource name="jdbc/DBschoolUX" auth="Container" type="javax.sql.DataSource"
+    <Resource name="schoolux" auth="Container" type="javax.sql.DataSource"
               maxActive="100" maxIdle="30" maxWait="10000"
               username="root" password=""
               driverClassName="com.mysql.jdbc.Driver"
