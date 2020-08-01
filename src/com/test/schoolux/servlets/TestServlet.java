@@ -1,4 +1,4 @@
-package test.com.schoolux.servlets;
+package com.test.schoolux.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
