@@ -1,9 +1,9 @@
 package com.main.schoolux.servlets;
 
 
-import com.JPAutil.JPAutil;
-import com.entities.DocumentEntity;
-import com.entityFinder.EntityFinderImpl;
+import com.persistence.JPAutil.JPAutil;
+import com.persistence.entities.DocumentEntity;
+import com.persistence.entityFinder.EntityFinderImpl;
 import com.main.schoolux.form.DocumentForm;
 import com.main.schoolux.services.DocumentService;
 import org.apache.log4j.Logger;

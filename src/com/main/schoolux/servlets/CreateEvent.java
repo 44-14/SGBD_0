@@ -2,8 +2,8 @@ package com.main.schoolux.servlets;
 
 
 
-import com.JPAutil.JPAutil;
-import com.entities.EventEntity;
+import com.persistence.JPAutil.JPAutil;
+import com.persistence.entities.EventEntity;
 import com.main.schoolux.form.EventForm;
 import com.main.schoolux.services.EventService;
 import org.apache.log4j.Logger;

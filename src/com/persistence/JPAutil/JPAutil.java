@@ -1,4 +1,4 @@
-package com.JPAutil;
+package com.persistence.JPAutil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

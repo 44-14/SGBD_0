@@ -1,4 +1,4 @@
-package com.entityFinder;
+package com.persistence.entityFinder;
 
  import java.io.Serializable;
  import java.util.*;

@@ -1,13 +1,13 @@
-package com.entities;
+package com.persistence.entities;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "medias_users", schema = "schoolux", catalog = "")
-public class MediaUserEntity {
+@Table(name = "events_users", schema = "schoolux", catalog = "")
+public class EventUserEntity {
     private int id;
-    private MediaEntity mediasByIdMedia;
+    private EventEntity eventsByIdEvent;
 
     @Id
     @Column(name = "id")
@@ -23,7 +23,7 @@ public class MediaUserEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MediaUserEntity that = (MediaUserEntity) o;
+        EventUserEntity that = (EventUserEntity) o;
         return id == that.id;
     }
 
@@ -33,12 +33,12 @@ public class MediaUserEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "id_media", referencedColumnName = "id", nullable = false)
-    public MediaEntity getMediasByIdMedia() {
-        return mediasByIdMedia;
+    @JoinColumn(name = "id_event", referencedColumnName = "id", nullable = false)
+    public EventEntity getEventsByIdEvent() {
+        return eventsByIdEvent;
     }
 
-    public void setMediasByIdMedia(MediaEntity mediasByIdMedia) {
-        this.mediasByIdMedia = mediasByIdMedia;
+    public void setEventsByIdEvent(EventEntity eventsByIdEvent) {
+        this.eventsByIdEvent = eventsByIdEvent;
     }
 }

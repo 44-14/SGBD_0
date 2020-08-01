@@ -1,13 +1,12 @@
 package com.main.schoolux.servlets;
 
 
-import com.JPAutil.JPAutil;
-import com.entities.EventEntity;
+import com.persistence.JPAutil.JPAutil;
+import com.persistence.entities.EventEntity;
 import com.main.schoolux.form.EventForm;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

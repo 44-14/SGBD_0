@@ -1,12 +1,9 @@
-package com.entityFinder;
+package com.persistence.entityFinder;
 
 //import be.src.persistence.model.AbstractActive;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.EntityManager;
-
 
 
 /**

@@ -1,4 +1,4 @@
-package com.entityFinder;
+package com.persistence.entityFinder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

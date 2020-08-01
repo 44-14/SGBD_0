@@ -24,7 +24,7 @@
     <!-- url: The JDBC connection url for connecting to your MySQL dB. -->
 
 
-    <Resource name="jdbc/schoolux"
+    <Resource name="jdbc/DataSchoolUX"
 
               driverClassName="com.mysql.jdbc.Driver"
               url="jdbc:mysql://localhost:3306/schoolux?autoReconnect=true"

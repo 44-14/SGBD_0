@@ -1,8 +1,8 @@
 package com.main.schoolux.form;
 
 
-import com.entities.EventEntity;
-import com.entityFinder.EntityFinderImpl;
+import com.persistence.entities.EventEntity;
+import com.persistence.entityFinder.EntityFinderImpl;
 import com.main.schoolux.servlets.ReadUser;
 import org.apache.log4j.Logger;
 
