@@ -29,7 +29,7 @@ public class CreateDocument extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 log.info("doPost CreateDocuments servlet - begin");
         DocumentService docServ = new DocumentService();
-        EntityManager em = JPAutil.createEntityManager("schoolux");
+        EntityManager em = JPAutil.createEntityManager("PersistUnit_schoolUX");
         /* Préparation de l'objet formulaire */
         DocumentForm form = new DocumentForm();
         HttpSession session = request.getSession();

@@ -16,7 +16,6 @@
         <setting name="validation-enabled" value="true" />
         <datasource-mapping>
           <factory-entry name="PersistUnit_schoolUX" />
-          <factory-entry name="noname-a.xml@0" value="8f2fd39d-5ee6-4af3-9a78-fe5a46ecdb0f" />
         </datasource-mapping>
         <naming-strategy-map />
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/META-INF/persistence.xml" />

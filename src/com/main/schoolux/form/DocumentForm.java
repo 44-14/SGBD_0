@@ -97,6 +97,7 @@ public Date dateJour(){
         //recuperate of the id for update a document
         int id = Integer.parseInt(request.getParameter("idDocUpdate"));
         log.debug("l'id recupere depuis notre page ShowDocument dans l'update est : "+ id);
+        log.debug("l'id recupere depuis notre page ShowDocument dans l'update est : "+ id);
         doc = (DocumentEntity) efi.findOne(doc, id);
         //request
         String label = request.getParameter("updateLabelDoc");

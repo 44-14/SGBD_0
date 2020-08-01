@@ -10,8 +10,7 @@
 
 	<!--<persistence-unit name="test"  transaction-type="JTA"> -->
 	<!-- mettre nom du projet ou de la base de données en attribut name -->
-	<persistence-unit name="schoolux"  transaction-type="RESOURCE_LOCAL">
-
+	<persistence-unit name="PersistUnit_schoolUX"  transaction-type="RESOURCE_LOCAL">
 
 
 
@@ -25,14 +24,12 @@
 		Le name de la <Resource> concernée dans le context.xml correspond à ce qui suit le java:comp/env/ dans la <jta-data-source> ci-dessous.
 		Ici on a java:comp/env/jdbc/schoolUX donc la ressource concernée est <Resource name="jdbc/schoolUX"> dans context.xml
 		-->
-		<jta-data-source>java:comp/env/jdbc/schoolux</jta-data-source>
+		<jta-data-source>java:comp/env/jdbc/DBschoolUX</jta-data-source>
 
 		<!-- Les <class> seront auto-générées lors de l'import DB
 		Si on souhaite re-générer la db, il faudra les delete ici juste avant -->
 		<class>package.name.class</class>
 		<class>com.entities.DocumentEntity</class>
-		<class>com.entities.EventEntity</class>
-		<class>com.entities.MediaEntity</class>
 
 
 
@@ -40,21 +37,6 @@
 
 		<!-- on peut remplacer la balise <jta-data-source> et la resource liée dans le context.xml par les properties suivantes -->
 		<!--
-		<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-
-		<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/schoolux"/>
-
-		<property name="javax.persistence.jdbc.user" value="root"/>
-
-		<property name="javax.persistence.jdbc.password" value=""/>
-
-		<property name="eclipselink.logging.level" value="FINE"/>
-
-		///////////////////////////////
-
-
-
-
 		<properties>
 
 		<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
@@ -79,15 +61,6 @@
 			<property name="eclipselink.ddl-generation.output-mode" value="database"/>
 			<property name="eclipselink.ddl-generation" value="create-tables"/>
 		    -->
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/schoolux"/>
-
-			<property name="javax.persistence.jdbc.user" value="root"/>
-
-			<property name="javax.persistence.jdbc.password" value=""/>
-
-			<property name="eclipselink.logging.level" value="FINE"/>
 
 		</properties>
 	</persistence-unit>

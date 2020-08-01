@@ -12,7 +12,6 @@ public final class JPAutil {
 
     public static EntityManager createEntityManager(final String persistUnit) {
         if (emf == null) {
-
             emf = Persistence.createEntityManagerFactory(persistUnit);
         }
         return emf.createEntityManager();

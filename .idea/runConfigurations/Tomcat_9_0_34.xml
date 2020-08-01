@@ -8,7 +8,7 @@
       </artifact>
     </deployment>
     <server-settings>
-      <option name="BASE_DIRECTORY_NAME" value="Tomcat_9_0_34_SGBD_0_2" />
+      <option name="BASE_DIRECTORY_NAME" value="Tomcat_9_0_34_SGBD_0" />
     </server-settings>
     <predefined_log_file enabled="true" id="Tomcat" />
     <predefined_log_file enabled="true" id="Tomcat Catalina" />
