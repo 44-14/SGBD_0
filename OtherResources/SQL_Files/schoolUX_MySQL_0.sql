@@ -33,12 +33,12 @@ SET time_zone = "+00:00";
 
 
 --
--- Nom de notre Base de données :  `projetecole`
+-- Nom de notre Base de données :  `schoolUX`
 --
 
-DROP DATABASE IF EXISTS projetecole;
-CREATE DATABASE IF NOT EXISTS projetecole;
-USE projetecole;
+DROP DATABASE IF EXISTS schoolUX;
+CREATE DATABASE IF NOT EXISTS schoolUX;
+USE schoolUX;
 
 
 -- DROP TABLE IF EXISTS countries,
