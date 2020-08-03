@@ -3,14 +3,14 @@ package com.persistence.entityFinderImplementation;
 import java.io.Serializable;
 import java.util.*;
 
-import javax.inject.Inject;
+/*import javax.inject.Inject;*/
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
 import org.apache.log4j.Logger;
 
-import com.og.connection.EMF;
+/*import com.og.connection.EMF;*/
 
 /** 
  * Class to perform entity CRUD with the database
