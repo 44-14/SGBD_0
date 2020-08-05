@@ -1,0 +1,27 @@
+
+
+
+Le fichier log4j.properties doit se trouver dans racine du dossier "src". (voir Log4j.pdf)
+
+
+
+
+
+
+=========================
+A l'import mappant les tables de la db en classes
+===========================
+
+En SQL, on utilise des tiny int (1) pour simuler un boolean
+Le mapping transforme ce type en byte alors qu il faut boolean
+
+
+Pour les enum, mettre le type java.lang.String et pas Object
+
+Mettre tous les noms de classes au singulier
+Vérifier le camelcase pour tous les noms de champs
+Id_Parent à mettre en int et pas java.Integer
+
+Une fois les classés générées, aller dans chacune rajouter l'annotation
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+en dessous de chaque annotation @Id
