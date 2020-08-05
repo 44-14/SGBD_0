@@ -33,11 +33,11 @@ SET time_zone = "+00:00";
 
 
 --
--- Nom de notre Base de données :  `schoolUX`
+-- Nom de notre Base de données :  `schoolux`
 --
 
-DROP DATABASE IF EXISTS schoolUX;
-CREATE DATABASE IF NOT EXISTS schoolUX;
+DROP DATABASE IF EXISTS schoolux;
+CREATE DATABASE IF NOT EXISTS schoolux;
 USE schoolUX;
 
 
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
 DROP TABLE IF EXISTS `roles_permissions`;
 CREATE TABLE IF NOT EXISTS `roles_permissions` (
 
--- artificial id dans les tables intermediaires pour simplifier java
+-- artificial id dans les tables intermediaires pour simplifier java (permet que la table intermédiaire existe en tant que classe java, et non pas en tant qu'annotations dans les 2 autres classes java des tables générant la jointure).
   `id` int(11) NOT NULL AUTO_INCREMENT,
 
 
@@ -176,7 +176,11 @@ CREATE TABLE IF NOT EXISTS `roles_permissions` (
   
   
 
-  CONSTRAINT PK_ROLES_PERMISSIONS PRIMARY KEY (`id`)
+  CONSTRAINT PK_ROLES_PERMISSIONS PRIMARY KEY (`id`),
+
+
+
+  CONSTRAINT UNIQUE_CONSTRAINT_ROLES_PERMISSIONS_fkcomposite UNIQUE (`id_role`,`id_permission`)
    
   
   
@@ -672,8 +676,11 @@ CREATE TABLE IF NOT EXISTS `courses_sections` (
   
   
 
-  CONSTRAINT PK_COURSES_SECTIONS PRIMARY KEY (`id`)
+  CONSTRAINT PK_COURSES_SECTIONS PRIMARY KEY (`id`),
    
+
+
+  CONSTRAINT UNIQUE_CONSTRAINT_COURSES_PERMISSIONS_fkcomposite UNIQUE (`id_course`,`id_section`)
   
   
     
@@ -703,9 +710,11 @@ CREATE TABLE IF NOT EXISTS `medias_users` (
   
   
 
-  CONSTRAINT PK_MEDIAS_USERS PRIMARY KEY (`id`)
+  CONSTRAINT PK_MEDIAS_USERS PRIMARY KEY (`id`),
    
-  
+
+
+  CONSTRAINT UNIQUE_CONSTRAINT_MEDIAS_USERS_fkcomposite UNIQUE (`id_media`,`id_user`)
   
     
   
@@ -734,13 +743,15 @@ CREATE TABLE IF NOT EXISTS `events_users` (
   
   
 
-  CONSTRAINT PK_EVENTS_USERS PRIMARY KEY (`id`)
+  CONSTRAINT PK_EVENTS_USERS PRIMARY KEY (`id`),
    
+
+
+  CONSTRAINT UNIQUE_CONSTRAINT_EVENTS_USERS_fkcomposite UNIQUE (`id_event`,`id_user`)
   
   
     
-  
-  
+    
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=`latin1_general_ci`;
 
 
@@ -765,11 +776,12 @@ CREATE TABLE IF NOT EXISTS `activities_plannings` (
   
   
 
-  CONSTRAINT PK_ACTIVITIES_PLANNINGS PRIMARY KEY (`id`)
+  CONSTRAINT PK_ACTIVITIES_PLANNINGS PRIMARY KEY (`id`),
    
   
   
-    
+  CONSTRAINT UNIQUE_CONSTRAINT_ACTIVITIES_PLANNINGS_fkcomposite UNIQUE (`id_activity`,`id_planning`)
+
   
   
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=`latin1_general_ci`;
@@ -796,10 +808,11 @@ CREATE TABLE IF NOT EXISTS `activities_users` (
   
   
 
-  CONSTRAINT PK_ACTIVITIES_USERS PRIMARY KEY (`id`)
+  CONSTRAINT PK_ACTIVITIES_USERS PRIMARY KEY (`id`),
    
   
-  
+
+  CONSTRAINT UNIQUE_CONSTRAINT_ACTIVITIES_USERS_fkcomposite UNIQUE (`id_activity`,`id_user`)
     
   
   
@@ -827,10 +840,11 @@ CREATE TABLE IF NOT EXISTS `courses_users` (
   
   
 
-  CONSTRAINT PK_COURSESUSERS PRIMARY KEY (`id`)
+  CONSTRAINT PK_COURSESUSERS PRIMARY KEY (`id`),
    
   
   
+  CONSTRAINT UNIQUE_CONSTRAINT_COURSES_USERS_fkcomposite UNIQUE (`id_course`,`id_user`)
     
   
   
@@ -859,10 +873,11 @@ CREATE TABLE IF NOT EXISTS `sections_users` (
   
   
 
-  CONSTRAINT PK_SECTIONS_USERS PRIMARY KEY (`id`)
+  CONSTRAINT PK_SECTIONS_USERS PRIMARY KEY (`id`),
    
+
   
-  
+  CONSTRAINT UNIQUE_CONSTRAINT_SECTIONS_USERS_fkcomposite UNIQUE (`id_section`,`id_user`)
     
   
   
@@ -890,12 +905,13 @@ CREATE TABLE IF NOT EXISTS `documents_users` (
   
   
 
-  CONSTRAINT PK_DOCUMENTS_USERS PRIMARY KEY (`id`)
+  CONSTRAINT PK_DOCUMENTS_USERS PRIMARY KEY (`id`),
    
   
   
-    
+  CONSTRAINT UNIQUE_CONSTRAINT_DOCUMENTS_USERS_fkcomposite UNIQUE (`id_document`,`id_user`)
   
+
   
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=`latin1_general_ci`;
 
