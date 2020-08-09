@@ -35,6 +35,8 @@ en dessous de chaque annotation @Id
 
 
 vérifier dans persistence.xml que les balises <class> se sont bien rajoutées automatiquement
+comme le modèle suivant : <class>package.name.class</class>
+
 		<class>com.persistence.entities.PermissionEntity</class>
 		<class>com.persistence.entities.RoleEntity</class>
 		<class>com.persistence.entities.RolePermissionEntity</class>
