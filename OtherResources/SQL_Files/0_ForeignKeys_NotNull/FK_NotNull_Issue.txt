@@ -1,0 +1,14 @@
+
+
+Il faut modifier les id étant des foreign keys pour les passer de NOT NULL à NULL DEFAULT NULL.
+Pourquoi ?
+Car lorsqu'on tente de faire des insert en base de données, il faut toujours que les records pré-existent avant de pouvoir
+dans la table-parent avant de pouvoir attribuer une valeur dans la table-enfant ayant la foreign key pointant sur la table-parent.
+
+En exemple :
+Si je veux créer un user, il a en foreign key id_role, id_parent (déjà nullable), id_adress et id_school
+Donc il est nécessaire que son role, son adresse et que son ecole soient déjà existants dans leurs tables respectives
+avant que je puisse créer l'utilisateur.
+
+Si je veux créer l'utilisateur directeur, mais que le role directeur n'est pas encore existant dans la table roles, je ne voudrais rien selectionner.
+Impossible si l'id_role a comme contrainte NOT NULL, etc
