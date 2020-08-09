@@ -7,8 +7,8 @@ import java.util.Objects;
 @Table(name = "roles_permissions", schema = "schoolux", catalog = "")
 public class RolePermissionEntity {
     private int id;
-    private int idRole;
-    private int idPermission;
+    private Integer idRole;
+    private Integer idPermission;
     private RoleEntity rolesByIdRole;
     private PermissionEntity permissionsByIdPermission;
 
@@ -24,22 +24,22 @@ public class RolePermissionEntity {
     }
 
     @Basic
-    @Column(name = "id_role", nullable = false)
-    public int getIdRole() {
+    @Column(name = "id_role", nullable = true)
+    public Integer getIdRole() {
         return idRole;
     }
 
-    public void setIdRole(int idRole) {
+    public void setIdRole(Integer idRole) {
         this.idRole = idRole;
     }
 
     @Basic
-    @Column(name = "id_permission", nullable = false)
-    public int getIdPermission() {
+    @Column(name = "id_permission", nullable = true)
+    public Integer getIdPermission() {
         return idPermission;
     }
 
-    public void setIdPermission(int idPermission) {
+    public void setIdPermission(Integer idPermission) {
         this.idPermission = idPermission;
     }
 
@@ -49,8 +49,8 @@ public class RolePermissionEntity {
         if (o == null || getClass() != o.getClass()) return false;
         RolePermissionEntity that = (RolePermissionEntity) o;
         return id == that.id &&
-                idRole == that.idRole &&
-                idPermission == that.idPermission;
+                Objects.equals(idRole, that.idRole) &&
+                Objects.equals(idPermission, that.idPermission);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class RolePermissionEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "id_role", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_role", referencedColumnName = "id")
     public RoleEntity getRolesByIdRole() {
         return rolesByIdRole;
     }
@@ -69,7 +69,7 @@ public class RolePermissionEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "id_permission", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_permission", referencedColumnName = "id")
     public PermissionEntity getPermissionsByIdPermission() {
         return permissionsByIdPermission;
     }

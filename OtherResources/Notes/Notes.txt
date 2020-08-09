@@ -8,9 +8,9 @@ Le fichier log4j.properties doit se trouver dans racine du dossier "src". (voir 
 
 
 
-=========================
+=====================================================
 A l'import mappant les tables de la db en classes
-===========================
+======================================================
 
 En SQL, on utilise des tiny int (1) pour simuler un boolean
 Le mapping transforme ce type en byte alors qu il faut boolean
@@ -20,8 +20,22 @@ Pour les enum, mettre le type java.lang.String et pas Object
 
 Mettre tous les noms de classes au singulier
 Vérifier le camelcase pour tous les noms de champs
-Id_Parent à mettre en int et pas java.Integer
+
+Tous les id de foreign keys qui sont nullables doivent être en java.lang.Integer
+vu qu'un simple int ne peut pas être NULL, il faut utiliser la classe enveloppe.
+
+
+Décocher les collections de classe représentant des tables pas encore gérées par le groupe
+
 
 Une fois les classés générées, aller dans chacune rajouter l'annotation
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 en dessous de chaque annotation @Id
+
+
+
+vérifier dans persistence.xml que les balises <class> se sont bien rajoutées automatiquement
+		<class>com.persistence.entities.PermissionEntity</class>
+		<class>com.persistence.entities.RoleEntity</class>
+		<class>com.persistence.entities.RolePermissionEntity</class>
+		<class>com.persistence.entities.UserEntity</class>

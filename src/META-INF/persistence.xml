@@ -34,6 +34,7 @@
 		<class>com.persistence.entities.RolePermissionEntity</class>
 		<class>com.persistence.entities.UserEntity</class>
 
+
 		<!-- Les <class> juste au-dessus sont auto-générées lors de l'import DB
 		Si on souhaite re-générer la db, il faudra les delete ici juste avant -->
 		<!-- <class>package.name.class</class> -->

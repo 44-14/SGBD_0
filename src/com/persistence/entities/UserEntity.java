@@ -15,17 +15,15 @@ public class UserEntity {
     private String username;
     private String password;
     private String phoneNumber;
-    private Timestamp birthdate;
+    private Date birthdate;
     private String gender;
     private String emailAddress;
     private boolean active;
-    private Date inscriptionDate;
+    private Timestamp inscriptionDate;
     private String title;
     private String photo;
-    private int idAddress;
-    private int idRole;
-    private int idSchool;
-    private int idParent;
+    private Integer idRole;
+    private Integer idParent;
     private RoleEntity rolesByIdRole;
     private UserEntity usersByIdParent;
     private Collection<UserEntity> usersById;
@@ -93,11 +91,11 @@ public class UserEntity {
 
     @Basic
     @Column(name = "birthdate", nullable = false)
-    public Timestamp getBirthdate() {
+    public Date getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Timestamp birthdate) {
+    public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -133,11 +131,11 @@ public class UserEntity {
 
     @Basic
     @Column(name = "inscription_date", nullable = false)
-    public Date getInscriptionDate() {
+    public Timestamp getInscriptionDate() {
         return inscriptionDate;
     }
 
-    public void setInscriptionDate(Date inscriptionDate) {
+    public void setInscriptionDate(Timestamp inscriptionDate) {
         this.inscriptionDate = inscriptionDate;
     }
 
@@ -162,42 +160,22 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "id_address", nullable = false)
-    public int getIdAddress() {
-        return idAddress;
-    }
-
-    public void setIdAddress(int idAddress) {
-        this.idAddress = idAddress;
-    }
-
-    @Basic
-    @Column(name = "id_role", nullable = false)
-    public int getIdRole() {
+    @Column(name = "id_role", nullable = true)
+    public Integer getIdRole() {
         return idRole;
     }
 
-    public void setIdRole(int idRole) {
+    public void setIdRole(Integer idRole) {
         this.idRole = idRole;
     }
 
     @Basic
-    @Column(name = "id_school", nullable = false)
-    public int getIdSchool() {
-        return idSchool;
-    }
-
-    public void setIdSchool(int idSchool) {
-        this.idSchool = idSchool;
-    }
-
-    @Basic
     @Column(name = "id_parent", nullable = true)
-    public int getIdParent() {
+    public Integer getIdParent() {
         return idParent;
     }
 
-    public void setIdParent(int idParent) {
+    public void setIdParent(Integer idParent) {
         this.idParent = idParent;
     }
 
@@ -208,10 +186,6 @@ public class UserEntity {
         UserEntity that = (UserEntity) o;
         return id == that.id &&
                 active == that.active &&
-                idAddress == that.idAddress &&
-                idRole == that.idRole &&
-                idSchool == that.idSchool &&
-                idParent == that.idParent &&
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
                 Objects.equals(username, that.username) &&
@@ -222,16 +196,18 @@ public class UserEntity {
                 Objects.equals(emailAddress, that.emailAddress) &&
                 Objects.equals(inscriptionDate, that.inscriptionDate) &&
                 Objects.equals(title, that.title) &&
-                Objects.equals(photo, that.photo);
+                Objects.equals(photo, that.photo) &&
+                Objects.equals(idRole, that.idRole) &&
+                Objects.equals(idParent, that.idParent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, username, password, phoneNumber, birthdate, gender, emailAddress, active, inscriptionDate, title, photo, idAddress, idRole, idSchool, idParent);
+        return Objects.hash(id, firstName, lastName, username, password, phoneNumber, birthdate, gender, emailAddress, active, inscriptionDate, title, photo, idRole, idParent);
     }
 
     @ManyToOne
-    @JoinColumn(name = "id_role", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_role", referencedColumnName = "id")
     public RoleEntity getRolesByIdRole() {
         return rolesByIdRole;
     }
