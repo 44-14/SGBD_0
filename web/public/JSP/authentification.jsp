@@ -19,19 +19,21 @@
 </head>
 
 <body>
-    <div id="maDiv">
-        <h1><span>Veuillez vous authentifier : </span></h1>
 
-        <form method="post" action="auth">
-            <label for='idUsernameForm'>Username :</label>
-            <input id='idUsernameForm' name='usernameFromForm' type='text' value='${usernameSessionKey}' autofocus /> <br/>
-            <label for='idPwdForm'>Password :</label>
-            <input  id='idPwdForm' name='passwordFromForm' type='password' value='${passwordSessionKey}' /> <br/>
-            <br/>
-            <input name='btnConnect' type='submit' /> <br/>
-        </form>
+        <span id="mainTitle"> School UX </span>
+        <div id="maDiv">
+            <span id="ask">Veuillez vous authentifier : </span>
 
-    </div>
+            <form method="post" action="auth">
+                <label for='idUsernameForm'>Username :</label>
+                <input id='idUsernameForm' name='usernameFromForm' type='text' value='${usernameSessionKey}' autofocus /> <br/>
+                <label for='idPwdForm'>Password :</label>
+                <input  id='idPwdForm' name='passwordFromForm' type='password' value='${passwordSessionKey}' /> <br/>
+                <br/>
+                <input name='btnConnect' type='submit' /> <br/>
+            </form>
+        </div>
+
 </body>
 </html>
 

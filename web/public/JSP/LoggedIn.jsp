@@ -20,8 +20,11 @@
 
 <body>
     <div id="maDiv">
+        <div id="block">
+        <span id="ask">Bienvenue Mister ${usernameSessionKey} </span>
+        </div>
 
-        <h1> <span>Bienvenue Mister ${usernameSessionKey} </span></h1>
+        <a href="${pageContext.request.contextPath}/public/home.jsp"><button class="btn"> Appuyez ici pour continuer. </button></a>
 
     </div>
 </body>

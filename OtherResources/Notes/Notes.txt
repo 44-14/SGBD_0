@@ -44,7 +44,11 @@ Obtenir un logger
 ============================================================
 
 Le fichier log4j.properties doit se trouver dans racine du dossier "src". (voir Log4j.pdf)
+Mettre LOG en maj et pas log car final signifie que c'est une constante => convention
 
+private final static Logger LOG = Logger.getLogger(NomDeLaClasse.class);
 
-private final static Logger log = Logger.getLogger(NomDeLaClasse.class);
-afficher un msg => log.info("mon message");
+afficher un msg =>
+LOG.info("monMessage");
+ou
+LOG.log(Level.INFO, "monMessage");*/

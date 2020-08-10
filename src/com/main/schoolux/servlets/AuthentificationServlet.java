@@ -1,5 +1,6 @@
 package com.main.schoolux.servlets;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -10,17 +11,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "AuthentificationServlet", urlPatterns = "/auth")
+/* l'attribut loadOnStartup permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue) */
+@WebServlet(name = "AuthentificationServlet", urlPatterns = "/auth", loadOnStartup = 1)
 public class AuthentificationServlet extends HttpServlet {
 
 
-    private final static Logger log = Logger.getLogger(AuthentificationServlet.class);
+    private final static Logger LOG = Logger.getLogger(AuthentificationServlet.class);
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        log.info("=================  DoGet() de AuthentificationServlet -  BEGIN  ======================");
-
+        LOG.info("=================  DoGet() de AuthentificationServlet -  BEGIN  ======================");
+        /*le même que LOG.log(Level.INFO, "========MonMessage======");*/
 
         String usernameSession = request.getParameter("usernameFromForm");
         String passwordSession = request.getParameter("passwordFromForm");

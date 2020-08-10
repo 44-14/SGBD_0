@@ -6,15 +6,44 @@ html{
 
 body{
     background-color: black;
-    margin-top: 50vh; /* poussé de la moitié de hauteur de viewport */
-    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
-
     text-align:center;
 }
 
+
+#maDiv {
+    margin-top: 30vh; /* poussé de la moitié de hauteur de viewport */
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+}
+
+#mainTitle {
+
+    color : dodgerblue;
+    border : solid 3px dodgerblue;;
+    padding : 20px;
+    font-size : 80px;
+    font-weight :bold;
+    top : 50px;
+    position : relative
+}
+
+#ask {
+    color : orange;
+    border : solid 1px orange;
+    font-size : 40px;
+
+
+}
+
 form {
+    margin-top : 50px;
     color : yellow;
     font-size : 20px;
+}
+label {
+    display:inline-block;
+    width:100px;
+    text-align:left;
+    margin : 10px;
 }
 
 input {
@@ -22,21 +51,16 @@ input {
 }
 
 
+
 span {
     color: orange;
-
-    border: solid 3px orange;
+    border: solid 1px orange;
     padding : 10px;
 }
 
-h1 {
-    margin-bottom : 70px;
+
+#block {
+    display : block;
+    margin-bottom : 50px;
 }
 
-
-label {
-    display:inline-block;
-    width:100px;
-    text-align:left;
-    margin : 10px;
-}
