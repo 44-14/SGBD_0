@@ -1,13 +1,4 @@
 
-
-
-Le fichier log4j.properties doit se trouver dans racine du dossier "src". (voir Log4j.pdf)
-
-
-
-
-
-
 =====================================================
 A l'import mappant les tables de la db en classes
 ======================================================
@@ -51,5 +42,9 @@ comme le modèle suivant : <class>package.name.class</class>
 ============================================================
 Obtenir un logger
 ============================================================
+
+Le fichier log4j.properties doit se trouver dans racine du dossier "src". (voir Log4j.pdf)
+
+
 private final static Logger log = Logger.getLogger(NomDeLaClasse.class);
 afficher un msg => log.info("mon message");
