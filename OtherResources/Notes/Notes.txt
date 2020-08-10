@@ -52,3 +52,12 @@ afficher un msg =>
 LOG.info("monMessage");
 ou
 LOG.log(Level.INFO, "monMessage");*/
+
+
+
+=============================================
+Le MyGlobalListener
+==============================================
+Vraiment un truc à mettre en place car ça simplifie beaucoup le logging
+On peut voir automatiquement ce qu'il se passe en session etc grâce à des events générés par les classes importées
+Simple à mettre en place et efficace

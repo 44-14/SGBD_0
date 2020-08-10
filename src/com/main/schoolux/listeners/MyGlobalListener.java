@@ -6,23 +6,20 @@ import org.apache.log4j.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.*;
 
 @WebListener()
-public class MonListenerGlobal implements ServletContextListener,
+public class MyGlobalListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
 
 
 
-    private static final Logger LOG = Logger.getLogger( MonListenerGlobal.class);
+    private static final Logger LOG = Logger.getLogger( MyGlobalListener.class);
     private int sessionCounter = 0;
 
 
     // Public constructor is required by servlet spec
-    public MonListenerGlobal() {
+    public MyGlobalListener() {
     }
 
 
@@ -39,7 +36,9 @@ public class MonListenerGlobal implements ServletContextListener,
          initialized(when the Web application is deployed). 
          You can initialize servlet context related data here.
       */
-        LOG.log( Level.INFO, "======  School UX -- Application started ====== " );
+        LOG.log( Level.INFO, "\n============================================================\n" +
+                                     "============  School UX -- Application started =============\n" +
+                                     "============================================================");
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
@@ -47,8 +46,9 @@ public class MonListenerGlobal implements ServletContextListener,
          (the Web application) is undeployed or 
          Application Server shuts down.
       */
-        LOG.log( Level.INFO, "======  School UX -- Application stopped ====== " );
-    }
+        LOG.log( Level.INFO, "\n============================================================\n" +
+                "============  School UX -- Application stopped =============\n" +
+                "============================================================");}
 
 
 
@@ -67,7 +67,7 @@ public class MonListenerGlobal implements ServletContextListener,
         synchronized ( this ) {
             sessionCounter ++;
         }
-        LOG.log( Level.INFO,"======= Session created - "+sessionCounter+" session(s) in memory ======");
+        LOG.log( Level.INFO,"***** Session created - "+sessionCounter+" session(s) in memory  ***** ");
     }
 
 
@@ -79,7 +79,7 @@ public class MonListenerGlobal implements ServletContextListener,
         synchronized ( this ) {
             sessionCounter --;
         }
-        LOG.log( Level.INFO,"======= Session destroyed - "+sessionCounter+" session(s) in memory ======");
+        LOG.log( Level.INFO,"*****  Session destroyed - "+sessionCounter+" session(s) in memory  ***** ");
 
     }
 
@@ -108,8 +108,14 @@ public class MonListenerGlobal implements ServletContextListener,
       /* This method is called when an attribute 
          is added to a session.
       */
+
         LOG.log(Level.INFO,
-                "====== Attribut ajouté en session : \nNom de l'attribut: "+sbe.getName()+"\nValeur: "+sbe.getValue()+"\nSession: "+sbe.getSession()+"");
+                "***  Attribut ajouté en session : *** \nNom de l'attribut: "+sbe.getName()+"\nValeur à la création: "+sbe.getValue());
+
+
+                /* on peut rajouter ce qui suit pour avoir l'id de la section :
+                +"\nSession: "+sbe.getSession());
+                */
 
     }
 
@@ -118,7 +124,8 @@ public class MonListenerGlobal implements ServletContextListener,
          is removed from a session.
       */
         LOG.log(Level.INFO,
-                "====== Attribut supprimé en session : \nNom de l'attribut: "+sbe.getName()+"\nValeur: "+sbe.getValue()+"\nSession: "+sbe.getSession()+"");
+                "*** Attribut supprimé en session : ***  : \nNom de l'attribut: "+sbe.getName()+"\nValeur: "+sbe.getValue());
+
 
     }
 
@@ -127,7 +134,25 @@ public class MonListenerGlobal implements ServletContextListener,
          is replaced in a session.
       */
         LOG.log(Level.INFO,
-                "====== Attribut remplacé en session : \nNom de l'attribut: "+sbe.getName()+"\nValeur: "+sbe.getValue()+"\nSession: "+sbe.getSession()+"");
+                "***  Attribut remplacé en session : ***  \n" +
+                        "Nom de l'attribut: "+sbe.getName()+"\n" +
+                        "Ancienne valeur: "+sbe.getValue()+"\n" +
+                        "Nouvelle valeur: "+sbe.getSession().getAttribute(sbe.getName()));
 
+
+
+
+        /* Comme le sbe.getValue() retourne l'ancienne valeur de l'attribut modifié, il fallait trouver comment afficher la nouvelle valeur
+        sbe.getSession() retourne un objet de type HttpSession
+        Ce retour contient tous les attributs mis dans cette session, et ils sont joignables un par un en utlisant la methode getAttribut(string nomAttribut) qui retourne la value du nomAttribut
+        donc sbe.getSession().getAttribute(String nomAttributATrouver);
+        Hors, le nom de l'attribut à trouver en fait l'attribut qui a déclenché la méthode ici au vu de sa modification,
+        donc on le trouve avec sbe.getName();
+        Du coup on a
+        sbe.getSession().getAttribute(sbe.getName()) qui nous retournera bien la nouvelle valeur de l'attribut modifié
+        Pour l'afficher :
+        LOG.log(Level.INFO, "Nouvelle valeur: "+sbe.getSession().getAttribute(sbe.getName())+"");
+        Mais on l'a concatené dans le meme LOG.log juste au dessus pour que ça soit groupé dans l'affichage des logs.
+        */
     }
 }

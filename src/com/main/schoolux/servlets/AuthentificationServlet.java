@@ -40,7 +40,7 @@ public class AuthentificationServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        log.info("==================  doPost() de AuthentificationServlet -  BEGIN  ===================");
+        LOG.info("==================  doPost() de AuthentificationServlet -  BEGIN  ===================");
 
 
         String usernameSession = request.getParameter("usernameFromForm");
@@ -49,6 +49,7 @@ public class AuthentificationServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         session.setAttribute("usernameSessionKey", usernameSession);
         session.setAttribute("passwordSessionKey", passwordSession);
+
 
 
         if (usernameSession.equals("Bond") && passwordSession.equals("007")) {
