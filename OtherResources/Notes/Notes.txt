@@ -41,3 +41,15 @@ comme le modèle suivant : <class>package.name.class</class>
 		<class>com.persistence.entities.RoleEntity</class>
 		<class>com.persistence.entities.RolePermissionEntity</class>
 		<class>com.persistence.entities.UserEntity</class>
+
+
+
+
+
+
+
+============================================================
+Obtenir un logger
+============================================================
+private final static Logger log = Logger.getLogger(NomDeLaClasse.class);
+afficher un msg => log.info("mon message");

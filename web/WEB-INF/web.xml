@@ -3,7 +3,32 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-</web-app>
+
+
+
+    
+        <welcome-file-list>
+            <welcome-file>LoginServlet</welcome-file>
+                    <!-- rajoutera login à la fin de l'url, donc ici que l'url soit
+                     http://localhost:8080/SGBD_0_war_exploded/
+                     ou
+                     http://localhost:8080/SGBD_0_war_exploded/login
+                     reviendra au même
+                     -->
+
+            <welcome-file>home.html</welcome-file>
+                    <!-- ici, que l'url soit :
+                    http://localhost:8080/SGBD_0_war_exploded/
+                    ou
+                    http://localhost:8080/SGBD_0_war_exploded/home.html
+                    renverra le meme welcome-file à savoir home.html
+                    -->
+
+            <welcome-file>index</welcome-file>
+        </welcome-file-list>
+
+
+
 
 
 
@@ -13,5 +38,31 @@ Pas de mapping de servlet ici
 Cela ajoutera une annotation @WebServlet(name="") qui remplace le mapping d'ici
 
 Dans le cas où on fait les 2 par erreur, c'est le web.xml qui sera prioritaire par rapport aux annotations.
--->
+
+Exemple à l'ancienne :
+
+
+        <servlet>
+            <servlet-name>NomDeMaServlet</servlet-name>
+            <servlet-class> com.main.schoolux.servlets.ClasseLiéeAuNomDeServlet</servlet-class>
+        </servlet>
+
+        <servlet-mapping>
+            <servlet-name>NomDeMaServlet</servlet-name>
+            <url-pattern>/UnMotEnRapportAvecLeNomDeLaServlet</url-pattern>
+        </servlet-mapping>
+
+Fin exemple
+ -->
+    
+
+
+</web-app>
+
+
+
+
+
+
+
 

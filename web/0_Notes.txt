@@ -1,0 +1,58 @@
+
+
+le dossier web doit contenir un sous-dossier WEB-INF, qui contient lui-même obigatoirement :
+_ dossier classes
+_ dossier lib
+_ le fichier web.xml
+
+et accessoirement :
+_ le dossier JSP pour les jsp privées
+
+
+
+
+Ce qui se trouve dans le dossier WEB-INF est privé.
+
+Le reste de ce qui se trouve directement à la racine du dossier web est public,
+et donc accessibles directement par le client via leurs URL
+=> on peut atteindre
+http://localhost:8080/SGBD_0_war_exploded/public/quoiqueCeSoit
+mais on ne pourrait pas atteindre
+http://localhost:8080/SGBD_0_war_exploded/WEB-INF/quoiqueCeSoit
+
+
+SGBD_0_war_exploded est en fait le nom de notre projet
+on peut considérer que c le point d'entrée de notre application sur le serveur
+et donc le dossier web qui est bien le dossier-racine de notre application
+
+
+
+Voir :
+
+La racine de l'application, en violet sur le schéma,
+ est le dossier qui porte le nom de votre projet
+ et qui contient l'intégralité des dossiers
+ et fichiers de l'application. (= dossier web sur intelliJ)
+
+
+Le dossier nommé WEB-INF est un dossier spécial.
+Il doit obligatoirement exister et être placé juste
+sous la racine de l'application.
+Il doit à son tour obligatoirement contenir :
+
+    .le fichier de configuration de l'application (web.xml) ;
+
+    .un dossier nommé classes,
+    qui contient à son tour les classes compilées (fichiers .class) ;
+
+    .un dossier nommé lib,
+    qui contient à son tour les bibliothèques nécessaires au projet (archives .jar).
+
+
+Bref, tous les dossiers et fichiers marqués en rouge sur le schéma doivent obligatoirement être nommés et placés comme indiqué sur le schéma.
+
+Les fichiers et dossiers persos placés directement sous la racine, en bleu sur le schéma, sont publics et donc accessibles directement par le client via leurs URL. (*)
+
+Les fichiers et dossiers persos placés sous le répertoire WEB-INF, en orange sur le schéma, sont privés et ne sont donc pas accessibles directement par le client. (*)
+
+(*) Nous reviendrons en temps voulu sur le caractère privé du dossier WEB-INF, et sur la distinction avec les dossiers publics.
