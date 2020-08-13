@@ -24,15 +24,18 @@ public class AuthentificationServlet extends HttpServlet {
         LOG.info("=================  DoGet() de AuthentificationServlet -  BEGIN  ======================");
         /*le même que LOG.log(Level.INFO, "========MonMessage======");*/
 
+/*
         String usernameSession = request.getParameter("usernameFromForm");
         String passwordSession = request.getParameter("passwordFromForm");
 
         if (usernameSession == null) usernameSession = "";
         if (passwordSession == null) passwordSession = "";
 
-        HttpSession session = request.getSession(true); /* le paramètre booléen mis à true permet de générer la session si elle n'existe pas, on évite ainsi un null) */
+        HttpSession session = request.getSession(true); // le paramètre booléen mis à true permet de générer la session si elle n'existe pas, on évite ainsi un null)
+
         session.setAttribute("usernameSessionKey", usernameSession);
         session.setAttribute("passwordSessionKey", passwordSession);
+*/
 
         request.getRequestDispatcher("/public/JSP/authentification.jsp").forward(request, response);
     }

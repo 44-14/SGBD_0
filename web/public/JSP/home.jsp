@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<h1> home.jsp</h1>
+<h1> ceci est home.jsp</h1>
 
 </body>
 </html>

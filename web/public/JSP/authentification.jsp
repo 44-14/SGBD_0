@@ -26,9 +26,9 @@
 
             <form method="post" action="auth">
                 <label for='idUsernameForm'>Username :</label>
-                <input id='idUsernameForm' name='usernameFromForm' type='text' value='${usernameSessionKey}' autofocus /> <br/>
+                <input id='idUsernameForm' name='usernameFromForm' type='text' value='${sessionScope.usernameSessionKey}' autofocus /> <br/>
                 <label for='idPwdForm'>Password :</label>
-                <input  id='idPwdForm' name='passwordFromForm' type='password' value='${passwordSessionKey}' /> <br/>
+                <input  id='idPwdForm' name='passwordFromForm' type='password' value='${sessionScope.passwordSessionKey}' /> <br/>
                 <br/>
                 <input name='btnConnect' type='submit' /> <br/>
             </form>
