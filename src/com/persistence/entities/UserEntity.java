@@ -3,7 +3,6 @@ package com.persistence.entities;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -22,14 +21,10 @@ public class UserEntity {
     private Timestamp inscriptionDate;
     private String title;
     private String photo;
-    private Integer idRole;
-    private Integer idParent;
     private RoleEntity rolesByIdRole;
     private UserEntity usersByIdParent;
-    private Collection<UserEntity> usersById;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
@@ -159,26 +154,6 @@ public class UserEntity {
         this.photo = photo;
     }
 
-    @Basic
-    @Column(name = "id_role", nullable = true)
-    public Integer getIdRole() {
-        return idRole;
-    }
-
-    public void setIdRole(Integer idRole) {
-        this.idRole = idRole;
-    }
-
-    @Basic
-    @Column(name = "id_parent", nullable = true)
-    public Integer getIdParent() {
-        return idParent;
-    }
-
-    public void setIdParent(Integer idParent) {
-        this.idParent = idParent;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -196,14 +171,12 @@ public class UserEntity {
                 Objects.equals(emailAddress, that.emailAddress) &&
                 Objects.equals(inscriptionDate, that.inscriptionDate) &&
                 Objects.equals(title, that.title) &&
-                Objects.equals(photo, that.photo) &&
-                Objects.equals(idRole, that.idRole) &&
-                Objects.equals(idParent, that.idParent);
+                Objects.equals(photo, that.photo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, username, password, phoneNumber, birthdate, gender, emailAddress, active, inscriptionDate, title, photo, idRole, idParent);
+        return Objects.hash(id, firstName, lastName, username, password, phoneNumber, birthdate, gender, emailAddress, active, inscriptionDate, title, photo);
     }
 
     @ManyToOne
@@ -224,14 +197,5 @@ public class UserEntity {
 
     public void setUsersByIdParent(UserEntity usersByIdParent) {
         this.usersByIdParent = usersByIdParent;
-    }
-
-    @OneToMany(mappedBy = "usersByIdParent")
-    public Collection<UserEntity> getUsersById() {
-        return usersById;
-    }
-
-    public void setUsersById(Collection<UserEntity> usersById) {
-        this.usersById = usersById;
     }
 }
