@@ -4,7 +4,7 @@ A l'import mappant les tables de la db en classes
 ======================================================
 
 En SQL, on utilise des tiny int (1) pour simuler un boolean
-Le mapping transforme ce type en byte alors qu il faut boolean
+Le mapping transforme ce type en byte alors qu il faut le java type boolean
 
 
 Pour les enum, mettre le type java.lang.String et pas Object
@@ -12,8 +12,12 @@ Pour les enum, mettre le type java.lang.String et pas Object
 Mettre tous les noms de classes au singulier
 Vérifier le camelcase pour tous les noms de champs
 
+
+
 Tous les id de foreign keys qui sont nullables doivent être en java.lang.Integer
-vu qu'un simple int ne peut pas être NULL, il faut utiliser la classe enveloppe.
+vu qu'un simple int ne peut pas être NULL, il faut utiliser la classe enveloppe Integer
+=> finalement on décoche les id de clés étrangères, on garde que les collections
+
 
 
 Décocher les collections de classe représentant des tables pas encore gérées par le groupe
