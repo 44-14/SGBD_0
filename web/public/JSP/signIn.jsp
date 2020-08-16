@@ -14,8 +14,8 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Authentification</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signin.css' />
+    <title>SignIn</title>
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signIn.css' />
 </head>
 
 <body>
@@ -27,7 +27,7 @@
     <div class="maDiv">
             <span class="ask">Veuillez vous authentifier : </span>
 
-            <form method="post" action="/signin">
+            <form method="post" action="${pageContext.request.contextPath}/signin">
                 <label for='idUsernameForm'>Username :</label>
                 <input id='idUsernameForm' name='usernameFromForm' type='text' value='${sessionScope.usernameSessionKey}' autofocus /> <br/>
                 <label for='idPwdForm'>Password :</label>
@@ -44,7 +44,7 @@
 
             <span class="ask">Pas encore inscrit ? </span>
 
-                <a id="monAncre" href="${pageContext.request.contextPath}/user/signup">
+                <a id="monAncre" href="${pageContext.request.contextPath}/createuser">
                     <button>S'inscrire</button>
                 </a>
 

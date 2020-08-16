@@ -14,7 +14,7 @@ import java.io.IOException;
 
 
 /* l'attribut loadOnStartup permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue) */
-@WebServlet(name = "UserServlet", urlPatterns = "/user/*", loadOnStartup = 1)
+@WebServlet(name = "CreateUserServlet", urlPatterns = "/test/user/*", loadOnStartup = 1)
 public class UserServlet extends HttpServlet {
 
 
@@ -25,7 +25,7 @@ public class UserServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.info("===  DoGet() de UserServlet -  BEGIN  ===");
+        LOG.info("===  DoGet() de CreateUserServlet -  BEGIN  ===");
         // ou LOG.log(Level.INFO, "========MonMessage======");
 
         LOG.log(Level.INFO, "Servlet path :"+request.getServletPath().toString());
@@ -91,7 +91,7 @@ public class UserServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.info("===  doPost() de UserServlet -  BEGIN  ===");
+        LOG.info("===  doPost() de CreateUserServlet -  BEGIN  ===");
 
 
         String usernameSession = request.getParameter("usernameFromForm");

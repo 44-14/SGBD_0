@@ -13,12 +13,8 @@ import java.io.IOException;
 
 
 
-
-
-
-
 /* l'attribut loadOnStartup permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue) */
-@WebServlet(name = "SignInServlet", urlPatterns = "/signin/*", loadOnStartup = 1)
+@WebServlet(name = "SignInServlet", urlPatterns = "/signin", loadOnStartup = 1)
 public class SignInServlet extends HttpServlet {
 
 
