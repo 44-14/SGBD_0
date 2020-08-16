@@ -15,7 +15,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Bienvenue</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/authentification.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signin.css' />
 </head>
 
 <body>

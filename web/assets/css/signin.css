@@ -4,16 +4,20 @@ html{
     width : 100%;
 }
 
-body{
+body {
     background-color: black;
-    text-align:center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    margin-top : 100px;
 }
 
 
-#maDiv {
-    margin-top: 30vh; /* poussé de la moitié de hauteur de viewport */
-    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+.maDiv{
+    margin-top : 50px;
+    margin-bottom : 50px;
 }
+
 
 #mainTitle {
 
@@ -22,23 +26,29 @@ body{
     padding : 20px;
     font-size : 80px;
     font-weight :bold;
-    top : 50px;
-    position : relative
+
+
 }
 
-#ask {
+.ask {
     color : orange;
     border : solid 1px orange;
     font-size : 40px;
-
-
+    display : inline-block;
+    margin-bottom : 30px;
 }
 
+
+#monAncre{
+    display:block;
+}
+
+
 form {
-    margin-top : 50px;
     color : yellow;
     font-size : 20px;
 }
+
 label {
     display:inline-block;
     width:100px;
@@ -51,7 +61,6 @@ input {
 }
 
 
-
 span {
     color: orange;
     border: solid 1px orange;
@@ -59,8 +68,4 @@ span {
 }
 
 
-#block {
-    display : block;
-    margin-bottom : 50px;
-}
 

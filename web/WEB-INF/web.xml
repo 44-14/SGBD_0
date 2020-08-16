@@ -8,11 +8,11 @@
 
     
         <welcome-file-list>
-            <welcome-file>auth</welcome-file>
-                    <!-- rajoutera auth à la fin de l'url, donc ici que l'url soit
+            <welcome-file>signin</welcome-file>
+                    <!-- rajoutera signin à la fin de l'url, donc ici que l'url soit
                      http://localhost:8080/SGBD_0_war_exploded/
                      ou
-                     http://localhost:8080/SGBD_0_war_exploded/auth
+                     http://localhost:8080/SGBD_0_war_exploded/signin
                      reviendra au même
                      -->
 

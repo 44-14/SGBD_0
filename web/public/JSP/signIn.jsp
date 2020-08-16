@@ -15,24 +15,40 @@
 <head>
     <meta charset="UTF-8" />
     <title>Authentification</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/authentification.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signin.css' />
 </head>
 
 <body>
 
-        <span id="mainTitle"> School UX </span>
-        <div id="maDiv">
-            <span id="ask">Veuillez vous authentifier : </span>
+    <div class="maDiv">
+            <span id="mainTitle"> School UX </span>
+    </div>
 
-            <form method="post" action="auth">
+    <div class="maDiv">
+            <span class="ask">Veuillez vous authentifier : </span>
+
+            <form method="post" action="/signin">
                 <label for='idUsernameForm'>Username :</label>
                 <input id='idUsernameForm' name='usernameFromForm' type='text' value='${sessionScope.usernameSessionKey}' autofocus /> <br/>
                 <label for='idPwdForm'>Password :</label>
                 <input  id='idPwdForm' name='passwordFromForm' type='password' value='${sessionScope.passwordSessionKey}' /> <br/>
                 <br/>
-                <input name='btnConnect' type='submit' /> <br/>
+                <input name='btnSignIn' type='submit' value="Se connecter"/> <br/>
             </form>
-        </div>
+
+    </div>
+
+
+
+    <div class="maDiv">
+
+            <span class="ask">Pas encore inscrit ? </span>
+
+                <a id="monAncre" href="${pageContext.request.contextPath}/user/signup">
+                    <button>S'inscrire</button>
+                </a>
+
+    </div>
 
 </body>
 </html>

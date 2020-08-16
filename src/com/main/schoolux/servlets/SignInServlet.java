@@ -11,20 +11,32 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+
+
+
+
+
+
 /* l'attribut loadOnStartup permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue) */
-@WebServlet(name = "AuthentificationServlet", urlPatterns = "/auth", loadOnStartup = 1)
-public class AuthentificationServlet extends HttpServlet {
+@WebServlet(name = "SignInServlet", urlPatterns = "/signin/*", loadOnStartup = 1)
+public class SignInServlet extends HttpServlet {
 
 
-    private final static Logger LOG = Logger.getLogger(AuthentificationServlet.class);
+    private final static Logger LOG = Logger.getLogger(SignInServlet.class);
+
+
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.info("=================  DoGet() de AuthentificationServlet -  BEGIN  ======================");
-        /*le même que LOG.log(Level.INFO, "========MonMessage======");*/
+        LOG.info("===  DoGet() de SignInServlet -  BEGIN  ===");
+        // ou LOG.log(Level.INFO, "========MonMessage======");
 
-/*
+
+
+        /*
+
+
         String usernameSession = request.getParameter("usernameFromForm");
         String passwordSession = request.getParameter("passwordFromForm");
 
@@ -35,15 +47,29 @@ public class AuthentificationServlet extends HttpServlet {
 
         session.setAttribute("usernameSessionKey", usernameSession);
         session.setAttribute("passwordSessionKey", passwordSession);
-*/
 
-        request.getRequestDispatcher("/public/JSP/authentification.jsp").forward(request, response);
+         */
+
+
+
+        /*
+         Les  LOG qui suivent ont été déplacé au niveau d'un listener d'evenements auto-générés dans la classe MyHTTPRequestListener,
+        LOG.log(Level.INFO, "URI Request :"+request.getRequestURI().toString());
+        LOG.log(Level.INFO, "URL Request :"+request.getRequestURL().toString());
+         */
+
+
+
+        LOG.log(Level.INFO, "Servlet path :"+request.getServletPath().toString());
+
+        // créer en mm tps la session
+        request.getRequestDispatcher("/public/JSP/signIn.jsp").forward(request, response);
     }
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.info("==================  doPost() de AuthentificationServlet -  BEGIN  ===================");
+        LOG.info("===  doPost() de SignInServlet -  BEGIN  ===");
 
 
         String usernameSession = request.getParameter("usernameFromForm");
@@ -60,7 +86,7 @@ public class AuthentificationServlet extends HttpServlet {
             request.getRequestDispatcher("/public/JSP/LoggedIn.jsp").forward(request, response);
         } else {
             session.setAttribute("isLoggedIn", false);
-            request.getRequestDispatcher("/public/JSP/authentification.jsp").forward(request, response);
+            request.getRequestDispatcher("/public/JSP/signIn.jsp").forward(request, response);
         }
 
 

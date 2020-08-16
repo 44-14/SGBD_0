@@ -3,8 +3,6 @@ package com.persistence.entityFinderImplementation;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-
 /**
  * 
  * @author Renaud DIANA

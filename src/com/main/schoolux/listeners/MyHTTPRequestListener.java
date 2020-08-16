@@ -37,14 +37,15 @@ public class MyHTTPRequestListener implements ServletRequestListener {
     // -------------------------------------------------------
     /* Un écouteur sur l'activité des sessions HTTP */
     @Override
-    public void requestInitialized(ServletRequestEvent sre) {
-        HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
-        //request.setAttribute("startTime", System.currentTimeMillis());
+        public void requestInitialized(ServletRequestEvent sre) {
+            HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
+            //request.setAttribute("startTime", System.currentTimeMillis());
 
-        LOG.log(Level.INFO, "***  Requête initialisée : ***  \n" +
-                " Méthode de la requête : " + ((HttpServletRequest) sre.getServletRequest()).getMethod() + "\n" +
-                "URI de la requête : " + ((HttpServletRequest) sre.getServletRequest()).getRequestURI());
-    };
+            LOG.log(Level.INFO, "**********************  Requête initialisée : ***********************  \n" +
+                    " Méthode de la requête : " + ((HttpServletRequest) sre.getServletRequest()).getMethod() + "\n" +
+                    "URL de la requête : " + ((HttpServletRequest) sre.getServletRequest()).getRequestURL() + "\n" +
+                    "URI de la requête : " + ((HttpServletRequest) sre.getServletRequest()).getRequestURI());
+        }
 
 
 
