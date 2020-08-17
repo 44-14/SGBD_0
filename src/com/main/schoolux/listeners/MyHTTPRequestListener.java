@@ -41,7 +41,8 @@ public class MyHTTPRequestListener implements ServletRequestListener {
             HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
             //request.setAttribute("startTime", System.currentTimeMillis());
 
-            LOG.log(Level.INFO, "**********************  Requête initialisée : ***********************  \n" +
+            LOG.log(Level.INFO, "*************************************************************\n" +
+                    "**********************  Requête initialisée : ***********************  \n" +
                     " Méthode de la requête : " + ((HttpServletRequest) sre.getServletRequest()).getMethod() + "\n" +
                     "URL de la requête : " + ((HttpServletRequest) sre.getServletRequest()).getRequestURL() + "\n" +
                     "URI de la requête : " + ((HttpServletRequest) sre.getServletRequest()).getRequestURI());
@@ -55,6 +56,11 @@ public class MyHTTPRequestListener implements ServletRequestListener {
             /*long startTime = (Long) request.getAttribute( "startTime" );
             LOG.log( Level.INFO, "Request is produced in {0} milliseconds",System.currentTimeMillis() - startTime );
             */
+
+            LOG.log(Level.INFO, "*********************************************************************\n" +
+                    "**********************  Requête  "+ ((HttpServletRequest) sre.getServletRequest()).getMethod()+"détruite :  "+
+                    ((HttpServletRequest) sre.getServletRequest()).getRequestURI()+"***********************  \n");
+
         }
 
     }

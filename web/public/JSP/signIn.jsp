@@ -44,7 +44,7 @@
 
             <span class="ask">Pas encore inscrit ? </span>
 
-                <a id="monAncre" href="${pageContext.request.contextPath}/createuser">
+                <a id="monAncre" href="${pageContext.request.contextPath}/signup">
                     <button>S'inscrire</button>
                 </a>
 

@@ -65,3 +65,41 @@ Le MyGlobalListener
 Vraiment un truc à mettre en place car ça simplifie beaucoup le logging
 On peut voir automatiquement ce qu'il se passe en session etc grâce à des events générés par les classes importées
 Simple à mettre en place et efficace
+
+
+
+
+
+
+
+
+
+
+==================
+Structure reflexion
+===================
+
+signin servlet
+signup servlet pour l  inscription only
+accountServlet pour gerer son compte genre /myAccount
+
+userManagingServlet pour gérer les utilisateurs
+où là on vérifierait le rôle à l'appel du get de la servlet
+si c bien un admin, il peut continuer
+
+on fait le bail du check de l'url substring
+/list => return usersList.jsp
+/edit => à partir de la liste, on a cliquer sur un bouton éditer à coté d un user,
+return userInfos.jsp qui une fois éditer et submit en post repart vers /users/edit
+donc faire methode post avec aussi le substring dans la servlet
+
+/delete => à partir de la liste on a cliqué sur delete user
+
+
+
+
+
+
+
+
+

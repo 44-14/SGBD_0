@@ -17,8 +17,8 @@ import java.io.IOException;
 @WebServlet(name = "SignInServlet", urlPatterns = "/signin", loadOnStartup = 1)
 public class SignInServlet extends HttpServlet {
 
-
     private final static Logger LOG = Logger.getLogger(SignInServlet.class);
+    public final String VUE_FORM ="/public/JSP/signIn.jsp";
 
 
 
@@ -28,11 +28,7 @@ public class SignInServlet extends HttpServlet {
         LOG.info("===  DoGet() de SignInServlet -  BEGIN  ===");
         // ou LOG.log(Level.INFO, "========MonMessage======");
 
-
-
         /*
-
-
         String usernameSession = request.getParameter("usernameFromForm");
         String passwordSession = request.getParameter("passwordFromForm");
 
@@ -46,20 +42,16 @@ public class SignInServlet extends HttpServlet {
 
          */
 
-
-
         /*
          Les  LOG qui suivent ont été déplacé au niveau d'un listener d'evenements auto-générés dans la classe MyHTTPRequestListener,
         LOG.log(Level.INFO, "URI Request :"+request.getRequestURI().toString());
         LOG.log(Level.INFO, "URL Request :"+request.getRequestURL().toString());
          */
 
-
-
         LOG.log(Level.INFO, "Servlet path :"+request.getServletPath().toString());
 
         // créer en mm tps la session
-        request.getRequestDispatcher("/public/JSP/signIn.jsp").forward(request, response);
+        request.getRequestDispatcher(VUE_FORM).forward(request, response);
     }
 
 

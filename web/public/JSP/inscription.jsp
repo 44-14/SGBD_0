@@ -28,11 +28,11 @@
         <span class="ask">Veuillez compléter le formulaire : </span>
 
         <!-- Create an user -->
-        <form method="post" action="/createUser" enctype="multipart/form-data">
+        <form method="post" action="${pageContext.request.contextPath}/createuser" enctype="multipart/form-data">
 
             <!-- First Name -->
             <label for='idFirstNameForm'>Prénom :</label>
-            <input id='idFirstNameForm' name='firstNameFromForm' type='text' value='${sessionScope.firstNameSessionKey}' required autofocus /> <br/>
+            <input id='isFirstNameForm' name='firstNameFromForm' type='text' value='${sessionScope.firstNameSessionKey}' required autofocus /> <br/>
 
             <!-- Last Name -->
             <label for='idLastNameForm'>Nom :</label>
@@ -47,27 +47,30 @@
             <input  id='idPasswordForm' name='passwordFromForm' type='password' value='${sessionScope.passwordSessionKey}' required /> <br/>
 
             <!-- Phone Number -->
-            <label for='idPhoneNumberForm'>Numéro de téléphone : null</label>
+            <label for='idPhoneNumberForm'>Numéro de téléphone : </label>
             <input id='idPhoneNumberForm' name='phoneNumberFromForm' type='text' value='${sessionScope.phoneNumberSessionKey}' /> <br/>
+            <p> Null</p>
 
             <!-- Birthdate -->
             <label for='idBirthdateForm'>Date de naissance :</label>
             <input id='idBirthdateForm' name='birthdateFromForm' type='date' value='${sessionScope.birthdateSessionKey}' required /> <br/>
 
             <!-- Gender -->
-            <label for='idGenderForm'>Genre : à vérifier la manière de proposer les entrées de l'enum</label>
+            <label for='idGenderForm'>Genre : </label>
             <select id='idGenderForm' name='genderFromForm' value='${sessionScope.genderSessionKey}' required >
                 <option value="MASCULIN">Masculin</option>
                 <option value="FEMININ">Féminin</option>
                 <option value="NEUTRE">Neutre</option>
                 <option value="PERSONNALISE">Personnalisé</option>
             </select>
+            <br/>
+            <p> à vérifier la manière de proposer les entrées de l'enum</p>
 
 
             <!-- Email address -->
             <label for='idEmailAddressForm'>Adresse e-mail :</label>
             <input id='idEmailAddressForm' name='emailAddressFromForm' type='text' value='${sessionScope.addressEmailSessionKey}' required /> <br/>
-<
+
             <!-- Is active -->
             <!-- useless - niveau code
             <label for='idUsernameForm'>Active ? :</label>
@@ -81,20 +84,24 @@
             -->
 
             <!-- Title -->
-            <label for='idTitleForm'>Title : null</label>
+            <label for='idTitleForm'>Title :</label>
             <input id='idTitleForm' name='titleFromForm' type='text' value='${sessionScope.titleSessionKey}'  /> <br/>
+            <p> null </p>
 
             <!-- Photo -->
-            <label for='idPhotoForm'>Photo : null</label>
+            <label for='idPhotoForm'>Photo :</label>
             <input id='idPhotoForm' name='photoFromForm' type='file' value='${sessionScope.photoSessionKey}'  /> <br/>
+            <p>null</p>
 
             <!-- Role -->
-            <label for='idRoleForm'>Role : null pour le moment mais need les lister pour en select un</label>
+            <label for='idRoleForm'>Role :</label>
             <input id='idRoleForm' name='usernameFromForm' type='text' value='${sessionScope.roleSessionKey}'  /> <br/>
+            <p>null pour le moment mais need les lister pour en select un</p>
 
             <!-- Parent -->
             <label for='idParentForm'>Parent :</label>
             <input id='idParentForm' name='parentFromForm' type='text' value='${sessionScope.parentSessionKey}'  /> <br/>
+            <p>null</p>
 
 
             <br/>
