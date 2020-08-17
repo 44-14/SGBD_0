@@ -68,11 +68,28 @@ Simple à mettre en place et efficace
 
 
 
+=============================================
+Avoir une classe de test sans lancer toute l'appli
+=============================================
+
+créer une classe test dans le dossier src
+Il faut impérativement qu'elle comporte une méthode  <public static void main>
+
+public class test {
+
+    public static void main(String[] args){
+
+        System.out.println("Hello World");
+
+    }
+}
 
 
+Clic droit sur la classe => run test.main()
+On peut aussi choisir de run uniquement une méthode en cliquant sur le nom de la méthode dans le fichier
 
-
-
+Remarque : il faut que le dossier src soit Source Root
+=> clic droit sur le dossier src => mark Directory as => Sources Root
 
 
 ==================
