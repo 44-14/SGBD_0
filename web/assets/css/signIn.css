@@ -10,6 +10,7 @@ body {
     height: 100%;
     width: 100%;
     margin-top : 100px;
+    color : dodgerblue;
 }
 
 
@@ -36,6 +37,7 @@ body {
     font-size : 40px;
     display : inline-block;
     margin-bottom : 30px;
+    padding: 10px;
 }
 
 
@@ -51,22 +53,42 @@ form {
 
 label {
     display:inline-block;
-    width:100px;
-    text-align:left;
+    width:200px;
+
     margin : 10px;
+    text-align: right;
 }
 
-input {
-    height : 20px;
+input, select {
+    height : 25px;
+    text-align: center;
+
+}
+
+
+.error
+ {
+    font-size : 20px;
+    color: red;
+    /*background-color: red;*/
+    border: solid 1px red;
+    padding : 5px;
+    animation: error 0.5s linear infinite;
+}
+@keyframes error {
+    /* le premier % détermine en combien de temps il passe de 100% d opacité au x % d'opacité précisé par le deuxième %
+        mettre 75% et 40% signifie qu il mettre 75% du nbr de secondes defini dans le champ animation de .error pour passer
+        de 100% d opacité à 40% et il restera les 25% restants de secondes pour passer 40% d opacité à 100%
+     */
+    50% { opacity: 75%; }
 }
 
 
 
-span {
-    color: orange;
-    border: solid 1px orange;
-    padding : 10px;
-}
 
+aqa {
+    display: inline-block;
+    color : dodgerblue;
+}
 
 

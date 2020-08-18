@@ -57,7 +57,13 @@ LOG.info("monMessage");
 ou
 LOG.log(Level.INFO, "monMessage");*/
 
-
+================================================================
+Entourer automatiquement du code par une structure récurrente
+================================================================
+Selectionner le code à entourer
+ctrl + alt + T
+les templates de surroundings sont éditables
+https://www.jetbrains.com/help/idea/surrounding-blocks-of-code-with-language-constructs.html
 
 =============================================
 Le MyGlobalListener

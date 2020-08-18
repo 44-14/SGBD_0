@@ -71,7 +71,7 @@ public class SignInServlet extends HttpServlet {
 
         if (usernameSession.equals("Bond") && passwordSession.equals("007")) {
             session.setAttribute("isLoggedIn", true);
-            request.getRequestDispatcher("/public/JSP/LoggedIn.jsp").forward(request, response);
+            request.getRequestDispatcher("/public/JSP/confirmationSignIn.jsp").forward(request, response);
         } else {
             session.setAttribute("isLoggedIn", false);
             request.getRequestDispatcher("/public/JSP/signIn.jsp").forward(request, response);

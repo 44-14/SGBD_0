@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
+
 /* = la servlet d inscription
 rediriger le bouton <s'inscrire> de la signIn.jsp vers ici */
 
@@ -22,8 +23,8 @@ rediriger le bouton <s'inscrire> de la signIn.jsp vers ici */
 public class SignUpServlet extends HttpServlet {
 
     private static final Logger LOG = Logger.getLogger(SignUpServlet.class);
-    public final String VUE_FORM ="/public/JSP/inscription.jsp";
-    //public final String VUE_SUCCESS = "/WEB-INF/confirmForm.jsp";
+    public final String VUE_FORM ="/public/JSP/signUp.jsp";
+    //public final String VUE_SUCCESS = "/WEB-INF/confirmationSignUp.jsp";
 
 
 
@@ -45,12 +46,33 @@ public class SignUpServlet extends HttpServlet {
 
         LOG.info("===  doPost() de SignUpServlet -  BEGIN  ===");
 
+
+        String test = request.getParameter("firstNameFromForm");
+        LOG.info(test);
         UserValidation myValidation = new UserValidation();
-        UserEntity myUser = myValidation.createUserValidation(request);
+        UserEntity myUser = myValidation.createValidation(request);
 
 
+        if (myUser==null) {
+            {
+            // alors y a eu des erreurs qui sont dans la HashMap myErrors en session
+            request.getRequestDispatcher(VUE_FORM).forward(request, response);
+            }
+        }
+        else {
+            request.getRequestDispatcher("/public/JSP/confirmationSignUp.jsp").forward(request,response);
+        }
 
 
+/*
+
+        if myUser == null
+                alors erreur >1
+                    dispatch vue form en refilant la request qui possede la mise en session des erreurs et des valeurs ok
+        else
+            alors on a un userEntity clean, go appeler l entity manager + service pour le persister en verifiant les unique key
+
+*/
 
         /*
 
@@ -65,7 +87,7 @@ public class SignUpServlet extends HttpServlet {
 
         if (usernameSession.equals("Bond") && passwordSession.equals("007")) {
             session.setAttribute("isLoggedIn", true);
-            request.getRequestDispatcher("/public/JSP/LoggedIn.jsp").forward(request, response);
+            request.getRequestDispatcher("/public/JSP/confirmationSignIn.jsp").forward(request, response);
         } else {
             session.setAttribute("isLoggedIn", false);
             request.getRequestDispatcher("/public/JSP/signIn.jsp").forward(request, response);
