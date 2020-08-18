@@ -184,6 +184,20 @@ Source : https://stackoverflow.com/questions/28764744/enctype-multipart-form-dat
 ***********************************
 **********************************
 
+clic droit sur le dossier src/com/main/schoolux/servlets
+new => Create new servlet   n'apparaissait plus dans le menu contextuel
+Il fallait pour ça faire un clic droit sur le dossier src, mark Directory as Sources Root
+
+Sauf qu'en le faisant dans l'explorateur de gauche, ça ne le faisait pas dans le facet
+file => project structure => onglet facets => section web =>  Web(SGBD_0)
+et en bas à droite de la popup, on voit Source Roots avec une case à cocher en dessous
+qui est le chemin de notre disque dur vers le dossier src dans lequel on veut créer la servlet
+
+Suffit de cocher la case, et normalement Create new servlet réapparait dans le menu contextuel
+
+
+
+
 
 
 
