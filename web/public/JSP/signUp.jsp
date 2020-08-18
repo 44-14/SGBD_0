@@ -17,8 +17,8 @@
 <!-- les attributs <name> des différentes balises représentent les noms des paramètres de la requête HTTP qui seront récupérables coté serveur -->
 
 
-    <c:out value="${sessionScope.myErrorsSessionKey}"/>
-    <c:out value="${sessionScope.myValidAttributesSessionKey}"/>
+    HashMap contenant les erreurs : <c:out value="${sessionScope.myErrorsSessionKey}"/> <br/>
+    HashMap contenant les attributs valides : <c:out value="${sessionScope.myValidAttributesSessionKey}"/>
 
 
 

@@ -23,8 +23,8 @@ rediriger le bouton <s'inscrire> de la signIn.jsp vers ici */
 public class SignUpServlet extends HttpServlet {
 
     private static final Logger LOG = Logger.getLogger(SignUpServlet.class);
-    public final String VUE_FORM ="/public/JSP/signUp.jsp";
-    //public final String VUE_SUCCESS = "/WEB-INF/confirmationSignUp.jsp";
+    public final String FORM_VIEW ="/public/JSP/signUp.jsp";
+    public final String CONFIRMATION_VIEW = "/public/JSP/confirmationSignUp.jsp";
 
 
 
@@ -36,7 +36,7 @@ public class SignUpServlet extends HttpServlet {
 
 
         // créer en mm tps la session
-        request.getRequestDispatcher(VUE_FORM).forward(request, response);
+        request.getRequestDispatcher(FORM_VIEW).forward(request, response);
     }
 
 
@@ -46,21 +46,18 @@ public class SignUpServlet extends HttpServlet {
 
         LOG.info("===  doPost() de SignUpServlet -  BEGIN  ===");
 
-
-        String test = request.getParameter("firstNameFromForm");
-        LOG.info(test);
+        // Mettre en statique le UserValidation pour pas instancier ?
         UserValidation myValidation = new UserValidation();
-        UserEntity myUser = myValidation.createValidation(request);
-
+        UserEntity myUser = myValidation.UserValidation_Create(request);
 
         if (myUser==null) {
             {
-            // alors y a eu des erreurs qui sont dans la HashMap myErrors en session
-            request.getRequestDispatcher(VUE_FORM).forward(request, response);
+            // alors il y a eu des erreurs, celles-ci sont placées dans la HashMap myErrors en session
+            request.getRequestDispatcher(FORM_VIEW).forward(request, response);
             }
         }
         else {
-            request.getRequestDispatcher("/public/JSP/confirmationSignUp.jsp").forward(request,response);
+            request.getRequestDispatcher(CONFIRMATION_VIEW).forward(request,response);
         }
 
 

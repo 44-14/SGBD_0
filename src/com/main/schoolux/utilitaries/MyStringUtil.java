@@ -11,7 +11,7 @@ public class MyStringUtil {
     // exemple d'utilisation :    //
     // String action = MyStringUtil.getURL_Action(request);
     // LOG.info("Action de la requête : "+action);
-    public static String getURL_Action(HttpServletRequest myRequest) {
+    public static String myGetURL_Action(HttpServletRequest myRequest) {
 
         String myString = myRequest.getRequestURL().toString();
         myString = myString.substring(myString.lastIndexOf("/")+1);

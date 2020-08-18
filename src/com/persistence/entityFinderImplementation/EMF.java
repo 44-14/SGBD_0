@@ -10,9 +10,15 @@ import javax.persistence.Persistence;
  * @author Renaud DIANA
  */
 public final class EMF {
-	
+
+    /* Initialement :
 	private static EntityManagerFactory emfInstance =
 	        Persistence.createEntityManagerFactory("your_unit_persistence_name");
+     */
+
+    // Pour projet schoolUX  => la persistence unit à passer en paramètre ci-dessous est dans le persistence.xml
+    private static EntityManagerFactory emfInstance =
+            Persistence.createEntityManagerFactory("PersistUnit_schoolUX");
 
     private EMF() {}
 
