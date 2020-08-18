@@ -29,6 +29,19 @@
 
 
 
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <include-prelude>public/JSP/includes/header.jsp</include-prelude>
+        </jsp-property-group>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <include-coda>public/JSP/includes/footer.jsp</include-coda>
+        </jsp-property-group>
+    </jsp-config>
+
+
+
 
 
 
