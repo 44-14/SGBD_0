@@ -1,15 +1,52 @@
+1
+2
+3
+4
+5
+======================================================================================================================
+======================================================================================================================
+
+======================================================================================================================
+======================================================================================================================
+1
+2
+3
+===========================================================
+
+===========================================================
+1
 
 
-============================================================
-============================================================
+1
+2
+===========================================================
+
+===========================================================
+
+
+
+
+
+======================================================================================================================
+======================================================================================================================
 DEMARCHE INITIALE - MISE EN PLACE IMPORTANTE
-============================================================
-============================================================
+======================================================================================================================
+======================================================================================================================
 
 
-=====================================================
+
+===========================================================
 A l'import mappant les tables de la db en classes
-======================================================
+===========================================================
+
+Dans le code sql , mettre toutes les foreign key nullables pour éviter les pb lors du développement
+C plus facile de faire les tests d'insert db etc quand on peut mettre les fk à null en attendant le developpement du code
+correspondant à ces tables
+
+
+===========================================================
+A l'import mappant les tables de la db en classes
+===========================================================
 
 En SQL, on utilise des tiny int (1) pour simuler un boolean
 Le mapping transforme ce type en byte alors qu il faut le java type boolean
@@ -46,14 +83,9 @@ comme le modèle suivant : <class>package.name.class</class>
 		<class>com.persistence.entities.UserEntity</class>
 
 
-
-
-
-
-
-============================================================
+===========================================================
 Obtenir un logger
-============================================================
+===========================================================
 
 Le fichier log4j.properties doit se trouver dans racine du dossier "src". (voir Log4j.pdf)
 Mettre LOG en maj et pas log car final signifie que c'est une constante => convention
@@ -66,22 +98,18 @@ ou
 LOG.log(Level.INFO, "monMessage");*/
 
 
+===========================================================
+Le MyGlobalListener + MyHTTPRequestListener
+===========================================================
 
-
-=============================================
-Le MyGlobalListener
-==============================================
 Vraiment un truc à mettre en place car ça simplifie beaucoup le logging
 On peut voir automatiquement ce qu'il se passe en session etc grâce à des events générés par les classes importées
 Simple à mettre en place et efficace
 
 
-
-
-
-=============================================
+===========================================================
 Avoir une classe de test sans lancer toute l'appli
-=============================================
+===========================================================
 
 créer une classe test dans le dossier src
 Il faut impérativement qu'elle comporte une méthode  <public static void main>
@@ -105,9 +133,19 @@ Remarque : il faut que le dossier src soit Source Root
 
 
 
-================================================================
+
+===========================================================
+===========================================================
+ASTUCES
+===========================================================
+===========================================================
+
+
+
+===========================================================
 Entourer automatiquement du code par une structure récurrente
-================================================================
+===========================================================
+
 Selectionner le code à entourer
 ctrl + alt + T
 les templates de surroundings sont éditables
@@ -117,11 +155,13 @@ https://www.jetbrains.com/help/idea/surrounding-blocks-of-code-with-language-con
 
 
 
-==================================================
-==================================================
+======================================================================================================================
+======================================================================================================================
 Modifications fichiers fournis par prof
-==================================================
-==================================================
+======================================================================================================================
+======================================================================================================================
+
+
 
 Dans la classe EMF , il faut changer la string paramètre "your_unit_persistence_name"
 en le nom de notre persist-unit qui se trouve dans le persistence.xml
@@ -135,27 +175,16 @@ devient dans le cadre du projet schoolUX :
             Persistence.createEntityManagerFactory("PersistUnit_schoolUX");
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-==================================================
-==================================================
+======================================================================================================================
+======================================================================================================================
 Erreurs particulières
-==================================================
-==================================================
+======================================================================================================================
+======================================================================================================================
 
-************************
-************************
+
+
+===========================================================
+===========================================================
 
 Erreur lors des request.getParameter("nameParam") qui étaient tous null
 lorsque le formulaire html avait l'attribut enctype="multipart/form-data"
@@ -181,8 +210,9 @@ Have a look at http://commons.apache.org/proper/commons-fileupload//using.html
 
 Source : https://stackoverflow.com/questions/28764744/enctype-multipart-form-data-is-not-supported-to-send-simple-text
 
-***********************************
-**********************************
+
+===========================================================
+===========================================================
 
 clic droit sur le dossier src/com/main/schoolux/servlets
 new => Create new servlet   n'apparaissait plus dans le menu contextuel
@@ -197,18 +227,183 @@ Suffit de cocher la case, et normalement Create new servlet réapparait dans le 
 
 
 
+source :https://stackoverflow.com/questions/32914473/cannot-add-servlet-in-a-maven-project
 
 
 
 
 
+======================================================================================================================
+======================================================================================================================
+COMPREHENSION
+======================================================================================================================
+======================================================================================================================
 
 
-==================================================
-==================================================
+===========================================================
+DIFFERENCE ARGUMENTS D UNE METHODE ET PARAMETRES D UNE METHODE
+===========================================================
+
+Généralement, un paramètre est ce qui apparaît dans la définition de la méthode. Un argument est l'instance transmise à la méthode pendant l'exécution.
+
+
+===========================================================
+DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
+===========================================================
+
+What is the difference between getAttribute() and getParameter() methods within HttpServletRequest class?
+
+getParameter() returns http request parameters.
+Those passed from the client to the server.
+ example http://example.com/servlet?parameter=1. Can only return String
+
+getAttribute() is for server-side usage only -
+you fill the request with attributes that you can use within the same request.
+For example - you set an attribute in a servlet, and read it from a JSP.
+Can be used for any object, not just string.
+
+
+
+
+Generally, a parameter is a string value that is most commonly known for being sent from the client to the server (e.g. a form post)
+ and retrieved from the servlet request.
+ The frustrating exception to this is ServletContext initial parameters which are string parameters that are configured in web.xml and exist on the server.
+
+An attribute is a server variable that exists within a specified scope i.e.:
+
+application, available for the life of the entire application
+session, available for the life of the session
+request, only available for the life of the request
+page (JSP only), available for the current JSP page only
+
+
+
+Source : https://stackoverflow.com/questions/5243754/difference-between-getattribute-and-getparameter#:~:text=Generally%2C a parameter is a,retrieved from the servlet request.&text=An attribute is a server,life of the entire application
+
+
+
+
+        /* Remarque : les attributs sont server-side, les paramètres sont client-side
+        On peut donc get et set les attributs quand on est sur le serveur, mais uniquement get un paramètre
+
+
+        /* setAttributs = server-side
+        /* dans la request = disponible pendant la durée de vie de la requete , donc à la requête suivante on a perdu l'objet */
+        /* dans la session = disponible pendant la durée de vie de la session, donc les objets sont récupérables même si c'est une nouvelle requête qui arrive dans une nouvelle servlet*/
+        /* concretement : coté client,
+
+===========================================================
+===========================================================
+
+en fait le but, c'est dans le retour que le client a,
+il ne faut mettre aucune vraie url d'accès à un fichier mais bien un urlPattern
+qui touchera une servlet => en gros on veut passer h24 par une servlet qui dispatchera la réponse
+
+si en href d'une ancre dans un formulaire je mets :
+<a href="${pageContext.request.contextPath}/public/JSP/home.jsp"> <button class="btn"> Appuyez ici pour continuer. </button> </a>
+alors on sait atteindre publiquement la home.jsp en ecrivant directement l'url
+
+si cet home.jsp est dans WEB-INF, alors :
+<a href="${pageContext.request.contextPath}/WEB-INF/JSP/home.jsp"> <button class="btn"> Appuyez ici pour continuer. </button> </a>
+provoquera une erreur vu qu on ne peut joindre le contenu dans WEB-INF que via un servlet controller
+qui fait appel à cette .jsp via getRequestDispatcher(VUE);
+
+
+Du coup il faut plutôt mettre l'url qui permet de toucher cette servlet controller
+<a href="${pageContext.request.contextPath}/signin"><button class="btn"> Appuyez ici pour continuer. </button></a>
+
+ici la servlet avec le urlPattern="/signin" recevra la requête
+Dans notre cas, on y vérifie si le champ isLogged est true, si oui alors il est connecté et on lui retourne la home.jsp
+si non, alors on lui retourne le formulaire de connexion signInForm.jsp
+
+
+c ca qu on appelle URL relative, elle ne correspond pas réellement à une ressource
+mais elle est matchée pour atteindre un controller qui répond à cet urlPattern
+et qui lui se chargera de renvoyer des jsp ou autre
+
+
+===========================================================
+===========================================================
+
+public final String FORM_VIEW = "/WEB-INF/JSP/signUpForm.jsp";
+
+Mettre les chemins dans des constantes String permet d'éviter, dans le cas où on modifie ce chemin ou le nom du fichier,
+de devoir aller modifier ce chemin à chaque fois qu'il est utilisé en argument dans les request dispatchers.
+
+
+===========================================================
+===========================================================
+
+les paramètres dans la request sont couple  key - value
+les values d attributs dans la request = string
+si la key de l'attribut existe meme pas en request, la value sera null
+si la key attribute existe mais que le client n'a rien mis dans l'input, la value sera une chaine vide = ""
+ce qui n est pas un null
+
+
+les paramètres dans la session sont des couples key - value
+les values d'attributs dans la session = object
+donc à chaque fois qu'on récupère la value d'un attribut mis en session,
+il sera en type object donc faudra le caster à chaque fois
+si le key de l'attribut n'existe pas en session, la value sera null
+
+
+donc à chaque fois qu'on récup ces valeurs, il faut vérifier si ce n'est pas null
+
+example :
+
+if(session().getAttribute("isConnected") != null){
+    boolean value = (Boolean) req.getSession().getAttribute("status");
+}
+
+si la value liée à la key d'attribut "isConnected" n'est pas nulle,
+alors je récupère cette value en la cast en boolean et je stocke le résultat
+
+Sans vérifier si c'est nul au préalable, on tenterait de stocker un NULL dans une variable de type boolean
+ce qui engendrerait un null pointer exception vu qu un boolean ne peut être null
+
+
+Concernant le type Boolean qui peut être true - false - null , on doit éviter un max de l utiliser :
+The Boolean class is a wrapper around the boolean primitive type.
+The use of this wrapper is to be able to pass a boolean in a method that accepts an object or generic. Ie vector.
+A Boolean object can NEVER have a value of null. If your reference to a Boolean is null, it simply means that your Boolean was never created.
+
+
+
+source :
+ https://www.codejava.net/java-ee/servlet/how-to-use-session-in-java-web-application
+ https://stackoverflow.com/questions/27665442/session-get-attribute-of-a-boolean-value
+
+
+
+
+======================================================================================================================
+======================================================================================================================
 Structure reflexion
-==================================================
-==================================================
+======================================================================================================================
+======================================================================================================================
+
+
+
+===========================================================
+===========================================================
+
+signin servlet pour gerer la connexion
+    retour get : formulaire
+    retour post si valide : confirmation de connexion contenant bouton continuer qui re-appelle signin
+    retour post si invalide : formulaire
+    retour get : home si isLogged est à true
+
+signup servlet pour gerer l inscription par un nouvel user
+    retour get : formulaire
+    retour post si valide : confirmation d inscription contenant bouton continuer qui appelle signin servlet
+    retour post si invalide : formulaire
+
+
+
+
+
+
 
 
 

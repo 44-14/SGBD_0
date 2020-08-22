@@ -206,8 +206,9 @@ public class UserValidation {
         // }
 
         /* Stockage du résultat et des messages d'erreur dans l'objet request ou session  (choisir)*/
-        //request.setAttribute("erreurs", myErrors);
-        //request.setAttribute("attributsOK", myValidAttributes);
+        // Voir notes.txt => DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
+        //request.setAttribute("myErrorsRequestKey", myErrors);
+        //request.setAttribute("myValidAttributesRequestKey", myValidAttributes);
         request.getSession().setAttribute("myErrorsSessionKey", myErrors);
         request.getSession().setAttribute("myValidAttributesSessionKey", myValidAttributes);
 

@@ -15,7 +15,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>SignIn</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signIn.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/myCss.css' />
 </head>
 
 <body>
@@ -28,6 +28,9 @@
             <span class="ask">Veuillez vous authentifier : </span>
 
             <form method="post" action="${pageContext.request.contextPath}/signin">
+                <!--action correspond l'URL vers laquelle on envoie le contenu du formulaire -->
+                <!-- contextePath est le point d'entrée de notre application -->
+
                 <label for='idUsernameForm'>Username :</label>
                 <input id='idUsernameForm' name='usernameFromForm' type='text' value='${sessionScope.usernameSessionKey}' autofocus /> <br/>
                 <label for='idPwdForm'>Password :</label>

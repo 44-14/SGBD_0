@@ -4,6 +4,18 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
 
+
+@NamedQueries(
+        value = {
+                @NamedQuery(name = "Permission.selectAll",
+                            query = "SELECT p from PermissionEntity p"),
+                @NamedQuery(name = "Permission.selectOne",
+                            query = "SELECT p from PermissionEntity  p where p.id = :id")
+        }
+
+)
+
+
 @Entity
 @Table(name = "permissions", schema = "schoolux", catalog = "")
 public class PermissionEntity {

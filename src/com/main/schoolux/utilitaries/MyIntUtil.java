@@ -7,7 +7,6 @@ public class MyIntUtil {
     private final static Logger LOG = Logger.getLogger(MyStringUtil.class);
 
     /* Prendre myTryParseInt() à la place
-
     // retourne -1 si la string ne contenait pas un int parsable ou si elle etait nulle ou vide ""
     public static int getIdFromString(String myString) {
 
@@ -24,7 +23,6 @@ public class MyIntUtil {
         }
         return id;
     }
-
      */
 
 

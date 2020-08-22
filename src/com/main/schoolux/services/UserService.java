@@ -1,5 +1,105 @@
 package com.main.schoolux.services;
 
+
+import com.main.schoolux.exceptions.PropertyException;
+import com.persistence.entityFinderImplementation.EMF;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
+import com.persistence.entities.UserEntity;
+
+
+/*
+
+
+public class UserService {
+
+    private final static Logger LOG = Logger.getLogger(UserService.class);
+
+    // peuplé via le constructeur => c est le controlleur qui instancie l'EntityManager et qui le passe en paramètre dans l'appel du service
+    protected EntityManager em;
+
+
+    // constructeur
+    public UserService(EntityManager em)
+    {
+        this.em = em;
+    }
+
+
+
+
+    // READ ONE
+    public UserEntity findOne(int id)
+    {
+        return em.find(UserEntity.class,id);
+    }
+
+
+    // READ ALL
+    public List<UserEntity> findAll()
+    {
+
+        TypedQuery<UserEntity> query = em.createNamedQuery("User.NamedQuery.findAll",UserEntity.class);
+        if(param != null) {
+
+            setParameters(query, param);
+        }
+
+        LOG.debug("List " + t + " size: " + listT.size());
+        LOG.debug("Named query " + namedQuery + " find from database: Ok");
+
+        return query.getResultList();
+    }
+}
+
+
+/*
+
+    public <K, V> List<T> findByNamedQuery(String namedQuery, T t, Map<K, V> param) {
+
+        List<T> listT = new ArrayList<T>();
+        Class<? extends Object> ec = t.getClass();
+
+
+        // controlleur
+        EntityManager em = EMF.getEM();
+        try {
+            Query query = em.createNamedQuery(namedQuery, ec);
+
+            if(param != null) {
+
+                setParameters(query, param);
+            }
+            listT = (List<T>) query.getResultList();
+
+            log.debug("List " + t + " size: " + listT.size());
+            log.debug("Named query " + namedQuery + " find from database: Ok");
+        }
+        finally {
+
+            em.clear();
+            em.close();
+        }
+        return listT;
+    }
+
+/*
+
+
+
+
+
+
+package com.main.schoolux.services;
+
 import com.main.schoolux.exceptions.PropertyException;
 import org.apache.log4j.Logger;
 
@@ -35,8 +135,8 @@ public class UserService {
         /*em.createNamedQuery("Media.updateById");*/
         // em.persist(Media);
         //em.merge(media);
-        LOG.info("end - updateUser() in UserService");
-    }
+        //LOG.info("end - updateUser() in UserService");
+ /*   }
 }
 
 

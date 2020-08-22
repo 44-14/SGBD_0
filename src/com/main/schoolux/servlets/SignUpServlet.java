@@ -15,16 +15,29 @@ import java.io.IOException;
 
 
 
-/* = la servlet d inscription
-rediriger le bouton <s'inscrire> de la signIn.jsp vers ici */
 
 
+
+
+
+
+/* le bouton  "s'inscrire" de la page de connexion doit diriger vers ici via /signup */
+/* l'attribut loadOnStartup permet de charger la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue) */
 @WebServlet(name = "SignUpServlet", urlPatterns = "/signup", loadOnStartup = 1)
 public class SignUpServlet extends HttpServlet {
 
+
+
+
+
+    // LOGGER + PATH CONSTANTS
     private static final Logger LOG = Logger.getLogger(SignUpServlet.class);
-    public final String FORM_VIEW ="/public/JSP/signUp.jsp";
-    public final String CONFIRMATION_VIEW = "/public/JSP/confirmationSignUp.jsp";
+    public final String FORM_VIEW = "/WEB-INF/JSP/signUpForm.jsp";
+    public final String CONFIRMATION_VIEW = "/WEB-INF/JSP/confirmationSignUp.jsp";
+
+
+
+
 
 
 
@@ -87,7 +100,7 @@ public class SignUpServlet extends HttpServlet {
             request.getRequestDispatcher("/public/JSP/confirmationSignIn.jsp").forward(request, response);
         } else {
             session.setAttribute("isLoggedIn", false);
-            request.getRequestDispatcher("/public/JSP/signIn.jsp").forward(request, response);
+            request.getRequestDispatcher("/public/JSP/signInForm.jsp").forward(request, response);
         }
         */
 

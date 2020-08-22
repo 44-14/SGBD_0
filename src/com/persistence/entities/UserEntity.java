@@ -5,6 +5,27 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+
+
+
+
+
+@NamedQueries(
+        value = {
+                @NamedQuery(name = "User.selectAll",
+                        query = "SELECT u from UserEntity u"),
+                @NamedQuery(name = "User.selectOne",
+                        query = "SELECT u from UserEntity  u where u.id = :id")
+        }
+
+)
+
+
+
+
+
+
+
 @Entity
 @Table(name = "users", schema = "schoolux", catalog = "")
 public class UserEntity {

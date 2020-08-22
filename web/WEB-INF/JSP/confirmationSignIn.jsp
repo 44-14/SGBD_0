@@ -15,16 +15,17 @@
 <head>
     <meta charset="UTF-8" />
     <title>Bienvenue</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signIn.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/myCss.css' />
 </head>
 
 <body>
+    <p>Ceci est une confirmation de connexion</p>
     <div id="maDiv">
         <div id="block">
         <span id="ask">Bienvenue Mister ${usernameSessionKey} </span>
         </div>
 
-        <a href="${pageContext.request.contextPath}/public/home.jsp"><button class="btn"> Appuyez ici pour continuer. </button></a>
+        <a href="${pageContext.request.contextPath}/signin"><button class="btn"> Appuyez ici pour continuer. </button></a>
 
     </div>
 </body>

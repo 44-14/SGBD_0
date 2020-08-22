@@ -71,7 +71,7 @@ public class UserServlet extends HttpServlet {
 
         switch (action) {
             case "signup" :
-                request.getRequestDispatcher("/public/JSP/signIn.jsp").forward(request, response);
+                request.getRequestDispatcher("/public/JSP/signInForm.jsp").forward(request, response);
                 break;
 
             default:
@@ -85,7 +85,7 @@ public class UserServlet extends HttpServlet {
 
 
         // créer en mm tps la session
-        request.getRequestDispatcher("/public/JSP/signIn.jsp").forward(request, response);
+        request.getRequestDispatcher("/public/JSP/signInForm.jsp").forward(request, response);
     }
 
 
@@ -108,7 +108,7 @@ public class UserServlet extends HttpServlet {
             request.getRequestDispatcher("/public/JSP/confirmationSignIn.jsp").forward(request, response);
         } else {
             session.setAttribute("isLoggedIn", false);
-            request.getRequestDispatcher("/public/JSP/signIn.jsp").forward(request, response);
+            request.getRequestDispatcher("/public/JSP/signInForm.jsp").forward(request, response);
         }
 
 

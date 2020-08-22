@@ -6,7 +6,7 @@
 
 
 
-    
+
         <welcome-file-list>
             <welcome-file>signin</welcome-file>
                     <!-- rajoutera signin à la fin de l'url, donc ici que l'url soit
@@ -17,6 +17,7 @@
                      -->
 
             <welcome-file>home.html</welcome-file>
+                    <!-- prend le 1er qui repond dans les welcome-file -->
                     <!-- ici, que l'url soit :
                     http://localhost:8080/SGBD_0_war_exploded/
                     ou
@@ -29,44 +30,72 @@
 
 
 
+    <!-- Pour include le footer et header   ?? fonctionne pas
+
     <jsp-config>
+
         <jsp-property-group>
+
             <url-pattern>*.jsp</url-pattern>
-            <include-prelude>public/JSP/includes/header.jsp</include-prelude>
+            <include-prelude>/public/JSP/includes/header.jsp</include-prelude>
+            <include-coda>/public/JSP/includes/footer.jsp</include-coda>
         </jsp-property-group>
+
         <jsp-property-group>
-            <url-pattern>*.jsp</url-pattern>
-            <include-coda>public/JSP/includes/footer.jsp</include-coda>
+            <url-pattern> </url-pattern>
         </jsp-property-group>
     </jsp-config>
 
+    -->
+
+
+    <!-- Examples -->
+    <!--
+        <jsp-property-group>
+        <description>JSP configuration for the store front</description>
+        <url-pattern>/index.jsp</url-pattern>
+        <url-pattern>/WEB-INF/view/*</url-pattern>
+        <url-pattern>/WEB-INF/jspf/error/*</url-pattern>
+        <include-prelude>/WEB-INF/jspf/header.jspf</include-prelude>
+        <include-coda>/WEB-INF/jspf/footer.jspf</include-coda>
+    </jsp-property-group>
+    <jsp-property-group>
+        <description>JSP configuration for the admin console</description>
+        <url-pattern>/admin/index.jsp</url-pattern>
+        <url-pattern>/admin/login.jsp</url-pattern>
+        <url-pattern>/admin/error.jsp</url-pattern>
+        <include-prelude>/admin/jspf/header.jspf</include-prelude>
+        <include-coda>/admin/jspf/footer.jspf</include-coda>
+    </jsp-property-group>
+    -->
 
 
 
 
 
-<!--
-Pas de mapping de servlet ici
-=>  A la creation de chacune des servlets, on coche "Create Java EE 8 annotated class
-Cela ajoutera une annotation @WebServlet(name="") qui remplace le mapping d'ici
 
-Dans le cas où on fait les 2 par erreur, c'est le web.xml qui sera prioritaire par rapport aux annotations.
+    <!--
+    Pas de mapping de servlet ici
+    =>  A la creation de chacune des servlets, on coche "Create Java EE 8 annotated class
+    Cela ajoutera une annotation @WebServlet(name="") qui remplace le mapping d'ici
 
-Exemple à l'ancienne :
+    Dans le cas où on fait les 2 par erreur, c'est le web.xml qui sera prioritaire par rapport aux annotations.
+
+    Exemple à l'ancienne :
 
 
-        <servlet>
-            <servlet-name>NomDeMaServlet</servlet-name>
-            <servlet-class> com.main.schoolux.servlets.ClasseLiéeAuNomDeServlet</servlet-class>
-        </servlet>
+            <servlet>
+                <servlet-name>NomDeMaServlet</servlet-name>
+                <servlet-class> com.main.schoolux.servlets.ClasseLiéeAuNomDeServlet</servlet-class>
+            </servlet>
 
-        <servlet-mapping>
-            <servlet-name>NomDeMaServlet</servlet-name>
-            <url-pattern>/UnMotEnRapportAvecLeNomDeLaServlet</url-pattern>
-        </servlet-mapping>
+            <servlet-mapping>
+                <servlet-name>NomDeMaServlet</servlet-name>
+                <url-pattern>/UnMotEnRapportAvecLeNomDeLaServlet</url-pattern>
+            </servlet-mapping>
 
-Fin exemple
- -->
+    Fin exemple
+     -->
     
 
 

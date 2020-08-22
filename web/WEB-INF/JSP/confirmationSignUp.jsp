@@ -13,10 +13,11 @@
 	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signIn.css' />
 </head>
 <body>
-	<p>Ceci est une confirmation</p>
+	<p>Ceci est une confirmation d'inscription</p>
 	<p>Votre nom est ${sessionScope.myValidAttributesSessionKey['usernameValid']}</p>
 	<p>Votre mdp est ${sessionScope.myValidAttributesSessionKey['passwordValid']}</p>
 	<p>Votre rôle est ${sessionScope.myValidAttributesSessionKey['passwordValid']}</p>
 
+	<a href="${pageContext.request.contextPath}/signin"><button class="btn"> Appuyez ici pour continuer. </button></a>
 </body>
 </html>

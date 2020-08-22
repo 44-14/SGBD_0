@@ -8,14 +8,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
+<!-- Version simplifiée pour test le chemin -->
+
+
 <!DOCTYPE html>
 
 <html>
-<!-- Version simplifiée pour test le chemin -->
+
 <head>
     <meta charset="UTF-8" />
     <title>Création utilisateur</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signIn.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/myCss.css' />
 </head>
 
 <body>
