@@ -1,8 +1,10 @@
 package com.main.schoolux.validations;
 
 import com.main.schoolux.utilitaries.MyIntUtil;
+import com.persistence.entities.PermissionEntity;
 import com.persistence.entities.RoleEntity;
 import com.persistence.entities.UserEntity;
+import com.persistence.entityFinderImplementation.EntityFinder;
 import com.persistence.entityFinderImplementation.EntityFinderImpl;
 import org.apache.log4j.Logger;
 
@@ -244,8 +246,9 @@ public class UserValidation {
 
 
     private String validationFirstName(String firstName) throws Exception {
+        LOG.info(" BEGIN - ValidationFirstName()");
 
-        if (firstName.isEmpty() || firstName == null) {
+        if (firstName == null || firstName.isEmpty()) {
             throw new Exception("Le prénom est requis");
         }
 
@@ -256,7 +259,7 @@ public class UserValidation {
 
     private String validationLastName(String lastName) throws Exception {
 
-        if (lastName.isEmpty() || lastName == null) {
+        if (lastName == null || lastName.isEmpty()) {
             throw new Exception("Le nom est requis");
         }
 
@@ -268,7 +271,7 @@ public class UserValidation {
     private String validationUsername(String username) throws Exception {
         // attention : ne teste pas la contrainte unique
 
-        if (username.isEmpty() || username == null) {
+        if (username == null || username.isEmpty()) {
             throw new Exception("Le nom d'utilisateur est requis");
         }
 
@@ -279,7 +282,7 @@ public class UserValidation {
 
     private String validationPassword(String password, String confirmationPassword) throws Exception {
 
-        if (password.isEmpty() || password == null) {
+        if (password == null || password.isEmpty()) {
             throw new Exception("Un mot de passe est requis");
         }
 
@@ -299,7 +302,7 @@ public class UserValidation {
 
     private Date validationBirthdate(String birthdate) throws Exception {
 
-        if (birthdate.isEmpty() || birthdate == null) {
+        if (birthdate == null || birthdate.isEmpty()) {
             throw new Exception("Le date de naissance est requise");
         }
 
@@ -312,7 +315,7 @@ public class UserValidation {
 
     private String validationGender(String gender) throws Exception {
 
-        if (gender.isEmpty() || gender == null) {
+        if (gender == null || gender.isEmpty()) {
             throw new Exception("Le genre est requis");
         }
 
@@ -323,7 +326,7 @@ public class UserValidation {
 
     private String validationEmail(String emailAddress) throws Exception {
 
-        if (emailAddress.isEmpty() || emailAddress == null) {
+        if (emailAddress == null || emailAddress.isEmpty()) {
             throw new Exception("L'adresse email est requise");
         }
 
@@ -350,7 +353,7 @@ public class UserValidation {
 
     private RoleEntity validationRole(String role) throws Exception {
 
-        if (role.isEmpty() || role == null) {
+        if (role == null || role.isEmpty()) {
             throw new Exception("Le rôle est requis");
         } else {
             int idRole = MyIntUtil.myTryParseInt(role,-1);
@@ -358,10 +361,22 @@ public class UserValidation {
                 throw new Exception("La string role ne contient pas un int parsable");
             } else {
                 RoleEntity myRole = new RoleEntity();
-                EntityFinderImpl efi = new EntityFinderImpl();
 
-                myRole = (RoleEntity) efi.findOne(myRole, idRole);
+                EntityFinderImpl<RoleEntity> efi = new EntityFinderImpl<>();
+
+                myRole = efi.findOne(myRole, idRole);
+
                 return myRole;
+
+
+                /*
+                EntityFinder<PermissionEntity> myEntityFinder = new EntityFinderImpl<PermissionEntity>();
+
+                PermissionEntity myPermission = new PermissionEntity();
+
+                return myEntityFinder.findOne(myPermission, id);
+                */
+
             }
 
 
@@ -393,7 +408,7 @@ public class UserValidation {
 
     private UserEntity validationParent(String parent, String role) throws Exception {
     /*
-        if (role.equals("eleve 1") && (parent.isEmpty() || parent == null)) {
+        if (role.equals("eleve 1") && (parent == null || parent.isEmpty()) {
             throw new Exception("L'identité du parent est requise");
 
         }
