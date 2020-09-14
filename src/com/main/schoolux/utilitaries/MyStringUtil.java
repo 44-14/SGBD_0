@@ -18,6 +18,13 @@ public class MyStringUtil {
 
         return myString;
 
+    }
+
+    public static String myGetURL_Action_Bis(HttpServletRequest myRequest) {
+
+        return myRequest.getRequestURI().substring(myRequest.getContextPath().length());
+        // dans le case :
+        // if (myActionString.startsWith("/delete")) { do that }
 
     }
 

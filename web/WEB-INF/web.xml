@@ -6,17 +6,17 @@
 
 
 
-
+<!--
         <welcome-file-list>
-            <welcome-file>signin</welcome-file>
+            <welcome-file>signin</welcome-file>-->
                     <!-- rajoutera signin à la fin de l'url, donc ici que l'url soit
                      http://localhost:8080/SGBD_0_war_exploded/
                      ou
                      http://localhost:8080/SGBD_0_war_exploded/signin
                      reviendra au même
                      -->
-
-            <welcome-file>home.html</welcome-file>
+<!--
+            <welcome-file>home.html</welcome-file>-->
                     <!-- prend le 1er qui repond dans les welcome-file -->
                     <!-- ici, que l'url soit :
                     http://localhost:8080/SGBD_0_war_exploded/
@@ -25,8 +25,18 @@
                     renverra le meme welcome-file à savoir home.html
                     -->
 
-            <welcome-file>index</welcome-file>
-        </welcome-file-list>
+<!--            <welcome-file>index</welcome-file>
+        </welcome-file-list>-->
+
+
+        <filter>
+            <filter-name>MyAuthenticationFilter</filter-name>
+            <filter-class>com.main.schoolux.filters.MyAuthenticationFilter</filter-class>
+        </filter>
+        <filter-mapping>
+            <filter-name>MyAuthenticationFilter</filter-name>
+            <url-pattern>/*</url-pattern>
+        </filter-mapping>
 
 
 

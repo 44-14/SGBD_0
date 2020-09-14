@@ -21,7 +21,7 @@ public class UserValidation {
     private final static Logger LOG = Logger.getLogger(UserValidation.class);
 
 
-    // Validations liées à la création d'un utilisateur
+    /** Validations liées à la création d'un utilisateur **/
     public UserEntity UserValidation_Create(HttpServletRequest request) {
 
         LOG.info("=== START - createValidation() in UserValidation ===");

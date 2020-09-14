@@ -1,5 +1,10 @@
 package com.main.schoolux.servlets;
 
+import com.main.schoolux.AppConfig;
+import com.main.schoolux.utilitaries.DumpUtil;
+import com.main.schoolux.validations.UserValidation;
+import com.main.schoolux.validations.UserValidationBis;
+import com.persistence.entities.UserEntity;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -10,40 +15,43 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
-
-
-
-
-
-
-/* l'attribut loadOnStartup permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue) */
-@WebServlet(name = "SignInServlet", urlPatterns = "/signin", loadOnStartup = 1)
+/* l'attribut loadOnStartup permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue par la servlet) */
+@WebServlet(name = "SignInServlet", urlPatterns = {"/signin","/signout"}, loadOnStartup = 1)
 public class SignInServlet extends HttpServlet {
 
 
-
-
-    // LOGGER + PATH CONSTANTS
+    // LOGGER + PATH CONSTANTS + SERVLET MESSAGES LISTS
     private final static Logger LOG = Logger.getLogger(SignInServlet.class);
-    public final String FORM_VIEW ="/WEB-INF/JSP/signInForm.jsp";
-    public final String CONFIRMATION_VIEW = "/WEB-INF/JSP/confirmationSignIn.jsp";
-    public final String HOME_VIEW ="/WEB-INF/JSP/home.jsp";
+
+    public final static String SIGNIN_FORM_VIEW= AppConfig.SIGNIN_VIEWS_ROOT_PATH+"signInForm.jsp";
+    public final static String SIGNIN_CONFIRMATION_VIEW= AppConfig.SIGNIN_VIEWS_ROOT_PATH+"signInConfirmation.jsp";
+
+    private List<String> ServletConfirmations;
+    private List<String> ServletErrors;
 
 
-
-
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.ServletErrors = new ArrayList<>();
+        this.ServletConfirmations = new ArrayList<>();
+    }
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.info("===  DoGet() de SignInServlet -  BEGIN  ===");
-        // ou LOG.log(Level.INFO, "========MonMessage======");
+        LOG.debug("===  DoGet() de SignInServlet -  BEGIN  ===");
+        // ou LOG.log(Level.DEBUG, "========MonMessage======");
 
 
         // Ecrit le urlPatterns de la servlet traitant la requete
-        LOG.log(Level.INFO, "Servlet path :"+request.getServletPath().toString());
+        LOG.debug("Servlet path :"+request.getServletPath().toString());
+        String requestURI = request.getRequestURI().toString();
+        LOG.debug("Request URI :"+requestURI);
 
         /*
         //Les  LOG qui suivent ont été déplacé au niveau d'un listener d'evenements auto-générés dans la classe MyHTTPRequestListener,
@@ -89,23 +97,69 @@ public class SignInServlet extends HttpServlet {
 
         // plutot faire une methode statique signedInChecker(request) ??
 
-        if(request.getSession().getAttribute("isLogged") != null){
-            boolean isLogged = (boolean) request.getSession().getAttribute("isLogged");
-            if (isLogged) {
-                request.getRequestDispatcher(HOME_VIEW).forward(request,response);
-            }
 
-        }else{
-            request.getRequestDispatcher(FORM_VIEW).forward(request, response);
+
+        // Grâce au MyAuthenticationFilter, on est sûr qu'il y a un signedUser dans la session si on atteint l'uri /signout
+
+        if (requestURI.endsWith("/signout")) {
+                request.getSession().removeAttribute("signedUser");
+                ServletConfirmations.add("Vous avez été déconnecté.");
+                request.setAttribute("ServletConfirmationsRequestKey", ServletConfirmations);
         }
+
+        else if (request.getSession().getAttribute("signedUser")!=null) {
+            ServletErrors.add("Vous êtes déjà connecté");
+            request.setAttribute("ServletErrorsRequestKey", ServletErrors);
+        }
+
+        //DumpUtil.getFullRequestMapDumped(request);
+        LOG.debug("on est ici");
+        request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request,response);
 
 
     }
 
 
+
+
+
+
+
+
+
+
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.info("===  doPost() de SignInServlet -  BEGIN  ===");
+        LOG.debug("===  doPost() de SignInServlet -  BEGIN  ===");
+
+
+        LOG.info("===  doPost() de SignUpServlet -  BEGIN  ===");
+
+        // Mettre en statique le UserValidation pour pas instancier ?
+        UserEntity myUserToCheck = UserValidationBis.ToSignIn(request);
+
+        if (myUserToCheck==null) {
+            {
+                // alors il y a eu des erreurs, celles-ci sont placées dans la HashMap myErrors en paramètre de requête
+                DumpUtil.getFullRequestMapDumped(request);
+                request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request, response);
+            }
+        }
+        else {
+            LOG.debug("ok");
+            request.getRequestDispatcher(SIGNIN_CONFIRMATION_VIEW).forward(request,response);
+        }
+
+
+
+
+
+
+
+
+
+
 
 
         String usernameSession = request.getParameter("usernameFromForm");
@@ -122,11 +176,11 @@ public class SignInServlet extends HttpServlet {
             session.setAttribute("isLogged",true);
 
             // à modifier par la homepage ou compte
-            request.getRequestDispatcher(CONFIRMATION_VIEW).forward(request, response);
+            request.getRequestDispatcher(SIGNIN_CONFIRMATION_VIEW).forward(request, response);
             // par ensuite, rediriger vers la AccountServlet
         } else {
             session.setAttribute("isLogged", false);
-            request.getRequestDispatcher(FORM_VIEW).forward(request, response);
+            request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request, response);
         }
 
 

@@ -6,19 +6,23 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
-
 <html>
-
 <head>
     <meta charset="UTF-8" />
     <title>SignIn</title>
     <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/myCss.css' />
 </head>
-
 <body>
+
+<!-- les attributs <name> des différentes balises représentent les noms des paramètres de la requête HTTP qui seront récupérables coté serveur -->
+
+
+    HashMap contenant les erreurs : <c:out value="${requestScope.myErrorsRequestKey}"/> <br/>
+    HashMap contenant les attributs valides : <c:out value="${requestScope.myValidAttributesRequestKey}"/>
+
 
     <div class="maDiv">
             <span id="mainTitle"> School UX </span>
@@ -32,10 +36,13 @@
                 <!-- contextePath est le point d'entrée de notre application -->
 
                 <label for='idUsernameForm'>Username :</label>
-                <input id='idUsernameForm' name='usernameFromForm' type='text' value='${sessionScope.usernameSessionKey}' autofocus /> <br/>
+                <input id='idUsernameForm' name='usernameFromForm' type='text' value='${requestScope.myValidAttributesRequestKey['usernameValid']}' size="30" maxlength="50" required autofocus /> <br/>
+                <span class="error">${requestScope.myErrorsRequestKey['usernameError']}</span> <br/>
+
                 <label for='idPwdForm'>Password :</label>
-                <input  id='idPwdForm' name='passwordFromForm' type='password' value='${sessionScope.passwordSessionKey}' /> <br/>
-                <br/>
+                <input  id='idPwdForm' name='passwordFromForm' type='password' value='${requestScope.myValidAttributesRequestKey['passwordValid']}' size="30" maxlength="50" /> <br/>
+                <span class="error">${requestScope.myErrorsRequestKey['passwordError']}</span> <br/>
+
                 <input name='btnSignIn' type='submit' value="Se connecter"/> <br/>
             </form>
 
@@ -52,7 +59,6 @@
                 </a>
 
     </div>
-
 </body>
 </html>
 

@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>Création utilisateur</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signIn.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/signIn.css' />
 </head>
 <body>
 
