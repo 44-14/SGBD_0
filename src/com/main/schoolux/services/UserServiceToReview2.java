@@ -1,7 +1,5 @@
 package com.main.schoolux.services;
 
-
-import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Logger;
 
 
@@ -9,21 +7,17 @@ import javax.persistence.EntityManager;
 import com.persistence.entityFinderImplementation.EntityFinder;
 import com.persistence.entityFinderImplementation.EntityFinderImpl;
 
-import com.persistence.entities.PermissionEntity;
+import com.persistence.entities.UserEntity;
 
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
-public class PermissionService {
+public class UserServiceToReview2 {
 
 
     /////////////
     // LOGGER
-    private final static Logger LOG = Logger.getLogger(PermissionService.class);
+    private final static Logger LOG = Logger.getLogger(UserServiceToReview2.class);
 
 
     ////////////
@@ -35,11 +29,11 @@ public class PermissionService {
     ///////////////////
     // CONSTRUCTEURS //
     // 0 paramètre => dans le cas des read ou find qui utilisent la classe EntityFinderImpl qui instancie elle-même son EntityManager
-    public PermissionService() {
+    public UserServiceToReview2() {
     }
 
     // 1 paramètre => dans le cas des create - update - delete , car c'est le controller qui instancie l'EntityManager em avant de le passer en argument au service
-    public PermissionService(EntityManager em) {
+    public UserServiceToReview2(EntityManager em) {
         this.em = em;
     }
 
@@ -49,19 +43,18 @@ public class PermissionService {
     // METHODES
     ////////////////////
 
-    // retourne 1 permission
-    public PermissionEntity selectOnePermission(int id) {
+    // retourne 1 user
+    public UserEntity selectOneUserById(int id) {
 
         // on place la référence de l'objet de type EntityFinderImpl dans un pointeur de type EntityFinder
         // qui est une interface implémentée par EntityFinderImpl => methodes factorisées
-        EntityFinder<PermissionEntity> myEntityFinder = new EntityFinderImpl<PermissionEntity>();
+        EntityFinder<UserEntity> myEntityFinder = new EntityFinderImpl<UserEntity>();
 
         // on instancie un objet de type PermissionEntity dont les valeurs seront remplacées
         // au sein de la méthode findOne lors de l'instruction ** t = (T)em.find(ec, id); dans la classe EntityFinderImpl **  où t est myPermission
-        PermissionEntity myPermission = new PermissionEntity();
+        UserEntity myUser = new UserEntity();
 
-        return myEntityFinder.findOne(myPermission, id);
-
+        return myEntityFinder.findOne(myUser, id);
         // les find = read
 
 
@@ -70,16 +63,16 @@ public class PermissionService {
 
 
 
-    // liste toutes les permissions
-    public List<PermissionEntity> selectAllPermissions() {
+    // liste tous les users
+    public List<UserEntity> selectAllUsers() {
 
-        EntityFinder<PermissionEntity> myEntityFinder = new EntityFinderImpl<PermissionEntity>();
+        EntityFinder<UserEntity> myEntityFinder = new EntityFinderImpl<UserEntity>();
 
-        // Instanciation nécessaire d'un objet de type PermissionEntity pour le passer en argument de la méthode findByNamedQuery
-        // qui récupère le type de l'objet via l'instruction ** Class<? extends Object> ec = t.getClass(); ** où t est myPermission
-        PermissionEntity myPermission = new PermissionEntity();
+        // Instanciation nécessaire d'un objet de type UserEntity pour le passer en argument de la méthode findByNamedQuery
+        // qui récupère le type de l'objet via l'instruction ** Class<? extends Object> ec = t.getClass(); ** où t est myUser
+        UserEntity myUser = new UserEntity();
 
-        return myEntityFinder.findByNamedQuery("Permission.selectAll", myPermission, null);
+        return myEntityFinder.findByNamedQuery("User.selectAll", myUser, null);
 
 
     }
@@ -128,7 +121,7 @@ public class MediaService {
 
 
 
-    // READ ALL
+// READ ALL
 /*
     public List<UserEntity> findAll()
     {
@@ -147,3 +140,18 @@ public class MediaService {
 }
 
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

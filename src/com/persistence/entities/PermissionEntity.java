@@ -9,7 +9,7 @@ import java.util.Objects;
         value = {
                 @NamedQuery(name = "Permission.selectAll",
                             query = "SELECT p from PermissionEntity p"),
-                @NamedQuery(name = "Permission.selectOne",
+                @NamedQuery(name = "Permission.selectOneById",
                             query = "SELECT p from PermissionEntity  p where p.id = :id")
         }
 

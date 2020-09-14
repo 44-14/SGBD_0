@@ -1,20 +1,17 @@
 package com.main.schoolux.servlets;
 
-import com.main.schoolux.services.PermissionService;
+import com.main.schoolux.services.PermissionServiceToReview;
 import com.main.schoolux.utilitaries.MyStringUtil;
 import com.persistence.entities.PermissionEntity;
-import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -164,7 +161,7 @@ public class PermissionManagerServlet extends HttpServlet {
         // List<PermissionEntity> myPermissionsList = null;
 
         // Instanciation du service adapté
-        PermissionService myPermissionService = new PermissionService();
+        PermissionServiceToReview myPermissionService = new PermissionServiceToReview();
 
         // le try, le finally et le close est géré dans la méthode findByNamedQuery de l'EntityFinderImpl instancié dans la méthode appelée du service
         // pas de transaction pour une lecture en db donc pour read - find - select
@@ -193,14 +190,14 @@ public class PermissionManagerServlet extends HttpServlet {
         // EntityManager em = EMF.getEM();
 
         // Instanciation du service adapté
-        PermissionService myPermissionService = new PermissionService();
+        PermissionServiceToReview myPermissionService = new PermissionServiceToReview();
         // le try, le finally et le close est géré dans la méthode findOne de l'EntityFinderImpl instancié dans la méthode appelée du service
         // pas de transaction pour une lecture en db donc pour read - find - select
         //try {
         //try {
 
             // Recupére le record permission ciblé présent dans la base de données
-            return myPermissionService.selectOnePermission(idPermission);
+            return myPermissionService.selectOnePermissionById(idPermission);
 
         //} finally {
             //em.clear();

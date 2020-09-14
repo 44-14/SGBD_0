@@ -28,9 +28,10 @@ public class MyAuthenticationFilter implements Filter {
 
         final String SIGNIN_URI = myHttpRequest.getContextPath()+"/signin";
 
-        LOG.debug("\nDans le filtre d'authentification \nSign In URI : " + SIGNIN_URI);
+        LOG.debug("================== AUTHENTICATION FILTER ======================= " +
+                  "\nFiltered request infos :  Method = "+ myHttpRequest.getMethod() + "      -----------------    Request URI = " + myHttpRequest.getRequestURI());
 
-        LOG.debug("\nFiltrage de requête " + myHttpRequest.getMethod() + "\nURI de la requête: " + myHttpRequest.getRequestURI());
+
 
 
         // Ressources disponibles sans aucunes contraintes ou conditions d'accès à l'url /resources
@@ -47,7 +48,7 @@ public class MyAuthenticationFilter implements Filter {
             boolean isSignedIn = mySession != null && mySession.getAttribute("signedUser") != null;
             boolean isLoginRequest = particularRequest.equals("/signin");
 
-            LOG.debug("Connexion de l'utilisateur : " + isSignedIn);
+            LOG.info("User signed in : " + isSignedIn);
 
             if (isLoginRequest || isSignedIn) {
                 chain.doFilter(myHttpRequest, myHttpResponse);

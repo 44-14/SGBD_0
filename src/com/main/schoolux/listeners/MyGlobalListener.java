@@ -67,7 +67,7 @@ public class MyGlobalListener implements ServletContextListener,
         synchronized ( this ) {
             sessionCounter ++;
         }
-        LOG.log( Level.INFO,"***** Session created - "+sessionCounter+" session(s) in memory  ***** ");
+        LOG.log( Level.INFO,"******** Session created - "+sessionCounter+" session(s) in memory  ******* ");
     }
 
 
@@ -79,7 +79,7 @@ public class MyGlobalListener implements ServletContextListener,
         synchronized ( this ) {
             sessionCounter --;
         }
-        LOG.log( Level.INFO,"*****  Session destroyed - "+sessionCounter+" session(s) in memory  ***** ");
+        LOG.log( Level.INFO,"*******  Session destroyed - "+sessionCounter+" session(s) in memory  ******* ");
 
     }
 
@@ -110,7 +110,7 @@ public class MyGlobalListener implements ServletContextListener,
       */
 
         LOG.log(Level.INFO,
-                "***  Attribut ajouté en session : *** \nNom de l'attribut: "+sbe.getName()+"\nValeur à la création: "+sbe.getValue());
+                "***  New session attribute created : *** \nAttribute key : "+sbe.getName()+"\nAttribute original value : "+sbe.getValue());
 
 
                 /* on peut rajouter ce qui suit pour avoir l'id de la section :
@@ -124,7 +124,7 @@ public class MyGlobalListener implements ServletContextListener,
          is removed from a session.
       */
         LOG.log(Level.INFO,
-                "*** Attribut supprimé en session : ***  : \nNom de l'attribut: "+sbe.getName()+"\nValeur: "+sbe.getValue());
+                "*** Session attribute deleted : ***  : \nAttribute key "+sbe.getName()+"\nAttribute value : "+sbe.getValue());
 
 
     }
@@ -134,10 +134,10 @@ public class MyGlobalListener implements ServletContextListener,
          is replaced in a session.
       */
         LOG.log(Level.INFO,
-                "***  Attribut remplacé en session : ***  \n" +
-                        "Nom de l'attribut: "+sbe.getName()+"\n" +
-                        "Ancienne valeur: "+sbe.getValue()+"\n" +
-                        "Nouvelle valeur: "+sbe.getSession().getAttribute(sbe.getName()));
+                "***  Session attribute modified en session : ***  \n" +
+                        "Attribute key : "+sbe.getName()+"\n" +
+                        "Old attribute value : "+sbe.getValue()+"\n" +
+                        "New attribute value : "+sbe.getSession().getAttribute(sbe.getName()));
 
 
 

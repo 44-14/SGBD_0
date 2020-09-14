@@ -14,15 +14,13 @@ import java.util.Objects;
         value = {
                 @NamedQuery(name = "User.selectAll",
                         query = "SELECT u from UserEntity u"),
-                @NamedQuery(name = "User.selectOne",
-                        query = "SELECT u from UserEntity  u where u.id = :id")
+                @NamedQuery(name = "User.selectOneById",
+                        query = "SELECT u from UserEntity  u where u.id = :id"),
+                @NamedQuery(name = "User.selectOneByUsername",
+                        query = "SELECT u from UserEntity u where u.username= :username")
         }
 
 )
-
-
-
-
 
 
 

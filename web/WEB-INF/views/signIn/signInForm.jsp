@@ -36,12 +36,12 @@
                 <!-- contextePath est le point d'entrée de notre application -->
 
                 <label for='idUsernameForm'>Username :</label>
-                <input id='idUsernameForm' name='usernameFromForm' type='text' value='${requestScope.myValidAttributesRequestKey['usernameValid']}' size="30" maxlength="50" required autofocus /> <br/>
-                <span class="error">${requestScope.myErrorsRequestKey['usernameError']}</span> <br/>
+                <input id='idUsernameForm' name='usernameFromForm' type='text' value='${requestScope.myValidAttributesRequestKey['usernameFromFormValid']}' size="30" maxlength="50" required autofocus /> <br/>
+                <span class="error">${requestScope.myErrorsRequestKey['usernameFromFormError']}</span> <br/>
 
                 <label for='idPwdForm'>Password :</label>
-                <input  id='idPwdForm' name='passwordFromForm' type='password' value='${requestScope.myValidAttributesRequestKey['passwordValid']}' size="30" maxlength="50" /> <br/>
-                <span class="error">${requestScope.myErrorsRequestKey['passwordError']}</span> <br/>
+                <input  id='idPwdForm' name='passwordFromForm' type='password' value='${requestScope.myValidAttributesRequestKey['passwordFromFormValid']}' size="30" maxlength="50" required /> <br/>
+                <span class="error">${requestScope.myErrorsRequestKey['passwordFromFormError']}</span> <br/>
 
                 <input name='btnSignIn' type='submit' value="Se connecter"/> <br/>
             </form>

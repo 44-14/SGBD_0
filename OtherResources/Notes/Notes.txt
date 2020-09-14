@@ -251,6 +251,12 @@ Généralement, un paramètre est ce qui apparaît dans la définition de la mé
 DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
 ===========================================================
 
+Autre source intéressante :
+https://www.xyzws.com/Servletfaq/what-is-the-difference-between-the-request-attribute-and-request-parameter/1
+
+
+
+
 What is the difference between getAttribute() and getParameter() methods within HttpServletRequest class?
 
 getParameter() returns http request parameters.

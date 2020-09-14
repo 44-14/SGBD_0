@@ -22,9 +22,9 @@
     <p>Ceci est une confirmation de connexion</p>
     <div id="maDiv">
         <div id="block">
-        <span id="ask">Bienvenue Mister ${usernameSessionKey} </span>
+        <span id="ask">Bienvenue ${pageContext.request.getParameter("usernameFromForm")}</span>
         </div>
-
+        ${param.id}
         <a href="${pageContext.request.contextPath}/signin"><button class="btn"> Appuyez ici pour continuer. </button></a>
 
     </div>

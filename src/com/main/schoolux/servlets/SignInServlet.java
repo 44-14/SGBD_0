@@ -34,6 +34,9 @@ public class SignInServlet extends HttpServlet {
     private List<String> ServletErrors;
 
 
+
+
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -42,9 +45,12 @@ public class SignInServlet extends HttpServlet {
     }
 
 
+
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.debug("===  DoGet() de SignInServlet -  BEGIN  ===");
+        LOG.debug("======  DoGet() in SignInServlet ======");
         // ou LOG.log(Level.DEBUG, "========MonMessage======");
 
 
@@ -113,8 +119,8 @@ public class SignInServlet extends HttpServlet {
         }
 
         //DumpUtil.getFullRequestMapDumped(request);
-        LOG.debug("on est ici");
         request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request,response);
+        //request.getRequestDispatcher("/WEB-INF/views/signin/signInForm.jsp").forward(request,response);
 
 
     }
@@ -131,57 +137,42 @@ public class SignInServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.debug("===  doPost() de SignInServlet -  BEGIN  ===");
+        LOG.debug("=====  doPost() in SignInServlet  ======");
 
 
-        LOG.info("===  doPost() de SignUpServlet -  BEGIN  ===");
-
-        // Mettre en statique le UserValidation pour pas instancier ?
+        // Mettre en statique le UserValidation pour pas instancier
         UserEntity myUserToCheck = UserValidationBis.ToSignIn(request);
 
         if (myUserToCheck==null) {
             {
                 // alors il y a eu des erreurs, celles-ci sont placées dans la HashMap myErrors en paramètre de requête
-                DumpUtil.getFullRequestMapDumped(request);
                 request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request, response);
             }
         }
         else {
-            LOG.debug("ok");
+
+
+
+
+
+
+
+
+
+
+
+
+
             request.getRequestDispatcher(SIGNIN_CONFIRMATION_VIEW).forward(request,response);
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-        String usernameSession = request.getParameter("usernameFromForm");
-        String passwordSession = request.getParameter("passwordFromForm");
-
-        HttpSession session = request.getSession(true);
-        session.setAttribute("usernameSessionKey", usernameSession);
-        session.setAttribute("passwordSessionKey", passwordSession);
-
-
-
-        if (usernameSession.equals("Bond") && passwordSession.equals("007")) {
-
-            session.setAttribute("isLogged",true);
-
-            // à modifier par la homepage ou compte
-            request.getRequestDispatcher(SIGNIN_CONFIRMATION_VIEW).forward(request, response);
             // par ensuite, rediriger vers la AccountServlet
-        } else {
-            session.setAttribute("isLogged", false);
-            request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request, response);
         }
+
+
+
+        //HttpSession session = request.getSession(true);
+        //session.setAttribute("signedUser",myUserToCheck);
+        //session.removeAttribute("signedUser",myUserToCheck);
+
 
 
     }
