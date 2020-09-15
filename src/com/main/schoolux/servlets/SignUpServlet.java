@@ -1,6 +1,6 @@
 package com.main.schoolux.servlets;
 
-import com.main.schoolux.validations.UserValidation;
+import com.main.schoolux.validations.UserValidation_Old_0;
 import com.persistence.entities.UserEntity;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
@@ -60,7 +59,7 @@ public class SignUpServlet extends HttpServlet {
         LOG.info("===  doPost() de SignUpServlet -  BEGIN  ===");
 
         // Mettre en statique le UserValidation pour pas instancier ?
-        UserValidation myValidation = new UserValidation();
+        UserValidation_Old_0 myValidation = new UserValidation_Old_0();
         UserEntity myUser = myValidation.UserValidation_Create(request);
 
         if (myUser==null) {

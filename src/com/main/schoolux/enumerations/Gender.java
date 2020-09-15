@@ -19,6 +19,10 @@ public enum Gender {
         List<String> genderListString = new ArrayList<>();
 
         for (Gender genderItem : genderList) {
+
+            genderListString.add(genderItem.name().replace("_", " "));
+
+            // Remplacer les underscores par un espace blanc si une valeur de l'enum est composée de plusieurs mots
             genderListString.add(genderItem.name().replace("_", " "));
         }
 

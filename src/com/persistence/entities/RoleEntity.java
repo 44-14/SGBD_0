@@ -9,10 +9,12 @@ import java.util.Objects;
 
 @NamedQueries(
         value = {
-                @NamedQuery(name = "Role.selectall",
+                @NamedQuery(name = "Role.selectAll",
                         query = "SELECT r from RoleEntity r"),
-                @NamedQuery(name = "Role.selectOne",
-                        query = "SELECT r from RoleEntity  r where r.id = :id")
+                @NamedQuery(name = "Role.selectOneById",
+                        query = "SELECT r from RoleEntity  r where r.id = :id"),
+                @NamedQuery(name = "Role.selectOneByLabel",
+                         query = "SELECT r from RoleEntity r where r.label= :label")
         }
 
 )

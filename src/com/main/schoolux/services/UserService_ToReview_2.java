@@ -12,12 +12,12 @@ import com.persistence.entities.UserEntity;
 import java.util.List;
 
 
-public class UserServiceToReview2 {
+public class UserService_ToReview_2 {
 
 
     /////////////
     // LOGGER
-    private final static Logger LOG = Logger.getLogger(UserServiceToReview2.class);
+    private final static Logger LOG = Logger.getLogger(UserService_ToReview_2.class);
 
 
     ////////////
@@ -29,11 +29,11 @@ public class UserServiceToReview2 {
     ///////////////////
     // CONSTRUCTEURS //
     // 0 paramètre => dans le cas des read ou find qui utilisent la classe EntityFinderImpl qui instancie elle-même son EntityManager
-    public UserServiceToReview2() {
+    public UserService_ToReview_2() {
     }
 
     // 1 paramètre => dans le cas des create - update - delete , car c'est le controller qui instancie l'EntityManager em avant de le passer en argument au service
-    public UserServiceToReview2(EntityManager em) {
+    public UserService_ToReview_2(EntityManager em) {
         this.em = em;
     }
 

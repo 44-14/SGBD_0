@@ -2,7 +2,7 @@ package com.main.schoolux.servlets;
 
 import com.AppConfig;
 import com.main.schoolux.services.UserService;
-import com.main.schoolux.validations.UserValidationBis;
+import com.main.schoolux.validations.UserValidation;
 import com.persistence.entities.UserEntity;
 import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Logger;
@@ -13,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +142,7 @@ public class SignInServlet extends HttpServlet {
 
 
         // Mettre en statique le UserValidation pour pas instancier
-        UserEntity myUserToCheck = UserValidationBis.ToSignIn(request);
+        UserEntity myUserToCheck = UserValidation.ToSignIn(request);
 
         if (myUserToCheck==null) {
             {
