@@ -12,10 +12,12 @@ public abstract class ServiceImpl<T> implements Service<T> {
     protected EntityManager em;
 
 
+    public ServiceImpl(){}
 
     public ServiceImpl(EntityManager em) {
         this.em = em;
     }
+
 
 
 

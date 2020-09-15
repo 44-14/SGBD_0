@@ -24,6 +24,26 @@
     HashMap contenant les attributs valides : <c:out value="${requestScope.myValidAttributesRequestKey}"/>
 
 
+<c:if test="${not empty requestScope.ServletErrorMessagesRequestKey && requestScope.ServletErrorMessagesRequestKey.size() > 0}">
+    <div id="" class="alert alert-danger" role="alert">
+        <ul>test
+            <c:forEach items="${requestScope.ServletErrorMessagesRequestKey}" var="item">
+                <li>${item}</li>
+            </c:forEach>
+        </ul>
+    </div>
+</c:if>
+
+
+
+
+
+
+
+
+
+
+
     <div class="maDiv">
             <span id="mainTitle"> School UX </span>
     </div>
@@ -36,11 +56,11 @@
                 <!-- contextePath est le point d'entrée de notre application -->
 
                 <label for='idUsernameForm'>Username :</label>
-                <input id='idUsernameForm' name='usernameFromForm' type='text' value='${requestScope.myValidAttributesRequestKey['usernameFromFormValid']}' size="30" maxlength="50" required autofocus /> <br/>
+                <input id='idUsernameForm' name='usernameFromForm' type='text' value='${requestScope.myValidAttributesRequestKey['usernameFromFormValid']}' size="30" minlength="5" maxlength="50" required autofocus /> <br/>
                 <span class="error">${requestScope.myErrorsRequestKey['usernameFromFormError']}</span> <br/>
 
                 <label for='idPwdForm'>Password :</label>
-                <input  id='idPwdForm' name='passwordFromForm' type='password' value='${requestScope.myValidAttributesRequestKey['passwordFromFormValid']}' size="30" maxlength="50" required /> <br/>
+                <input  id='idPwdForm' name='passwordFromForm' type='password' value='${requestScope.myValidAttributesRequestKey['passwordFromFormValid']}' size="30" minlength="3" maxlength="50" required /> <br/>
                 <span class="error">${requestScope.myErrorsRequestKey['passwordFromFormError']}</span> <br/>
 
                 <input name='btnSignIn' type='submit' value="Se connecter"/> <br/>

@@ -27,10 +27,19 @@ public class UserService extends ServiceImpl<UserEntity> {
     // methode insert - update - delete définies dans la classe parent
 
 
+    ///////////////////
+    // CONSTRUCTEURS //
 
+    // 0 paramètre => dans le cas des read/find/select qui utilisent la classe EntityFinderImpl qui instancie elle-même son EntityManager
+    public UserService() {
+    }
+
+
+    // 1 paramètre => pour les autres opérations qui ne passent pas par  l'instanciation d'un EntityFinderImpl
     public UserService(EntityManager em) {
         super(em);
     }
+
 
 
     /*
@@ -132,6 +141,7 @@ public class UserService extends ServiceImpl<UserEntity> {
             //return myEntityFinder.findByNamedQuery("User.selectByUsername", myUser, null);
 
             try {
+                LOG.debug("ici");
                 return em.createNamedQuery("User.selectOneByUsername",UserEntity.class)
                         .setParameter("username", username)
                         .getSingleResult();
@@ -140,6 +150,7 @@ public class UserService extends ServiceImpl<UserEntity> {
                 return null;
             }
         } else {
+            LOG.debug("ou là");
             throw new IllegalArgumentException("Username is empty or null");
         }
     }

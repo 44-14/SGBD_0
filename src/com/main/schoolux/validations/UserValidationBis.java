@@ -56,7 +56,7 @@ public class UserValidationBis {
         MyValidationUtil.CheckEmptyAndLength(
                 request.getParameter("passwordFromForm"),
                 "passwordFromForm",
-                5,
+                3,
                 50,
                 myErrors,
                 myValidAttributes
@@ -77,7 +77,7 @@ public class UserValidationBis {
 
         } else {
             myUser.setUsername(request.getParameter("usernameFromForm"));
-            myUser.setPassword(request.getParameter("usernameFromForm"));
+            myUser.setPassword(request.getParameter("passwordFromForm"));
         }
 
         LOG.info("=== END -  ToSignIn() in UserValidation ===");
@@ -85,6 +85,12 @@ public class UserValidationBis {
 
 
     }
+
+
+
+
+
+
 
 
     /////////

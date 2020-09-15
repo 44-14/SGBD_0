@@ -71,7 +71,7 @@ public class MyValidationUtil {
      * (It really should be in the JDK, as a static method of the String class.)
      */
     public static boolean hasContent(String string) {
-        LOG.debug("Vérification qu'une chaîne de chars a du contenu: " + string);
+        LOG.debug("Contenu de la chaîne de caractères fournie : " + string);
         return (string != null && string.trim().length() > 0);
     }
 

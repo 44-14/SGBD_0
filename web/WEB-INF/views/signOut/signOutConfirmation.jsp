@@ -19,13 +19,13 @@
 </head>
 
 <body>
-    <p>Ceci est une confirmation de connexion</p>
+    <p>Confirmation de déconnexion</p>
     <div id="maDiv">
         <div id="block">
-        <span id="ask">Bienvenue ${pageContext.request.getParameter("usernameFromForm")}</span>
+        <span id="ask">Á bientôt</span>
         </div>
 
-        <a href="${pageContext.request.contextPath}/signin"><button class="btn"> Appuyez ici pour continuer. </button></a>
+        <a href="${pageContext.request.contextPath}/signin"><button class="btn"> Se reconnecter </button></a>
 
     </div>
 </body>

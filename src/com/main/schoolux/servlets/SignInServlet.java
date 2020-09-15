@@ -1,13 +1,13 @@
 package com.main.schoolux.servlets;
 
-import com.main.schoolux.AppConfig;
-import com.main.schoolux.utilitaries.DumpUtil;
-import com.main.schoolux.validations.UserValidation;
+import com.AppConfig;
+import com.main.schoolux.services.UserService;
 import com.main.schoolux.validations.UserValidationBis;
 import com.persistence.entities.UserEntity;
-import org.apache.log4j.Level;
+import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Logger;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,23 +29,19 @@ public class SignInServlet extends HttpServlet {
 
     public final static String SIGNIN_FORM_VIEW= AppConfig.SIGNIN_VIEWS_ROOT_PATH+"signInForm.jsp";
     public final static String SIGNIN_CONFIRMATION_VIEW= AppConfig.SIGNIN_VIEWS_ROOT_PATH+"signInConfirmation.jsp";
-
-    private List<String> ServletConfirmations;
-    private List<String> ServletErrors;
+    public final static String SIGNOUT_CONFIRMATION_VIEW= AppConfig.SIGNOUT_VIEWS_ROOT_PATH+"signOutConfirmation.jsp";
 
 
 
-
+    private List<String> ServletMessages;
+    private List<String> ServletSuccessMessages;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        this.ServletErrors = new ArrayList<>();
-        this.ServletConfirmations = new ArrayList<>();
+        this.ServletMessages = new ArrayList<>();
+        this.ServletSuccessMessages = new ArrayList<>();
     }
-
-
-
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,10 +50,14 @@ public class SignInServlet extends HttpServlet {
         // ou LOG.log(Level.DEBUG, "========MonMessage======");
 
 
+
         // Ecrit le urlPatterns de la servlet traitant la requete
         LOG.debug("Servlet path :"+request.getServletPath().toString());
         String requestURI = request.getRequestURI().toString();
         LOG.debug("Request URI :"+requestURI);
+
+
+        ServletMessages.clear();
 
         /*
         //Les  LOG qui suivent ont été déplacé au niveau d'un listener d'evenements auto-générés dans la classe MyHTTPRequestListener,
@@ -109,13 +109,15 @@ public class SignInServlet extends HttpServlet {
 
         if (requestURI.endsWith("/signout")) {
                 request.getSession().removeAttribute("signedUser");
-                ServletConfirmations.add("Vous avez été déconnecté.");
-                request.setAttribute("ServletConfirmationsRequestKey", ServletConfirmations);
+                ServletMessages.add("Vous avez été déconnecté");
+                request.setAttribute("ServletMessagesRequestKey",ServletMessages);
+                request.getRequestDispatcher(SIGNOUT_CONFIRMATION_VIEW).forward(request,response);
         }
 
         else if (request.getSession().getAttribute("signedUser")!=null) {
-            ServletErrors.add("Vous êtes déjà connecté");
-            request.setAttribute("ServletErrorsRequestKey", ServletErrors);
+            ServletMessages.add("Vous êtes déjà connecté");
+            request.setAttribute("ServletMessagesRequestKey",ServletMessages);
+            //request.setAttribute("ServletMessage","Vous êtes déjà connecté");
         }
 
         //DumpUtil.getFullRequestMapDumped(request);
@@ -151,28 +153,23 @@ public class SignInServlet extends HttpServlet {
         }
         else {
 
+            EntityManager em = EMF.getEM();
+            UserService myUserService = new UserService(em);
+            UserEntity returnedUser = myUserService.selectUserByUsernameOrNull(myUserToCheck.getUsername());
 
+            if (returnedUser==null || !(returnedUser.getPassword().equals(myUserToCheck.getPassword())))
+            {
+                ServletMessages.add("Le couple username/password est incorrect");
+                request.setAttribute("ServletMessagesRequestKey",ServletMessages);
+                request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request,response);
+            }
 
-
-
-
-
-
-
-
-
-
-
-            request.getRequestDispatcher(SIGNIN_CONFIRMATION_VIEW).forward(request,response);
-            // par ensuite, rediriger vers la AccountServlet
+            else {
+                request.getSession(false).setAttribute("signedUser", returnedUser);
+                request.getRequestDispatcher(SIGNIN_CONFIRMATION_VIEW).forward(request, response);
+                // par ensuite, rediriger vers la AccountServlet ou /home  je pense homeServlet via le bouton continuez
+            }
         }
-
-
-
-        //HttpSession session = request.getSession(true);
-        //session.setAttribute("signedUser",myUserToCheck);
-        //session.removeAttribute("signedUser",myUserToCheck);
-
 
 
     }
