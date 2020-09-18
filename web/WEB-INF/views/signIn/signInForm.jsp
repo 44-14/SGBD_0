@@ -52,7 +52,7 @@
             <span class="ask">Veuillez vous authentifier : </span>
 
             <form method="post" action="${pageContext.request.contextPath}/signin">
-                <!--action correspond l'URL vers laquelle on envoie le contenu du formulaire -->
+                <!--action correspond l'URI vers laquelle on envoie le contenu du formulaire -->
                 <!-- contextePath est le point d'entrée de notre application -->
 
                 <label for='idUsernameForm'>Username :</label>

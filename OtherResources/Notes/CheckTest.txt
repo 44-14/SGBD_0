@@ -1,0 +1,48 @@
+
+
+
+filter :
+check si l uri
+= resources
+= public
+= signin
+commence par sign up
+
+si oui, chain
+
+si non alors :
+check si connecté
+true = chain
+false = redirect vers /signin
+
+
+
+
+DISCONNECTED :
+
+
+
+http://localhost:8080/SGBD_0_war_exploded      redirect /signin
+http://localhost:8080/SGBD_0_war_exploded/*    redirect /signin
+
+http://localhost:8080/SGBD_0_war_exploded/resources et /resources/*  passe mais erreur normale
+http://localhost:8080/SGBD_0_war_exploded/public  et /public/*   passe mais erreur normale
+
+http://localhost:8080/SGBD_0_war_exploded/signin    passe
+http://localhost:8080/SGBD_0_war_exploded/signin/   redirect /signin
+http://localhost:8080/SGBD_0_war_exploded/signin/*  redirect /signin
+
+
+http://localhost:8080/SGBD_0_war_exploded/signup passe
+http://localhost:8080/SGBD_0_war_exploded/signup/  redirect /signup
+http://localhost:8080/SGBD_0_war_exploded/signup/* redirect /signup
+
+
+
+
+CONNECTED :
+
+
+
+
+

@@ -1,3 +1,27 @@
+
+
+======================================================================================================================
+======================================================================================================================
+
+======================================================================================================================
+======================================================================================================================
+1
+2
+3
+===========================================================
+
+===========================================================
+1
+
+
+1
+2
+===========================================================
+
+===========================================================
+1
+
+
 1
 2
 3
@@ -8,20 +32,7 @@
 
 ======================================================================================================================
 ======================================================================================================================
-1
-2
-3
-===========================================================
 
-===========================================================
-1
-
-
-1
-2
-===========================================================
-
-===========================================================
 
 
 
@@ -175,6 +186,9 @@ devient dans le cadre du projet schoolUX :
             Persistence.createEntityManagerFactory("PersistUnit_schoolUX");
 
 
+
+
+
 ======================================================================================================================
 ======================================================================================================================
 Erreurs particulières
@@ -240,6 +254,7 @@ COMPREHENSION
 ======================================================================================================================
 
 
+
 ===========================================================
 DIFFERENCE ARGUMENTS D UNE METHODE ET PARAMETRES D UNE METHODE
 ===========================================================
@@ -251,11 +266,11 @@ Généralement, un paramètre est ce qui apparaît dans la définition de la mé
 DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
 ===========================================================
 
-Autre source intéressante :
+Source 1 :
 https://www.xyzws.com/Servletfaq/what-is-the-difference-between-the-request-attribute-and-request-parameter/1
 
 
-
+===========================================================
 
 What is the difference between getAttribute() and getParameter() methods within HttpServletRequest class?
 
@@ -298,6 +313,7 @@ Source : https://stackoverflow.com/questions/5243754/difference-between-getattri
         /* dans la session = disponible pendant la durée de vie de la session, donc les objets sont récupérables même si c'est une nouvelle requête qui arrive dans une nouvelle servlet*/
         /* concretement : coté client,
 
+
 ===========================================================
 ===========================================================
 
@@ -309,7 +325,7 @@ si en href d'une ancre dans un formulaire je mets :
 <a href="${pageContext.request.contextPath}/public/JSP/home.jsp"> <button class="btn"> Appuyez ici pour continuer. </button> </a>
 alors on sait atteindre publiquement la home.jsp en ecrivant directement l'url
 
-si cet home.jsp est dans WEB-INF, alors :
+si cet home.jsp est dans WEB-INF qui n'est pas public, alors :
 <a href="${pageContext.request.contextPath}/WEB-INF/JSP/home.jsp"> <button class="btn"> Appuyez ici pour continuer. </button> </a>
 provoquera une erreur vu qu on ne peut joindre le contenu dans WEB-INF que via un servlet controller
 qui fait appel à cette .jsp via getRequestDispatcher(VUE);
@@ -331,20 +347,32 @@ et qui lui se chargera de renvoyer des jsp ou autre
 ===========================================================
 ===========================================================
 
+
+===========================================================
+===========================================================
+
 public final String FORM_VIEW = "/WEB-INF/JSP/signUpForm.jsp";
 
 Mettre les chemins dans des constantes String permet d'éviter, dans le cas où on modifie ce chemin ou le nom du fichier,
 de devoir aller modifier ce chemin à chaque fois qu'il est utilisé en argument dans les request dispatchers.
+
+Voir classe AppConfig
 
 
 ===========================================================
 ===========================================================
 
 les paramètres dans la request sont couple  key - value
-les values d attributs dans la request = string
+les values des paramètres dans la request = string
 si la key de l'attribut existe meme pas en request, la value sera null
 si la key attribute existe mais que le client n'a rien mis dans l'input, la value sera une chaine vide = ""
 ce qui n est pas un null
+
+les attributs dans la request sont des couples key - value
+les values d'attributs dans la request = object
+donc à chaque fois qu'on récupère la value d'un attribut mis en dans la request,
+il sera en type object donc faudra le caster à chaque fois
+si le key de l'attribut n'existe pas en request, la value sera null
 
 
 les paramètres dans la session sont des couples key - value
@@ -379,6 +407,20 @@ A Boolean object can NEVER have a value of null. If your reference to a Boolean 
 source :
  https://www.codejava.net/java-ee/servlet/how-to-use-session-in-java-web-application
  https://stackoverflow.com/questions/27665442/session-get-attribute-of-a-boolean-value
+
+
+===========================================================
+request.getRequestDispatcher(string).forward(request,response)  et  response.sendRedirect(string)
+===========================================================
+
+Source  : https://javarevisited.blogspot.com/2011/09/sendredirect-forward-jsp-servlet.html
+
+
+================================================================
+
+getRequestDispatcher("/servlet/ShowSupplies"); dispatcher. include(request, response);
+To handle interaction control to another servlet, use the RequestDispatcher interfaces forward() method with the servlet's URI as a parameter.
+
 
 
 

@@ -39,6 +39,18 @@
         </filter-mapping>
 
 
+        <jsp-config>
+            <jsp-property-group>
+                <url-pattern>/WEB-INF/views/*</url-pattern>
+                <url-pattern> /WEB-INF/public/views/*</url-pattern>
+                <include-prelude>/WEB-INF/includes/header.jsp</include-prelude>
+                <include-coda>/WEB-INF/includes/footer.jsp</include-coda>
+            </jsp-property-group>
+        </jsp-config>
+
+
+
+
 
     <!-- Pour include le footer et header   ?? fonctionne pas
 

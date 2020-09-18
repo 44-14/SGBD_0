@@ -31,9 +31,6 @@ public class PermissionManagerServlet extends HttpServlet {
     public final String DETAILS_VIEW = "/WEB-INF/JSP/permissionDetails.jsp";
 
 
-    private String action = "";
-
-
     // CRUD DANS SERVLET - insertNew  selectOne selectAll  updateLogically etc DANS SERVICE
 
 
@@ -66,7 +63,9 @@ public class PermissionManagerServlet extends HttpServlet {
         Et on analysera ce qu'est exactement xyz via un switch qui dispatchera dans un case correspondant  create - read - update - delete avec verif permissions
          */
 
-        action = MyStringUtil.myGetURL_Action(request);
+        String action = null;
+
+        action = MyStringUtil.URL_AfterLastSlash(request);
         LOG.info("Action de la requête : " + action);
 
         switch (action) {

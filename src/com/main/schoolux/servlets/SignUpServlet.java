@@ -1,5 +1,8 @@
 package com.main.schoolux.servlets;
 
+import com.AppConfig;
+import com.main.schoolux.utilitaries.MyStringUtil;
+import com.main.schoolux.validations.UserValidation;
 import com.main.schoolux.validations.UserValidation_Old_0;
 import com.persistence.entities.UserEntity;
 import org.apache.log4j.Level;
@@ -22,7 +25,7 @@ import java.io.IOException;
 
 /* le bouton  "s'inscrire" de la page de connexion doit diriger vers ici via /signup */
 /* l'attribut loadOnStartup permet de charger la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue) */
-@WebServlet(name = "SignUpServlet", urlPatterns = "/signup", loadOnStartup = 1)
+@WebServlet(name = "SignUpServlet", urlPatterns = {"/signup", "/signup/*"}, loadOnStartup = 1)
 public class SignUpServlet extends HttpServlet {
 
 
@@ -31,11 +34,13 @@ public class SignUpServlet extends HttpServlet {
 
     // LOGGER + PATH CONSTANTS
     private static final Logger LOG = Logger.getLogger(SignUpServlet.class);
-    public final String FORM_VIEW = "/WEB-INF/JSP/signUpForm.jsp";
-    public final String CONFIRMATION_VIEW = "/WEB-INF/JSP/confirmationSignUp.jsp";
+
+    public final static String SIGNUP_FORM_VIEW = AppConfig.SIGNUP_VIEWS_ROOT_PATH+"signUpForm.jsp";
+    public final static String SIGNUP_CONFIRMATION_VIEW= AppConfig.SIGNUP_VIEWS_ROOT_PATH+"signUpConfirmation.jsp";
 
 
-
+    public final String SIGNUP_URI_WITHOUT_CONTEXT = "/signup";
+    public String SIGNUP_URI;
 
 
 
@@ -47,8 +52,19 @@ public class SignUpServlet extends HttpServlet {
         LOG.log(Level.INFO, "Servlet path :"+request.getServletPath().toString());
 
 
-        // créer en mm tps la session
-        request.getRequestDispatcher(FORM_VIEW).forward(request, response);
+        this.SIGNUP_URI = request.getContextPath() + this.SIGNUP_URI_WITHOUT_CONTEXT; // construit /SGBD_0_war_exploded + /signup
+
+
+        String exploitableURI = MyStringUtil.URL_FromFirstExploitableSlash(request);
+
+        if (!exploitableURI.equals(this.SIGNUP_URI_WITHOUT_CONTEXT))
+        {
+            response.sendRedirect(this.SIGNUP_URI);
+        }
+        else {
+            // créer en mm tps la session
+            request.getRequestDispatcher(SIGNUP_FORM_VIEW).forward(request, response);
+        }
     }
 
 
@@ -62,14 +78,16 @@ public class SignUpServlet extends HttpServlet {
         UserValidation_Old_0 myValidation = new UserValidation_Old_0();
         UserEntity myUser = myValidation.UserValidation_Create(request);
 
+        //UserEntity myUser = UserValidation.ToSignUp();
+
         if (myUser==null) {
             {
             // alors il y a eu des erreurs, celles-ci sont placées dans la HashMap myErrors en session
-            request.getRequestDispatcher(FORM_VIEW).forward(request, response);
+            request.getRequestDispatcher(SIGNUP_FORM_VIEW).forward(request, response);
             }
         }
         else {
-            request.getRequestDispatcher(CONFIRMATION_VIEW).forward(request,response);
+            request.getRequestDispatcher(SIGNUP_CONFIRMATION_VIEW).forward(request,response);
         }
 
 

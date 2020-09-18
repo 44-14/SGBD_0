@@ -2,7 +2,9 @@ package com.main.schoolux.servlets;
 
 import com.AppConfig;
 import com.main.schoolux.services.UserService;
+import com.main.schoolux.utilitaries.MyStringUtil;
 import com.main.schoolux.validations.UserValidation;
+import com.persistence.entities.PermissionEntity;
 import com.persistence.entities.UserEntity;
 import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Logger;
@@ -19,7 +21,7 @@ import java.util.List;
 
 
 /* l'attribut loadOnStartup permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue par la servlet) */
-@WebServlet(name = "SignInServlet", urlPatterns = {"/signin","/signout"}, loadOnStartup = 1)
+@WebServlet(name = "SignInServlet", urlPatterns = {"/signin","/signin/*", "/signout", "/signout/*"}, loadOnStartup = 1)
 public class SignInServlet extends HttpServlet {
 
 
@@ -51,9 +53,10 @@ public class SignInServlet extends HttpServlet {
 
 
         // Ecrit le urlPatterns de la servlet traitant la requete
-        LOG.debug("Servlet path :"+request.getServletPath().toString());
+        LOG.debug("Servlet Path :"+request.getServletPath().toString());
         String requestURI = request.getRequestURI().toString();
         LOG.debug("Request URI :"+requestURI);
+
 
 
         ServletMessages.clear();
@@ -106,7 +109,11 @@ public class SignInServlet extends HttpServlet {
 
         // Grâce au MyAuthenticationFilter, on est sûr qu'il y a un signedUser dans la session si on atteint l'uri /signout
 
-        if (requestURI.endsWith("/signout")) {
+        String exploitableURI = MyStringUtil.URL_FromFirstExploitableSlash(request);
+        LOG.debug("Exploited URI : "+exploitableURI);
+
+
+        if (exploitableURI.startsWith("/signout")) {
                 request.getSession().removeAttribute("signedUser");
                 ServletMessages.add("Vous avez été déconnecté");
                 request.setAttribute("ServletMessagesRequestKey",ServletMessages);

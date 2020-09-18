@@ -67,7 +67,7 @@ public class MyGlobalListener implements ServletContextListener,
         synchronized ( this ) {
             sessionCounter ++;
         }
-        LOG.log( Level.INFO,"******** Session created - "+sessionCounter+" session(s) in memory  ******* ");
+        LOG.log( Level.DEBUG,"******** Session created - "+sessionCounter+" session(s) in memory  ******* ");
     }
 
 
@@ -79,7 +79,7 @@ public class MyGlobalListener implements ServletContextListener,
         synchronized ( this ) {
             sessionCounter --;
         }
-        LOG.log( Level.INFO,"*******  Session destroyed - "+sessionCounter+" session(s) in memory  ******* ");
+        LOG.log( Level.DEBUG,"*******  Session destroyed - "+sessionCounter+" session(s) in memory  ******* ");
 
     }
 
@@ -109,7 +109,7 @@ public class MyGlobalListener implements ServletContextListener,
          is added to a session.
       */
 
-        LOG.log(Level.INFO,
+        LOG.log(Level.DEBUG,
                 "***  New session attribute created : *** \nAttribute key : "+sbe.getName()+"\nAttribute original value : "+sbe.getValue());
 
 
@@ -123,7 +123,7 @@ public class MyGlobalListener implements ServletContextListener,
       /* This method is called when an attribute
          is removed from a session.
       */
-        LOG.log(Level.INFO,
+        LOG.log(Level.DEBUG,
                 "*** Session attribute deleted : ***  : \nAttribute key "+sbe.getName()+"\nAttribute value : "+sbe.getValue());
 
 
@@ -133,7 +133,7 @@ public class MyGlobalListener implements ServletContextListener,
       /* This method is invoked when an attribute
          is replaced in a session.
       */
-        LOG.log(Level.INFO,
+        LOG.log(Level.DEBUG,
                 "***  Session attribute modified en session : ***  \n" +
                         "Attribute key : "+sbe.getName()+"\n" +
                         "Old attribute value : "+sbe.getValue()+"\n" +
