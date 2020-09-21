@@ -10,28 +10,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "HomeServlet", urlPatterns = {"/home","/home/*"}, loadOnStartup = 1)
-public class HomeServlet extends HttpServlet {
+@WebServlet(name = "AccountServlet" , urlPatterns = {"/account","/account/*"}, loadOnStartup = -1)
+public class AccountServlet extends HttpServlet {
+
 
     // LOGGER + PATH CONSTANTS + SERVLET MESSAGES LISTS
-    private final static Logger LOG = Logger.getLogger(HomeServlet.class);
+    private final static Logger LOG = Logger.getLogger(AccountServlet.class);
 
-    public final static String HOME_VIEW = AppConfig.HOME_VIEWS_ROOT_PATH+"home.jsp";
+    public final static String ACCOUNT_VIEW = AppConfig.ACCOUNT_VIEWS_ROOT_PATH+"account.jsp";
+
+
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.getRequestDispatcher(HOME_VIEW).forward(request,response);
+
+        request.getRequestDispatcher(ACCOUNT_VIEW).forward(request,response);
 
     }
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        this.doGet(request,response);
 
-
+        /* if  hidden id du post = id du userConnecté en session  on dispatch vers /user en rajoutant les attributs nécessaires dans la request pour faire editer là bas
+         */
     }
 
 
 }
-;
