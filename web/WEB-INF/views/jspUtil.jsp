@@ -88,6 +88,7 @@ listera tous les champs et leurs valeurs pour l'objet signedUser donc lastname f
 
 
 <!--  Reprend les deux pépites au dessus -->
+<!-- source : https://stackoverflow.com/questions/16302554/view-all-fields-properties-of-bean-in-jsp-jstl -->
 
 <p class="TODO <your name> PRINT OBJECT PROPERTIES">
     <c:set var="object" value="${your_object_here}" />
