@@ -21,7 +21,7 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
     ///////////////////
     // CONSTRUCTEURS //
 
-    // 0 paramètre => dans le cas des read/find/select qui utilisent la classe EntityFinderImpl qui instancie elle-même son EntityManager
+    // 0 paramètre => dans le cas des select qui utilisent la classe EntityFinderImpl qui instancie elle-même son EntityManager (j utilise que pour selectAll
     public PermissionService() {
     }
 

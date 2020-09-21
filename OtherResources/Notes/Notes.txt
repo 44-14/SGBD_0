@@ -1,5 +1,5 @@
 
-
+▲   ▼      ▲▼      █        ██
 ======================================================================================================================
 ======================================================================================================================
 
@@ -420,6 +420,30 @@ Source  : https://javarevisited.blogspot.com/2011/09/sendredirect-forward-jsp-se
 
 getRequestDispatcher("/servlet/ShowSupplies"); dispatcher. include(request, response);
 To handle interaction control to another servlet, use the RequestDispatcher interfaces forward() method with the servlet's URI as a parameter.
+
+
+===========================================================
+La session dans les jsp
+===========================================================
+
+En fait la session et les request.setAttribute sont server-side
+Il ny a que les request.setParameter qui sont client-side
+
+Cela veut dire qu'il n y a que coté serveur que l on peut modifier les attributs en session ou requete
+dans le code des servlets ou des .jsp
+
+Une fois coté client (donc notre navigateur), les modifications ne peuvent transiter que via le formulaire post
+et donc les parameters de la requete
+
+C pour ça qu on doit en refaire des validations
+instancier un objet
+et le merger avec ce qui existait déjà coté serveur
+
+
+
+
+
+
 
 
 

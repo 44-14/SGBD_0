@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 public class MyIntUtil {
 
-    private final static Logger LOG = Logger.getLogger(MyStringUtil.class);
+    private final static Logger LOG = Logger.getLogger(MyUrlUtil.class);
 
     /* Prendre myTryParseInt() à la place
     // retourne -1 si la string ne contenait pas un int parsable ou si elle etait nulle ou vide ""

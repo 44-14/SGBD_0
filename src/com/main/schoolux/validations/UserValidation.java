@@ -1,23 +1,22 @@
 package com.main.schoolux.validations;
 
-import com.main.schoolux.utilitaries.MyIntUtil;
-import com.main.schoolux.utilitaries.MyValidationUtil;
-import com.persistence.entities.RoleEntity;
 import com.persistence.entities.UserEntity;
-import com.persistence.entityFinderImplementation.EntityFinderImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
-
-
+/* Amelioration :
+faire une methode generale de validation
+passer en paramètre String la raison de la validation (tosignin, tosignup, toedit , etc) + la requete
+faire un switch sur la raison
+invoquer une methode liée à cette raison
+cela permettrait d avoir le code factorisé par rapport au check des erreurs.size >0
+et des setAttribute en request ou session etc
+refaire un switch sur la raison lors des dispatch si on a get des erreurs etc
+ */
 
 public class UserValidation {
 
@@ -43,7 +42,7 @@ public class UserValidation {
         //////////
 
 
-        MyValidationUtil.CheckEmptyAndLength(
+        CommonValidation.checkEmptyAndLength_Input(
                 request.getParameter("usernameFromForm"),
                 "usernameFromForm",
                 5,
@@ -53,7 +52,7 @@ public class UserValidation {
         );
 
 
-        MyValidationUtil.CheckEmptyAndLength(
+        CommonValidation.checkEmptyAndLength_Input(
                 request.getParameter("passwordFromForm"),
                 "passwordFromForm",
                 3,
@@ -64,7 +63,7 @@ public class UserValidation {
 
 
         if (myErrors.size() != 0) {
-
+            LOG.debug("Errors : "+myErrors.size());
             // Stockage des inputs valides et des messages d'erreur dans l'objet request ou session  (choisir) : on prend request vu que les errors et valids ne servent ici que dans la jsp de réponse
             // Voir notes.txt => DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
             request.setAttribute("myErrorsRequestKey", myErrors);
@@ -128,7 +127,7 @@ public class UserValidation {
         UserEntity myUser = new UserEntity();
 
 
-        MyValidationUtil.CheckEmpty(
+        CommonValidation.checkEmpty_Input(
                 request.getParameter("firstNameFromForm"),
                 "firstNameFromForm",
                 myErrors,

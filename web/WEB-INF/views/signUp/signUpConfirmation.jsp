@@ -5,19 +5,36 @@
   Time: 12:57
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
-<head>
-	<title>Confirmation temporaire</title>
-	<link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/assets/css/signIn.css' />
-</head>
-<body>
-	<p>Ceci est une confirmation d'inscription</p>
-	<p>Votre nom est ${sessionScope.myValidAttributesSessionKey['usernameValid']}</p>
-	<p>Votre mdp est ${sessionScope.myValidAttributesSessionKey['passwordValid']}</p>
-	<p>Votre rôle est ${sessionScope.myValidAttributesSessionKey['passwordValid']}</p>
 
-	<a href="${pageContext.request.contextPath}/signin"><button class="btn"> Appuyez ici pour continuer. </button></a>
-</body>
-</html>
+<div class="mySmallContainer">
+	<div class="mySmallContainer">
+		<span class="title1"> School UX </span>
+	</div>
+
+
+	<div class="mySmallContainer">
+		<div class="title2"> Confirmation d'inscription  </div>
+
+		<div class="title3">C'est un plaisir de t'accueillir ${sessionScope.signedUser.firstName} ${sessionScope.signedUser.lastName} !</div>
+
+		<p> 	  Username : ${sessionScope.signedUser.username}
+			<br/> Role : ${sessionScope.signedUser.rolesByIdRole.label}
+		</p>
+
+	</div>
+
+	<div class ="mySmallContainer">
+		<a href="${pageContext.request.contextPath}/home" id="signUpButton" class="btn btn-sm btn-outline-primary" name="" >
+				Accéder sans plus attendre à cette magnifique application
+		</a>
+	</div>
+
+	<!--
+    <div class="mySmallContainer">
+        <a class=" btn btn-sm btn-outline-primary"  href="${pageContext.request.contextPath}/home">
+            Accéder sans plus attendre à cette magnifique application
+        </a>
+    </div>
+    -->
+
+</div>

@@ -35,5 +35,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="Tomcat 9.0.34" level="application_server_libraries" />
     <orderEntry type="library" exported="" name="lib" level="project" />
+    <orderEntry type="library" name="jquery-3.5.1.slim" level="application" />
+    <orderEntry type="library" name="popper.js" level="application" />
   </component>
 </module>

@@ -2,9 +2,9 @@ package com.main.schoolux.servlets;
 
 import com.AppConfig;
 import com.main.schoolux.services.UserService;
-import com.main.schoolux.utilitaries.MyStringUtil;
+import com.main.schoolux.utilitaries.MyUrlUtil;
 import com.main.schoolux.validations.UserValidation;
-import com.persistence.entities.PermissionEntity;
+import com.persistence.entities.RolePermissionEntity;
 import com.persistence.entities.UserEntity;
 import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Logger;
@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// Rappels :
+// CRUD DANS SERVLET -  insert - selectOne / selectAll - update / updateLogically - delete etc DANS SERVICE
+
 
 /* l'attribut loadOnStartup permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue par la servlet) */
 @WebServlet(name = "SignInServlet", urlPatterns = {"/signin","/signin/*", "/signout", "/signout/*"}, loadOnStartup = 1)
@@ -30,13 +33,18 @@ public class SignInServlet extends HttpServlet {
 
     public final static String SIGNIN_FORM_VIEW= AppConfig.SIGNIN_VIEWS_ROOT_PATH+"signInForm.jsp";
     public final static String SIGNIN_CONFIRMATION_VIEW= AppConfig.SIGNIN_VIEWS_ROOT_PATH+"signInConfirmation.jsp";
+    public final static String ALREADY_SIGNEDIN_VIEW= AppConfig.SIGNIN_VIEWS_ROOT_PATH+"alreadySignedIn.jsp";
     public final static String SIGNOUT_CONFIRMATION_VIEW= AppConfig.SIGNOUT_VIEWS_ROOT_PATH+"signOutConfirmation.jsp";
-
-
 
     private List<String> ServletMessages;
     private List<String> ServletSuccessMessages;
 
+
+
+
+    //////
+    // INIT
+    //////
     @Override
     public void init() throws ServletException {
         super.init();
@@ -45,18 +53,20 @@ public class SignInServlet extends HttpServlet {
     }
 
 
+
+
+    //////
+    // GET
+    //////
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.debug("======  DoGet() in SignInServlet ======");
+        LOG.debug("======  doGet() in SignInServlet ======");
         // ou LOG.log(Level.DEBUG, "========MonMessage======");
 
 
-
-        // Ecrit le urlPatterns de la servlet traitant la requete
-        LOG.debug("Servlet Path :"+request.getServletPath().toString());
-        String requestURI = request.getRequestURI().toString();
-        LOG.debug("Request URI :"+requestURI);
-
+        // Ecrit le path de la servlet visée par la request
+        LOG.debug("Request URI :"+ request.getRequestURI());
+        LOG.debug("Servlet Path :"+request.getServletPath());
 
 
         ServletMessages.clear();
@@ -109,26 +119,33 @@ public class SignInServlet extends HttpServlet {
 
         // Grâce au MyAuthenticationFilter, on est sûr qu'il y a un signedUser dans la session si on atteint l'uri /signout
 
-        String exploitableURI = MyStringUtil.URL_FromFirstExploitableSlash(request);
+        String exploitableURI = MyUrlUtil.URL_FromFirstExploitableSlash(request);
         LOG.debug("Exploited URI : "+exploitableURI);
 
 
+        // il y a d'office un signedUser si l'uri /signout arrive jusqu'ici grâce au MyAuthenticationFiler.class
         if (exploitableURI.startsWith("/signout")) {
-                request.getSession().removeAttribute("signedUser");
+                request.getSession().invalidate();
+                //request.getSession().removeAttribute("signedUser");
                 ServletMessages.add("Vous avez été déconnecté");
                 request.setAttribute("ServletMessagesRequestKey",ServletMessages);
+                request.setAttribute("pageTitle", "Signed out");
                 request.getRequestDispatcher(SIGNOUT_CONFIRMATION_VIEW).forward(request,response);
         }
 
-        else if (request.getSession().getAttribute("signedUser")!=null) {
-            ServletMessages.add("Vous êtes déjà connecté");
-            request.setAttribute("ServletMessagesRequestKey",ServletMessages);
-            //request.setAttribute("ServletMessage","Vous êtes déjà connecté");
+        else {
+            if (request.getSession().getAttribute("signedUser") != null) {
+                ServletMessages.add("Vous êtes déjà connecté");
+                request.setAttribute("ServletMessagesRequestKey", ServletMessages);
+                //request.setAttribute("ServletMessage","Vous êtes déjà connecté");
+                request.setAttribute("pageTitle", "Already signed in ");
+                request.getRequestDispatcher(ALREADY_SIGNEDIN_VIEW).forward(request,response);
+            }
+            //DumpUtil.getFullRequestMapDumped(request);
+            request.setAttribute("pageTitle", "Sign In ");
+            request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request, response);
+            //request.getRequestDispatcher("/WEB-INF/views/signin/signInForm.jsp").forward(request,response);
         }
-
-        //DumpUtil.getFullRequestMapDumped(request);
-        request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request,response);
-        //request.getRequestDispatcher("/WEB-INF/views/signin/signInForm.jsp").forward(request,response);
 
 
     }
@@ -147,6 +164,9 @@ public class SignInServlet extends HttpServlet {
 
         LOG.debug("=====  doPost() in SignInServlet  ======");
 
+        // Ecrit le urlPatterns de la servlet traitant la requete
+        LOG.debug("Servlet Path :"+request.getServletPath());
+        LOG.debug("Request URI :"+ request.getRequestURI());
 
         // Mettre en statique le UserValidation pour pas instancier
         UserEntity myUserToCheck = UserValidation.ToSignIn(request);
@@ -165,15 +185,34 @@ public class SignInServlet extends HttpServlet {
 
             if (returnedUser==null || !(returnedUser.getPassword().equals(myUserToCheck.getPassword())))
             {
-                ServletMessages.add("Le couple username/password est incorrect");
-                request.setAttribute("ServletMessagesRequestKey",ServletMessages);
+                //ServletMessages.add("Le couple username/password est incorrect");
+                request.setAttribute("signInError","Le couple username/password est invalide");
                 request.getRequestDispatcher(SIGNIN_FORM_VIEW).forward(request,response);
             }
 
             else {
                 request.getSession(false).setAttribute("signedUser", returnedUser);
+                LOG.debug("Transmitting to SIGNIN_CONFIRMATION_VIEW");
                 request.getRequestDispatcher(SIGNIN_CONFIRMATION_VIEW).forward(request, response);
                 // par ensuite, rediriger vers la AccountServlet ou /home  je pense homeServlet via le bouton continuez
+
+
+                // pour chopper les permissions de l user :
+                // retourne la liste des permissions liés à son role donc faut boucler dans cette liste pour trouver la permission qu on cherche
+                List<RolePermissionEntity> myList = (List<RolePermissionEntity>) returnedUser.getRolesByIdRole().getRolesPermissionsById();
+                String permissionLabelToSearch = "ReadAnyPermission";
+                // faut sauver le resultat de l instruction au dessus dans une collection <RolePermissionEntity> et boucler dessus
+                for (RolePermissionEntity myRolePermissionEntity : returnedUser.getRolesByIdRole().getRolesPermissionsById())
+                {
+                    if (myRolePermissionEntity.getPermissionsByIdPermission().getLabel()==permissionLabelToSearch)
+                    {
+                        boolean afficherBouton = true;
+                    }
+
+                }
+
+
+
             }
         }
 

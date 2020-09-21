@@ -5,17 +5,20 @@
          version="4.0">
 
 
+        <welcome-file-list>
+            <welcome-file>home</welcome-file>
+        </welcome-file-list>
 
 <!--
         <welcome-file-list>
             <welcome-file>signin</welcome-file>-->
-                    <!-- rajoutera signin à la fin de l'url, donc ici que l'url soit
-                     http://localhost:8080/SGBD_0_war_exploded/
-                     ou
+                    <!-- mettra /signin en servletPath si l'uri de la requête entrante est juste l'uri du contexte de l'application
+                     donc  /SGBD_0_war_exploded/
+                     donc http://localhost:8080/SGBD_0_war_exploded/
+                     reviendra au meme que
                      http://localhost:8080/SGBD_0_war_exploded/signin
-                     reviendra au même
-                     -->
-<!--
+                     meme si l'uri reste la même quand on fait request.getURI()
+
             <welcome-file>home.html</welcome-file>-->
                     <!-- prend le 1er qui repond dans les welcome-file -->
                     <!-- ici, que l'url soit :
@@ -24,9 +27,6 @@
                     http://localhost:8080/SGBD_0_war_exploded/home.html
                     renverra le meme welcome-file à savoir home.html
                     -->
-
-<!--            <welcome-file>index</welcome-file>
-        </welcome-file-list>-->
 
 
         <filter>
@@ -46,28 +46,36 @@
                 <include-prelude>/WEB-INF/includes/header.jsp</include-prelude>
                 <include-coda>/WEB-INF/includes/footer.jsp</include-coda>
             </jsp-property-group>
+            <jsp-property-group>
+                <url-pattern>*.jsp</url-pattern>
+                <page-encoding>UTF-8</page-encoding>
+            </jsp-property-group>
         </jsp-config>
 
 
 
+        <!-- Pour règler le problème des caractères non gérés quand on passe par un include du header -->
+        <!-- Source : http://blog.pixelastic.com/2014/01/07/utf-8-encoding-included-jsp-files/ -->
+        <!-- java.lang.IllegalArgumentException: <jsp-config> element is limited to 1 occurrence => obligé de remettre dans la balise <jsp-config> déjà existante-->
+        <!--
+        <jsp-config>
+            <jsp-property-group>
+                <url-pattern>*.jsp</url-pattern>
+                <page-encoding>UTF-8</page-encoding>
+            </jsp-property-group>
+        </jsp-config>
+        -->
 
 
-    <!-- Pour include le footer et header   ?? fonctionne pas
-
+    <!-- Pour include le footer et header  => fonctionne pas car le foother et header sont aussi des .jsp => boucle infinie-->
+    <!--
     <jsp-config>
-
         <jsp-property-group>
-
             <url-pattern>*.jsp</url-pattern>
             <include-prelude>/public/JSP/includes/header.jsp</include-prelude>
             <include-coda>/public/JSP/includes/footer.jsp</include-coda>
         </jsp-property-group>
-
-        <jsp-property-group>
-            <url-pattern> </url-pattern>
-        </jsp-property-group>
     </jsp-config>
-
     -->
 
 
@@ -90,9 +98,6 @@
         <include-coda>/admin/jspf/footer.jspf</include-coda>
     </jsp-property-group>
     -->
-
-
-
 
 
 

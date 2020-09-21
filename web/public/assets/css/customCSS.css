@@ -1,0 +1,140 @@
+
+
+body {
+    padding-top: 150px;  /* parce que <nav class="fixed-top">   => permet d'éviter du contenu soit en-dessous de la navbar
+    /*background-color:black;*/
+    background-color: #0A0A0F;
+}
+
+
+.container {
+    font-size : 20px;
+    text-align: center;
+    color :orange;
+
+}
+
+nav {
+    border : 2px solid dodgerblue;
+    /*border : 2px solid orange;*/
+    /*background-color: #1b1e21;*/
+    background-color: #000000;
+}
+
+nav.navbar > a.navbar-brand {
+    color : dodgerblue;
+    font-size: 30px;
+    font-weight: bold;
+    border : 1px solid dodgerblue;
+
+    margin-right : 50px;
+    padding : 15px 10px;
+}
+
+ul.navbar-nav > li > .dropdown-menu { /* fonctionne mais focus que la ul de la navbar */
+    background-color: #000000; /* change le fond du dropdown en noir */
+    border: 1px solid dodgerblue;
+}
+
+.dropdown-menu { /* pour tous les autres dropdown */
+    background-color: #000000;
+    border: 1px solid dodgerblue;
+}
+
+.dropdown-item {
+    color: dodgerblue;
+}
+
+.dropdown-menu a.dropdown-item:hover {  /* lorsque l'on passe avec la souris sur une balise <a> qui est un item d un dropdown menu */
+    background-color: dodgerblue;  /* on inverse la couleur de fond avec celle de la police par rapport à quand on ne passe pas dessus avec la souris */
+    color : black;
+}
+
+
+ul.navbar-nav > li.nav-item > a.nav-link.btn-outline-dark  {
+    color : dodgerblue;
+    border : 1px solid dodgerblue;
+    margin: 20px 8px;
+
+    font-size : 17px;
+}
+#navbarDropdownMenu_Gestion {
+    margin-right : 30px;
+    /*border-color : orange;*/
+    /*color : orange;*/
+}
+
+
+
+
+
+/* Fonctionne pour le background, pas la police
+.btn-outline-dark:hover {background : dodgerblue; color : black;}
+ */
+
+/* l'affichage de l'hamburger toggler icon est lié à une classe .navbar-dark ou - light ou autre
+Il est transparent ne s'affiche pas s'il ne figure pas une de ces classes en tant que classe de <nav>
+*/
+
+
+
+
+.messageInfo {
+    color : orange;
+    margin : 0 auto;
+}
+
+.pageInfo {
+    color : orange;
+    margin : 0 auto;
+}
+.pageInfo > h2 {
+    border : 2px solid orange;
+    display : inline-block;
+    width : 50%;
+    padding : 15px;
+
+}
+
+a.btn.alreadySignedIn {
+    font-size : 20px;
+    width : 50%;
+    padding: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+error
+{
+    font-size : 20px;
+    color: red;
+    /*background-color: red;*/
+    border: solid 1px red;
+    padding : 5px;
+    animation: error 0.5s linear infinite;
+}
+@keyframes error {
+    /* le premier % détermine en combien de temps il passe de 100% d opacité au x % d'opacité précisé par le deuxième %
+        mettre 75% et 40% signifie qu il mettre 75% du nbr de secondes defini dans le champ animation de .error pour passer
+        de 100% d opacité à 40% et il restera les 25% restants de secondes pour passer 40% d opacité à 100%
+     */
+    50% { opacity: 75%; }
+}
+
+
+
+aqa {
+    color : dodgerblue;
+}

@@ -9,42 +9,68 @@ body {
     text-align: center;
     height: 100%;
     width: 100%;
-    margin-top : 100px;
-    color : dodgerblue;
+    margin-top : 50px;
+    color : orange;
+    font-size: 20px;
 }
 
-
-.maDiv{
+.mySmallContainer{
     margin-top : 50px;
     margin-bottom : 50px;
 }
 
 
-#mainTitle {
+.title1 {
+    border : solid 3px dodgerblue;;
+    font-size : 80px;
 
     color : dodgerblue;
-    border : solid 3px dodgerblue;;
-    padding : 20px;
-    font-size : 80px;
     font-weight :bold;
 
-
+    margin : 0 auto; /*  haut&bas - droite&gauche */   /* OMGGGGGGG*/
+    padding : 20px;
+    width : 40%;
 }
 
-.ask {
-    color : orange;
+
+
+.title2 {
     border : solid 1px orange;
-    font-size : 40px;
-    display : inline-block;
-    margin-bottom : 30px;
+    font-size : 30px;
+
     padding: 10px;
+    /*margin-bottom:40px;*/
+
+    margin : 0px auto 40px auto;  /* haut droite bas gauche */
+    width : 40%;
+}
+
+.title3 {
+    /*border : solid 1px orange;*/
+    font-size : 25px;
+
+    display : inline-block;
+    padding: 10px;
+    margin : 0px auto 40px auto; /* haut droite bas gauche */
+
+    width : 40%;
+}
+
+#signInButton {
+    font-size : 18px;
+
+    width : 20%;
+    margin-top : 25px;
 }
 
 
-#monAncre{
-    display:block;
-}
+#signUpButton {
+    font-size : 20px;
 
+    width : 20%;
+    margin : 80px;
+    padding: 18px;
+}
 
 form {
     color : yellow;
@@ -53,7 +79,8 @@ form {
 
 label {
     display:inline-block;
-    width:200px;
+    width: 250px;
+
 
     margin : 10px;
     text-align: right;
@@ -63,6 +90,7 @@ input, select {
     height : 25px;
     text-align: center;
     font-size : 15px;
+    margin-left : 20px;
 
 }
 
@@ -86,10 +114,6 @@ input, select {
 
 
 
-
 aqa {
-    display: inline-block;
     color : dodgerblue;
 }
-
-

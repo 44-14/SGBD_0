@@ -1,6 +1,6 @@
 package com.test.schoolux.servlets;
 
-import com.main.schoolux.utilitaries.MyStringUtil;
+import com.main.schoolux.utilitaries.MyUrlUtil;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -57,7 +57,7 @@ public class UserServlet extends HttpServlet {
 
 
         /*
-        Le log qui suit a été déplacé au niveau de MyStringUtil afin d'avoir la méthode statique disponible pour toutes les servlets
+        Le log qui suit a été déplacé au niveau de MyUrlUtil afin d'avoir la méthode statique disponible pour toutes les servlets
         LOG.info(request.getRequestURL().substring(request.getRequestURL().lastIndexOf("/")+1));
 
         Objectif => utiliser un switch avec des cases correspondant à la fin de l'url afin de déterminer l'action
@@ -66,7 +66,7 @@ public class UserServlet extends HttpServlet {
         Et on analysera ce qu'est exactement xyz via un switch qui dispatchera dans un case correspondant  create - read - update - delete avec verif permissions
          */
 
-        action = MyStringUtil.URL_AfterLastSlash(request);
+        action = MyUrlUtil.URL_AfterLastSlash(request);
         LOG.info("Action de la requête : "+action);
 
         switch (action) {

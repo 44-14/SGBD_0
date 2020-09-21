@@ -18,7 +18,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Création utilisateur</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/myCss.css' />
+    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/customLandingCSS.css' />
 </head>
 
 <body>

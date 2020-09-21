@@ -5,35 +5,40 @@
   Time: 06:50
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
-<!DOCTYPE html>
 
-<html>
+<div class="mySmallContainer">
+    <div class="mySmallContainer">
+        <span class="title1"> School UX </span>
+    </div>
 
-<head>
-    <meta charset="UTF-8" />
-    <title>Bienvenue</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/myCss.css' />
-</head>
 
-<body>
-    <p>Ceci est une confirmation de connexion</p>
-    <div id="maDiv">
-        <div id="block">
-        <span id="ask">Bienvenue ${pageContext.request.getParameter("usernameFromForm")}</span>
-        </div>
+    <div class="mySmallContainer">
+        <div class="title2"> Confirmation de connexion  </div>
 
-        <a href="${pageContext.request.contextPath}/signin"><button class="btn"> Appuyez ici pour continuer. </button></a>
+        <div class="title3">Bienvenue ${sessionScope.signedUser.firstName} ${sessionScope.signedUser.lastName} !</div>
+
+         <p> Username : ${sessionScope.signedUser.username}
+            <br/> Role : ${sessionScope.signedUser.rolesByIdRole.label}
+         </p>
 
     </div>
-</body>
-</html>
+
+    <div class ="mySmallContainer">
+        <a href="${pageContext.request.contextPath}/home" id="signUpButton" class="btn btn-sm btn-outline-primary" name="" >
+                Accéder sans plus attendre à cette magnifique application
+        </a>
+    </div>
+
+    <!--
+    <div class="mySmallContainer">
+        <a class=" btn btn-sm btn-outline-primary"  href="${pageContext.request.contextPath}/home">
+            Accéder sans plus attendre à cette magnifique application
+        </a>
+    </div>
+    -->
+
+</div>
 
 
-
-
-
-<%--<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="java.util.Date"%> --%>

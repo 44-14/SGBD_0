@@ -5,35 +5,26 @@
   Time: 06:50
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<div class="messageInfo">
+    <h2> ██ Confirmation de déconnexion ██</h2>
+    <p> <br> À bientôt ! <br></p>
 
 
-<!DOCTYPE html>
 
-<html>
-
-<head>
-    <meta charset="UTF-8" />
-    <title>Bienvenue</title>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/myCss.css' />
-</head>
-
-<body>
-    <p>Confirmation de déconnexion</p>
-    <div id="maDiv">
-        <div id="block">
-        <span id="ask">Á bientôt</span>
-        </div>
-
-        <a href="${pageContext.request.contextPath}/signin"><button class="btn"> Se reconnecter </button></a>
+    <div class ="">
+        <a href="${pageContext.request.contextPath}/signin" class="btn btn-sm btn-outline-primary alreadySignedIn" name="" >
+            Vers la page de connexion
+        </a>
 
     </div>
-</body>
-</html>
 
+    <!--
+    <div class="mySmallContainer">
+        <a class=" btn btn-sm btn-outline-primary"  href="${pageContext.request.contextPath}/home">
+            Accéder sans plus attendre à cette magnifique application
+        </a>
+    </div>
+    -->
+</div>
 
-
-
-
-<%--<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="java.util.Date"%> --%>

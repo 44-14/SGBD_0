@@ -1,8 +1,7 @@
 package com.main.schoolux.servlets;
 
 import com.AppConfig;
-import com.main.schoolux.utilitaries.MyStringUtil;
-import com.main.schoolux.validations.UserValidation;
+import com.main.schoolux.utilitaries.MyUrlUtil;
 import com.main.schoolux.validations.UserValidation_Old_0;
 import com.persistence.entities.UserEntity;
 import org.apache.log4j.Level;
@@ -16,15 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-
-
-
-
-
-
-
+// Rappels :
+// dans la SignUpServlet, vérifier si deja connecté, ne pas renvoyer le formulaire d'inscription mais un msg disant déjà connecté pour ne pas qu une personne connectée puisse faire une nouvelle inscription
 /* le bouton  "s'inscrire" de la page de connexion doit diriger vers ici via /signup */
-/* l'attribut loadOnStartup permet de charger la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue) */
+
+
+/* l'attribut loadOnStartup=1 permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue par la servlet) */
 @WebServlet(name = "SignUpServlet", urlPatterns = {"/signup", "/signup/*"}, loadOnStartup = 1)
 public class SignUpServlet extends HttpServlet {
 
@@ -55,7 +51,7 @@ public class SignUpServlet extends HttpServlet {
         this.SIGNUP_URI = request.getContextPath() + this.SIGNUP_URI_WITHOUT_CONTEXT; // construit /SGBD_0_war_exploded + /signup
 
 
-        String exploitableURI = MyStringUtil.URL_FromFirstExploitableSlash(request);
+        String exploitableURI = MyUrlUtil.URL_FromFirstExploitableSlash(request);
 
         if (!exploitableURI.equals(this.SIGNUP_URI_WITHOUT_CONTEXT))
         {

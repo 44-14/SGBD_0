@@ -1,22 +1,23 @@
-package com.main.schoolux.utilitaries;
+package com.main.schoolux.validations;
 
+import com.main.schoolux.utilitaries.MyStringUtil;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 
-public class MyValidationUtil {
-    private static final Logger LOG = Logger.getLogger(MyValidationUtil.class);
+public class CommonValidation {
+    private static final Logger LOG = Logger.getLogger(CommonValidation.class);
 
-    private MyValidationUtil() {
+    private CommonValidation() {
     }
 
 
 
-    public static void CheckEmpty(String input, String inputLabel, Map<String,String> errors, Map <String,String> valids)  {
+    public static void checkEmpty_Input(String input, String inputLabel, Map<String,String> errors, Map <String,String> valids)  {
 
-        if (!hasContent(input)) {
+        if (!MyStringUtil.hasContent(input)) {
             errors.put(inputLabel+"Error", "Ce champ est requis");
         } else {
             valids.put(inputLabel+"Valid", input);
@@ -25,9 +26,9 @@ public class MyValidationUtil {
     }
 
 
-    public static void CheckEmptyAndLength(String input, String inputLabel,int minLength, int maxLength, Map<String,String> errors, Map <String,String> valids )  {
+    public static void checkEmptyAndLength_Input(String input, String inputLabel,int minLength, int maxLength, Map<String,String> errors, Map <String,String> valids )  {
 
-        if (!hasContent(input)) {
+        if (!MyStringUtil.hasContent(input)) {
             errors.put(inputLabel+"Error", "Ce champ est requis");
         } else {
             if (input.length() < minLength || input.length() > maxLength) {
@@ -40,6 +41,40 @@ public class MyValidationUtil {
         }
         return ;
     }
+
+
+    /**
+     * Returns -1 if the string can't be parsed into an int.
+     */
+    // pour les input, faire une methode checkIdInput qui call celle-ci et si recupere -1,  met un msg dans la hashmap
+    public static int checkValid_Id(String input) {
+
+        int id = -1;
+
+        try {
+            id = Integer.parseInt(input);
+            }
+        catch (NumberFormatException e) {
+            LOG.debug("id : "+e.getMessage());
+            //e.getMessage();
+            //errors.add(e.getMessage());
+            }
+        return id;
+    }
+
+
+
+/*
+    public static void checkIdAttribute(String input, String inputLabel,int minLength, int maxLength, Map<String,String> errors, Map <String,String> valids ) {
+        int id = -1;
+        try {
+            id = Integer.parseInt(request.getParameter("idPermissionFromForm"));
+        } catch (NumberFormatException e) {
+            //e.getMessage();
+            PermissionManagerServletMessages.add(e.getMessage());
+        }
+    }
+
 
 
 
