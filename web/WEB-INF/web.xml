@@ -28,7 +28,7 @@
                     renverra le meme welcome-file à savoir home.html
                     -->
 
-
+<!--
         <filter>
             <filter-name>MyAuthenticationFilter</filter-name>
             <filter-class>com.main.schoolux.filters.MyAuthenticationFilter</filter-class>
@@ -37,6 +37,7 @@
             <filter-name>MyAuthenticationFilter</filter-name>
             <url-pattern>/*</url-pattern>
         </filter-mapping>
+-->
 
 
         <jsp-config>

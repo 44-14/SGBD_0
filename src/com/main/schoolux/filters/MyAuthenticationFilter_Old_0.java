@@ -1,7 +1,7 @@
 package com.main.schoolux.filters;
 
 import com.AppConfig;
-import com.main.schoolux.utilitaries.MyUrlUtil;
+import com.main.schoolux.utilitaries.MyURLUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -22,11 +22,13 @@ public class MyAuthenticationFilter_Old_0 implements Filter {
 
 
     public void init(FilterConfig config) throws ServletException {
+/*
+        AppConfig.myFreeAccessWIthoutContextURIList.put("SIGNIN_URI_WITHOUT_CONTEXT", "/signin");
+        AppConfig.myFreeAccessWIthoutContextURIList.put("SIGNUP_URI_WITHOUT_CONTEXT", "/signup");
+        AppConfig.myFreeAccessWIthoutContextURIList.put("RESOURCES_URI_WITHOUT_CONTEXT", "/resources");
+        AppConfig.myFreeAccessWIthoutContextURIList.put("PUBLIC_URI_WITHOUT_CONTEXT", "/public");
 
-        AppConfig.myFreeAccessURIList.put("SIGNIN_URI_WITHOUT_CONTEXT", "/signin");
-        AppConfig.myFreeAccessURIList.put("SIGNUP_URI_WITHOUT_CONTEXT", "/signup");
-        AppConfig.myFreeAccessURIList.put("RESOURCES_URI_WITHOUT_CONTEXT", "/resources");
-        AppConfig.myFreeAccessURIList.put("PUBLIC_URI_WITHOUT_CONTEXT", "/public");
+ */
     }
 
     public void destroy() {
@@ -70,12 +72,12 @@ public class MyAuthenticationFilter_Old_0 implements Filter {
 
         // Ressources disponibles sans aucunes contraintes ou conditions d'accès à l'url /resources
         //String particularRequest = myHttpRequest.getRequestURI().substring(myHttpRequest.getContextPath().length());
-        String particularRequest = MyUrlUtil.URL_FromFirstExploitableSlash(myHttpRequest);
+        String particularRequest = MyURLUtil.URI_WithoutContext(myHttpRequest);
 
         /* for ( ItemType myItem  : myCollection) {}   */
 
 
-        for (Map.Entry<String, String> myItem : AppConfig.myFreeAccessURIList.entrySet()) {
+        for (Map.Entry<String, String> myItem : AppConfig.myFreeAccessWIthoutContextURIList.entrySet()) {
             //String key = myItem.getKey();
             //String value = myItem.getValue();
             LOG.debug("Inside  FOREACH loop");

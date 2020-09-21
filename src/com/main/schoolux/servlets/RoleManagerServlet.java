@@ -2,11 +2,15 @@ package com.main.schoolux.servlets;
 
 import com.AppConfig;
 import com.main.schoolux.services.PermissionService;
+import com.main.schoolux.services.RoleService;
 import com.main.schoolux.utilitaries.MyStringUtil;
+import com.main.schoolux.utilitaries.MyTrackingUtil;
 import com.main.schoolux.utilitaries.MyURLUtil;
 import com.main.schoolux.validations.CommonValidation;
 import com.persistence.entities.PermissionEntity;
+import com.persistence.entities.RoleEntity;
 import com.persistence.entityFinderImplementation.EMF;
+import com.sun.webkit.Invoker;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -33,15 +37,16 @@ import java.util.List;
 // la seule view dispo des permissions sera celle de la liste et il faudra la permission ViewAllPErmissions
 
 /* l'attribut loadOnStartup=1 permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue par la servlet) */
-@WebServlet(name = "PermissionManagerServlet", urlPatterns = "/permission", loadOnStartup = -1)
-public class PermissionManagerServlet extends HttpServlet {
+@WebServlet(name = "RoleManagerServlet", urlPatterns = {"/role","/role/*"}, loadOnStartup = -1)
+public class RoleManagerServlet extends HttpServlet {
 
 
     // LOGGER + PATH CONSTANTS + SERVLET MESSAGES LISTS
-    private final static Logger LOG = Logger.getLogger(PermissionManagerServlet.class);
+    private final static Logger LOG = Logger.getLogger(RoleManagerServlet.class);
 
-    public final static String PERMISSION_LIST_VIEW = AppConfig.PERMISSION_VIEWS_ROOT_PATH+"permissionList.jsp";
-    public final static String PERMISSION_DETAILS_VIEW = AppConfig.PERMISSION_VIEWS_ROOT_PATH+"permissionDetails.jsp";
+    public final static String ROLE_CREATE_VIEW = AppConfig.ROLE_VIEWS_ROOT_PATH+"roleCreate.jsp";
+    public final static String ROLE_LIST_VIEW = AppConfig.ROLE_VIEWS_ROOT_PATH+"roleList.jsp";
+    public final static String ROLE_DETAILS_VIEW = AppConfig.PERMISSION_VIEWS_ROOT_PATH+"roleDetails.jsp";
 
     private List<String> PermissionManagerServletMessages;
     private List<String> ServletSuccessMessages;
@@ -64,8 +69,16 @@ public class PermissionManagerServlet extends HttpServlet {
     //  GET
     //////
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOG.debug(this.getClass());
+        //LOG.debug(this.getClass().getEnclosingMethod().getName(); // -> null pointer
+        //LOG.debug(this.getClass().getEnclosingMethod().toString()); //-> null pointer
+        LOG.debug( new Exception().getStackTrace()[0].getMethodName());
 
-        LOG.debug("======  doGet() in PermissionManagerServlet  ======");
+        MyTrackingUtil.TrackMethodEntry(this, new Exception());
+
+
+
+        LOG.debug("======  doGet() in RoleManagerServlet  ======");
         // ou LOG.log(Level.DEBUG, "========MonMessage======");
 
         // urlPatterns de la servlet traitant la requete
@@ -77,10 +90,11 @@ public class PermissionManagerServlet extends HttpServlet {
         LOG.debug("URL Action : " + actionURL);
 
         switch (actionURL) {
-            case "readall":
 
+            case "readall":
+                LOG.debug("User attempts to get the role list view");
                 try{
-                    this.readAllPermissions(request,response);
+                    this.readAllRoles(request,response);
                 }
                 catch( Exception e)
                 {
@@ -88,18 +102,19 @@ public class PermissionManagerServlet extends HttpServlet {
                 }
                 break;
 
-             /*
-            case "FuturTest" :
+
+            case "create" :
+                LOG.debug("User attempts to get the create role form view");
+                this.createOneRole(request,response);
+
                 break;
-              */
+
 
             default:
                 // request.getRequestDispatcher(X) va modifier la request et rajouter X après le context, mais les parameters et attributs de la requete restent préservés
                 // tandis que response.sendRedirect(une URI) va détruire la requete en cours et forcer le client à en faire une nouvelle GET, les attributs et paramètres de l'ancienne requête seront perdus
                 // Si la requete etait une POST, ca deviendra une GET
-                LOG.debug("boucle");
-                this.readAllPermissions(request,response);
-                //request.getRequestDispatcher(request.getServletPath()+"/readall").forward(request,response);
+                request.getRequestDispatcher(request.getServletPath()+"/readall").forward(request,response);
         }
 
 
@@ -111,6 +126,16 @@ public class PermissionManagerServlet extends HttpServlet {
     //  POST
     //////
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        LOG.debug (this.getClass());
+        LOG.debug(Invoker.getInvoker());
+        /*LOG.debug("trouver comment display la methode où l instruction est " +
+                "puis faire un truc statique avec l instruction au dessus");
+         Ca ressemblerait à  myDumpUtil.getTrace(object o)
+         {
+         LOG.debug(o.getClass()); et à l appel on ferai myDumpUtil.getTrace(this)
+         */
+
 
         LOG.debug("======  doPost() in PermissionManagerServlet  ======");
 
@@ -155,7 +180,7 @@ public class PermissionManagerServlet extends HttpServlet {
                             PermissionManagerServletMessages.add("Le système n'a pas su récupérer de permission ayant l'id = " + id);
                         } else {
                             request.setAttribute("myPermissionRequestKey", returnedPermission);
-                            request.getRequestDispatcher(PERMISSION_DETAILS_VIEW).forward(request, response);
+                            request.getRequestDispatcher(ROLE_DETAILS_VIEW).forward(request, response);
                         }
                         break;
 
@@ -189,7 +214,16 @@ public class PermissionManagerServlet extends HttpServlet {
     //  METHODES DES SWITCH  //
     //////               //////
 
-    // Pour lister toutes les permissions
+
+
+    // Creer 1 role
+    private void createOneRole (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher(ROLE_CREATE_VIEW).forward(request, response);
+    }
+
+
+    // NE PAS UTILISER - ANCIENNE VERSION
+    // Lister tous les roles
     private List<PermissionEntity> readAllPermissions_Old() {
         // Pas besoin d'em en paramètre ici car la methode selectAllOrNull() du service utilise EntityFinderImpl.class instanciant son propre em
         // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class
@@ -203,17 +237,21 @@ public class PermissionManagerServlet extends HttpServlet {
     }
 
 
-    private void readAllPermissions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    // Lister tous les roles
+    private void readAllRoles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Pas besoin d'em en paramètre ici car la methode selectAllOrNull() du service utilise EntityFinderImpl.class instanciant son propre em
         // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class
         // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
         // Instanciation du service adapté
-        PermissionService myPermissionService = new PermissionService();
-        List<PermissionEntity> myPermissionsList = myPermissionService.selectAllOrNull();
-        request.setAttribute("myPermissionsListRequestKey", myPermissionsList);
-        request.getRequestDispatcher(PERMISSION_LIST_VIEW).forward(request, response);
+        RoleService myRoleService = new RoleService();
+        List<RoleEntity> myRoleList = myRoleService.selectAllOrNull();
+        request.setAttribute("myRoleListRequestKey", myRoleList);
+        request.getRequestDispatcher(ROLE_LIST_VIEW).forward(request, response);
 
     }
+
+
+
 
 
 

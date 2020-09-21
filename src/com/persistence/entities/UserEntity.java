@@ -36,7 +36,7 @@ public class UserEntity {
     private Date birthdate;
     private String gender;
     private String emailAddress;
-    private boolean active;
+    private boolean isActive;
     private Timestamp inscriptionDate;
     private String title;
     private String photo;
@@ -137,11 +137,11 @@ public class UserEntity {
     @Basic
     @Column(name = "active", nullable = false)
     public boolean isActive() {
-        return active;
+        return isActive;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     @Basic
@@ -180,7 +180,7 @@ public class UserEntity {
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
         return id == that.id &&
-                active == that.active &&
+                isActive == that.isActive &&
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
                 Objects.equals(username, that.username) &&
@@ -196,7 +196,7 @@ public class UserEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, username, password, phoneNumber, birthdate, gender, emailAddress, active, inscriptionDate, title, photo);
+        return Objects.hash(id, firstName, lastName, username, password, phoneNumber, birthdate, gender, emailAddress, isActive, inscriptionDate, title, photo);
     }
 
     @ManyToOne
@@ -219,3 +219,8 @@ public class UserEntity {
         this.usersByIdParent = usersByIdParent;
     }
 }
+
+
+
+
+

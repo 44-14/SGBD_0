@@ -1,7 +1,7 @@
 package com.main.schoolux.servlets;
 
 import com.AppConfig;
-import com.main.schoolux.utilitaries.MyUrlUtil;
+import com.main.schoolux.utilitaries.MyURLUtil;
 import com.main.schoolux.validations.UserValidation_Old_0;
 import com.persistence.entities.UserEntity;
 import org.apache.log4j.Level;
@@ -51,7 +51,7 @@ public class SignUpServlet extends HttpServlet {
         this.SIGNUP_URI = request.getContextPath() + this.SIGNUP_URI_WITHOUT_CONTEXT; // construit /SGBD_0_war_exploded + /signup
 
 
-        String exploitableURI = MyUrlUtil.URL_FromFirstExploitableSlash(request);
+        String exploitableURI = MyURLUtil.URI_WithoutContext(request);
 
         if (!exploitableURI.equals(this.SIGNUP_URI_WITHOUT_CONTEXT))
         {

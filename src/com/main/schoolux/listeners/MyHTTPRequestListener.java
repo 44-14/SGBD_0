@@ -41,11 +41,15 @@ public class MyHTTPRequestListener implements ServletRequestListener {
             HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
             //request.setAttribute("startTime", System.currentTimeMillis());
 
-            LOG.log(Level.DEBUG, "=============================================================\n" +
-                    "        ===================  REQUEST INITIALIZED  ===================  \n" +
-                    "Request Method : " + ((HttpServletRequest) sre.getServletRequest()).getMethod() + "\n" +
+            LOG.log(Level.DEBUG, "=====================================================================\n" +
+                    "                               "+((HttpServletRequest) sre.getServletRequest()).getMethod()+" REQUEST INITIALIZED                       \n" +
+                    "        =====================================================================\n" +
                     "Request URL : " + ((HttpServletRequest) sre.getServletRequest()).getRequestURL() + "\n" +
-                    "Request URI : " + ((HttpServletRequest) sre.getServletRequest()).getRequestURI());
+                    "Request URI : " + ((HttpServletRequest) sre.getServletRequest()).getRequestURI() + "\n" +
+                    "Request ContextPath : " + ((HttpServletRequest) sre.getServletRequest()).getContextPath() + "\n" +
+                    "Request ServletPath : " + ((HttpServletRequest) sre.getServletRequest()).getServletPath() + "\n" +
+                    "Request Method : " + ((HttpServletRequest) sre.getServletRequest()).getMethod());
+
         }
 
 
@@ -58,8 +62,8 @@ public class MyHTTPRequestListener implements ServletRequestListener {
             */
 
             LOG.log(Level.DEBUG, "===========================================================================\n" +
-                    "                   REQUEST  "+ ((HttpServletRequest) sre.getServletRequest()).getMethod()+" destroyed :  "+
-                    ((HttpServletRequest) sre.getServletRequest()).getRequestURI()+
+                    "                   "+ ((HttpServletRequest) sre.getServletRequest()).getMethod()+"REQUEST DESTROYED :  "+
+                    "   URI : "+((HttpServletRequest) sre.getServletRequest()).getRequestURI()+
                     "\n        ===========================================================================");
 
         }

@@ -21,18 +21,22 @@ public final class AppConfig {
     public final static String ROLE_VIEWS_ROOT_PATH =        VIEWS_ROOT_PATH+"role/";
     public final static String USER_VIEWS_ROOT_PATH =        VIEWS_ROOT_PATH+"user/";
 
-    public final static Map<String, String> myFreeAccessURIList = new HashMap<String,String>();
+    public final static Map<String, String> myFreeAccessWIthoutContextURIList = new HashMap<String,String>();
 
     static {
-        AppConfig.myFreeAccessURIList.put("SIGNIN_URI_WITHOUT_CONTEXT", "/signin");
-        AppConfig.myFreeAccessURIList.put("SIGNUP_URI_WITHOUT_CONTEXT", "/signup");
-        AppConfig.myFreeAccessURIList.put("RESOURCES_URI_WITHOUT_CONTEXT", "/resources");
-        AppConfig.myFreeAccessURIList.put("PUBLIC_URI_WITHOUT_CONTEXT", "/public");
+        AppConfig.myFreeAccessWIthoutContextURIList.put("SIGNIN_URI_WITHOUT_CONTEXT", "/signin");
+        AppConfig.myFreeAccessWIthoutContextURIList.put("SIGNUP_URI_WITHOUT_CONTEXT", "/signup");
+        AppConfig.myFreeAccessWIthoutContextURIList.put("RESOURCES_URI_WITHOUT_CONTEXT", "/resources");
+        AppConfig.myFreeAccessWIthoutContextURIList.put("PUBLIC_URI_WITHOUT_CONTEXT", "/public");
+
+        /* //AppConfig.myFreeAccessURIList.put("NO_URI_WITHOUT_CONTEXT", "/");
+        Correspond à http://localhost:8080/SGBD_0_war_exploded ou http://localhost:8080/SGBD_0_war_exploded/
+        Le / est ajouté à la création de la requete automatique, que pour ce cas là car c'est le context de l'application.
+        Cela accèdera au welcome-file dans le web.xml , c"est ok si c'est signin en welcome-file
+         mais ça ne va pas si c'est home vu qu on accèderait à la homeServlet sans être connecté, ce qu'on ne veut pas dans notre cas
+         */
 
     }
-
-    public static int requestCounter=0;
-
 
     public AppConfig() {
     }

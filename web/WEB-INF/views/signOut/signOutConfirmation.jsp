@@ -7,7 +7,7 @@
 --%>
 
 <div class="messageInfo">
-    <h2> ██ Confirmation de déconnexion ██</h2>
+    <h2> ♦ ♦ Confirmation de déconnexion ♦ ♦</h2>
     <p> <br> À bientôt ! <br></p>
 
 

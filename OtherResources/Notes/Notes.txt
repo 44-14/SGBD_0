@@ -261,6 +261,15 @@ DIFFERENCE ARGUMENTS D UNE METHODE ET PARAMETRES D UNE METHODE
 
 Généralement, un paramètre est ce qui apparaît dans la définition de la méthode. Un argument est l'instance transmise à la méthode pendant l'exécution.
 
+public static void testMethod (String e){
+    system.out.println(e);
+}
+=> c'est une définition de méthode, String e est un paramètre ; on ne sait jamais la valeur que ce sera à partir du code ici, vu qu elle sera appelée de partout
+
+testMethod(myString)
+=> myString est un argument, c'est un appel à la méthode  ; on sait déterminer sa valeur lors de cette instruction vu qu'elle sera settée avant de la passer en argument
+
+
 
 ===========================================================
 DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE

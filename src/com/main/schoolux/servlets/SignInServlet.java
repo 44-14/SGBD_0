@@ -2,7 +2,7 @@ package com.main.schoolux.servlets;
 
 import com.AppConfig;
 import com.main.schoolux.services.UserService;
-import com.main.schoolux.utilitaries.MyUrlUtil;
+import com.main.schoolux.utilitaries.MyURLUtil;
 import com.main.schoolux.validations.UserValidation;
 import com.persistence.entities.RolePermissionEntity;
 import com.persistence.entities.UserEntity;
@@ -22,9 +22,24 @@ import java.util.List;
 // Rappels :
 // CRUD DANS SERVLET -  insert - selectOne / selectAll - update / updateLogically - delete etc DANS SERVICE
 
+/* Rappel :  Voir MyAuthenticationFilter.class pour la note complète
+
+  Le pattern  /signin       intercepte uniquement    /signin
+
+  Le pattern  /signin/*     intercepte                tout ce qui commence par /signin/   dont /signin/abc
+                            ET INTERCEPTE EN PLUS UNIQUEMENT  /signin  sans le / à la fin
+                            MAIS n'intercepte pas le reste n'ayant pas le second /  comme    /signinabc  ou  /signino ou  /signinabc/oo
+
+                            Il est donc inutile d avoir  /signin dans la liste des urlPatterns si il y a déjà  /signin/*  vu que ce dernier couvre le 1er
+
+    DANS LES 2 CAS , LE SERVLET PATH UNE FOIS DANS LE doGet() SERA /signin
+    IL FAUDRA SCINDER L URI EN RECUPERANT TOUT CE QUI SUIT LE DERNIER / POUR AVOIR LA PARTIE EXPLOITABLE DANS LE SWITCH
+ */
+
+
 
 /* l'attribut loadOnStartup permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue par la servlet) */
-@WebServlet(name = "SignInServlet", urlPatterns = {"/signin","/signin/*", "/signout", "/signout/*"}, loadOnStartup = 1)
+@WebServlet(name = "SignInServlet", urlPatterns = {"/signin/*","/signout/*"}, loadOnStartup = 1)
 public class SignInServlet extends HttpServlet {
 
 
@@ -119,7 +134,7 @@ public class SignInServlet extends HttpServlet {
 
         // Grâce au MyAuthenticationFilter, on est sûr qu'il y a un signedUser dans la session si on atteint l'uri /signout
 
-        String exploitableURI = MyUrlUtil.URL_FromFirstExploitableSlash(request);
+        String exploitableURI = MyURLUtil.URI_WithoutContext(request);
         LOG.debug("Exploited URI : "+exploitableURI);
 
 

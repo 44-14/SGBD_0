@@ -7,7 +7,7 @@
 --%>
 
 <div class="messageInfo">
-    <h2> ██ Vous êtes déjà connecté ██ </h2>
+    <h2> ♦ ♦ Vous êtes déjà connecté ♦ ♦ </h2>
     <p> Username : ${sessionScope.signedUser.username}
         <br/> Role : ${sessionScope.signedUser.rolesByIdRole.label}
     </p>

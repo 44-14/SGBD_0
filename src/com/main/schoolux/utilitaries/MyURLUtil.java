@@ -3,7 +3,7 @@ package com.main.schoolux.utilitaries;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class MyUrlUtil {
+public class MyURLUtil {
 
 
 
@@ -15,22 +15,31 @@ public class MyUrlUtil {
     public static String URL_AfterLastSlash(HttpServletRequest myRequest) {
 
         String myString = myRequest.getRequestURL().toString();
+        return MyStringUtil.AfterLastOccurenceOf_OrNull(myString,'/');
+
+        /*Fonctionne
+
+        String myString = myRequest.getRequestURL().toString();
         myString = myString.substring(myString.lastIndexOf("/")+1);
 
         return myString;
 
+         */
 
 
-    }
+
+
+
+    };
 
 
 
     // Permet de récupérer ce qui suit le contexte dans l'URI
     // Exemple d'URI : /SGBD_0_war_exploded/signout/abc
     // Retour de la méthode : /signout/abc
-    public static String URL_FromFirstExploitableSlash(HttpServletRequest myRequest) {
+    public static String URI_WithoutContext(HttpServletRequest request) {
 
-        return myRequest.getRequestURI().substring(myRequest.getContextPath().length());
+        return request.getRequestURI().substring(request.getContextPath().length());
 
         // dans le case :
         // if (myActionString.startsWith("/signout")) { do that }
