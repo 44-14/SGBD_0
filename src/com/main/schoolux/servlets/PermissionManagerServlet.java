@@ -2,6 +2,7 @@ package com.main.schoolux.servlets;
 
 import com.AppConfig;
 import com.main.schoolux.services.PermissionService;
+import com.main.schoolux.utilitaries.MyLogUtil;
 import com.main.schoolux.utilitaries.MyStringUtil;
 import com.main.schoolux.utilitaries.MyURLUtil;
 import com.main.schoolux.validations.CommonValidation;
@@ -65,15 +66,10 @@ public class PermissionManagerServlet extends HttpServlet {
     //////
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.debug("======  doGet() in PermissionManagerServlet  ======");
-        // ou LOG.log(Level.DEBUG, "========MonMessage======");
-
-        // urlPatterns de la servlet traitant la requete
-        LOG.debug("Servlet Path :"+request.getServletPath());
-        LOG.debug("Request URI :"+ request.getRequestURI());
+        MyLogUtil.enterServlet(this,new Exception(),request);
 
 
-        String actionURL = MyURLUtil.URL_AfterLastSlash(request);
+        String actionURL = MyURLUtil.URI_AfterLastSlash(request);
         LOG.debug("URL Action : " + actionURL);
 
         switch (actionURL) {
@@ -112,11 +108,7 @@ public class PermissionManagerServlet extends HttpServlet {
     //////
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.debug("======  doPost() in PermissionManagerServlet  ======");
-
-        // urlPatterns de la servlet traitant la requete
-        LOG.debug("Servlet Path :" + request.getServletPath());
-        LOG.debug("Request URI :" + request.getRequestURI());
+        MyLogUtil.enterServlet(this,new Exception(),request);
 
         // Reset des messages de la servlet
         PermissionManagerServletMessages.clear();

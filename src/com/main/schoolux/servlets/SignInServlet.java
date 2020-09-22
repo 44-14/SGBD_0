@@ -2,6 +2,7 @@ package com.main.schoolux.servlets;
 
 import com.AppConfig;
 import com.main.schoolux.services.UserService;
+import com.main.schoolux.utilitaries.MyLogUtil;
 import com.main.schoolux.utilitaries.MyURLUtil;
 import com.main.schoolux.validations.UserValidation;
 import com.persistence.entities.RolePermissionEntity;
@@ -75,24 +76,9 @@ public class SignInServlet extends HttpServlet {
     //////
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.debug("======  doGet() in SignInServlet ======");
-        // ou LOG.log(Level.DEBUG, "========MonMessage======");
-
-
-        // Ecrit le path de la servlet visée par la request
-        LOG.debug("Request URI :"+ request.getRequestURI());
-        LOG.debug("Servlet Path :"+request.getServletPath());
-
+        MyLogUtil.enterServlet(this, new Exception(),request);
 
         ServletMessages.clear();
-
-        /*
-        //Les  LOG qui suivent ont été déplacé au niveau d'un listener d'evenements auto-générés dans la classe MyHTTPRequestListener,
-        LOG.log(Level.INFO, "URI Request :"+request.getRequestURI().toString());
-        LOG.log(Level.INFO, "URL Request :"+request.getRequestURL().toString());
-         */
-
-
 
 
         //Structure à faire
@@ -177,11 +163,7 @@ public class SignInServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.debug("=====  doPost() in SignInServlet  ======");
-
-        // Ecrit le urlPatterns de la servlet traitant la requete
-        LOG.debug("Servlet Path :"+request.getServletPath());
-        LOG.debug("Request URI :"+ request.getRequestURI());
+        MyLogUtil.enterServlet(this,new Exception(),request);
 
         // Mettre en statique le UserValidation pour pas instancier
         UserEntity myUserToCheck = UserValidation.ToSignIn(request);
@@ -206,7 +188,9 @@ public class SignInServlet extends HttpServlet {
             }
 
             else {
-                request.getSession(false).setAttribute("signedUser", returnedUser);
+                // true est nécessaire au cas où quelqu'un récuperairerait le formulaire puis attendrait un timeout de la session avant de post
+                // vu que /signin passe par la HashMap de freeAccess dans le MyAuthenticationFilter.class
+                request.getSession(true).setAttribute("signedUser", returnedUser);
                 LOG.debug("Transmitting to SIGNIN_CONFIRMATION_VIEW");
                 request.getRequestDispatcher(SIGNIN_CONFIRMATION_VIEW).forward(request, response);
                 // par ensuite, rediriger vers la AccountServlet ou /home  je pense homeServlet via le bouton continuez

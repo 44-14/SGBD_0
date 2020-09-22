@@ -1,6 +1,7 @@
 package com.main.schoolux.servlets;
 
 import com.AppConfig;
+import com.main.schoolux.utilitaries.MyLogUtil;
 import com.main.schoolux.utilitaries.MyURLUtil;
 import com.main.schoolux.validations.UserValidation_Old_0;
 import com.persistence.entities.UserEntity;
@@ -43,12 +44,12 @@ public class SignUpServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        LOG.info("===  DoGet() de SignUpServlet -  BEGIN  ===");
-        // ou LOG.log(Level.INFO, "========MonMessage======");
-        LOG.log(Level.INFO, "Servlet path :"+request.getServletPath().toString());
+        MyLogUtil.enterServlet(this,new Exception(),request);
+        LOG.debug(super.getServletContext().getContextPath() + "\n" +
+         super.getServletName());
 
+        this.SIGNUP_URI=super.getServletContext()+SIGNUP_URI_WITHOUT_CONTEXT;
 
-        this.SIGNUP_URI = request.getContextPath() + this.SIGNUP_URI_WITHOUT_CONTEXT; // construit /SGBD_0_war_exploded + /signup
 
 
         String exploitableURI = MyURLUtil.URI_WithoutContext(request);

@@ -218,7 +218,38 @@ public class UserEntity {
     public void setUsersByIdParent(UserEntity usersByIdParent) {
         this.usersByIdParent = usersByIdParent;
     }
+
+
+
+
+
+    @Override
+    public String toString() {
+        return "UserEntity{ " +
+                "id=" + id +
+                ",isActive=" + isActive +
+                ",firstName=" + firstName +
+                ",lastName=" + lastName +
+                ",username=" + username +
+                ",password=" + password +
+                ",phoneNumber=" + phoneNumber +
+                ",birthdate=" + birthdate  +
+                ",gender=" + gender +
+                ",emailAddress=" + emailAddress  +
+                ",inscriptionDate=" + inscriptionDate +
+                ",title=" + title +
+                ",photo=" + photo +
+                ",role=" + rolesByIdRole +
+                ",usersByIdParent=" + usersByIdParent +
+                " } ";
+    }
+
+
 }
+
+
+
+
 
 
 

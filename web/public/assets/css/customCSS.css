@@ -84,6 +84,10 @@ Il est transparent ne s'affiche pas s'il ne figure pas une de ces classes en tan
     margin : 0 auto;
 }
 
+.messageInfo > h2 {
+    width : 100%
+}
+
 .pageInfo {
     color : orange;
     margin : 0 auto;

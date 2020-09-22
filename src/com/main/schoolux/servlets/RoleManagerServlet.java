@@ -3,8 +3,8 @@ package com.main.schoolux.servlets;
 import com.AppConfig;
 import com.main.schoolux.services.PermissionService;
 import com.main.schoolux.services.RoleService;
+import com.main.schoolux.utilitaries.MyLogUtil;
 import com.main.schoolux.utilitaries.MyStringUtil;
-import com.main.schoolux.utilitaries.MyTrackingUtil;
 import com.main.schoolux.utilitaries.MyURLUtil;
 import com.main.schoolux.validations.CommonValidation;
 import com.persistence.entities.PermissionEntity;
@@ -36,10 +36,12 @@ import java.util.List;
 // cependant les permissions sont statiques donc c plutot pour les roles cette reflexion
 // la seule view dispo des permissions sera celle de la liste et il faudra la permission ViewAllPErmissions
 
-/* l'attribut loadOnStartup=1 permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue par la servlet) */
-@WebServlet(name = "RoleManagerServlet", urlPatterns = {"/role","/role/*"}, loadOnStartup = -1)
-public class RoleManagerServlet extends HttpServlet {
 
+
+
+/* l'attribut loadOnStartup=1 permet de charget la servlet directement au démarrage de l'appli, et pas au moment de la 1ère requête reçue par la servlet) */
+@WebServlet(name = "RoleManagerServlet", urlPatterns = {"/role/*"}, loadOnStartup = -1)
+public class RoleManagerServlet extends HttpServlet {
 
     // LOGGER + PATH CONSTANTS + SERVLET MESSAGES LISTS
     private final static Logger LOG = Logger.getLogger(RoleManagerServlet.class);
@@ -65,59 +67,50 @@ public class RoleManagerServlet extends HttpServlet {
 
 
 
-    //////
+    ////////
     //  GET
-    //////
+    ////////
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOG.debug(this.getClass());
-        //LOG.debug(this.getClass().getEnclosingMethod().getName(); // -> null pointer
-        //LOG.debug(this.getClass().getEnclosingMethod().toString()); //-> null pointer
-        LOG.debug( new Exception().getStackTrace()[0].getMethodName());
 
-        MyTrackingUtil.TrackMethodEntry(this, new Exception());
+       MyLogUtil.enterServlet(this, new Exception(),request);
 
+       String actionURI = MyURLUtil.URI_LastExploitablePart(request);
+       LOG.debug("actionURI = " +actionURI);
+       if (actionURI == null) {actionURI="role";}
 
+       switch (actionURI) {
 
-        LOG.debug("======  doGet() in RoleManagerServlet  ======");
-        // ou LOG.log(Level.DEBUG, "========MonMessage======");
-
-        // urlPatterns de la servlet traitant la requete
-        LOG.debug("Servlet Path :"+request.getServletPath());
-        LOG.debug("Request URI :"+ request.getRequestURI());
-
-
-        String actionURL = MyURLUtil.URL_AfterLastSlash(request);
-        LOG.debug("URL Action : " + actionURL);
-
-        switch (actionURL) {
-
+            case "role" : // same as readall case
             case "readall":
-                LOG.debug("User attempts to get the role list view");
-                try{
-                    this.readAllRoles(request,response);
-                }
-                catch( Exception e)
-                {
-                    LOG.debug("Exception message : "+e.getMessage());
-                }
-                break;
 
+                        LOG.debug("User attempts to get the role list view");
+                        try{
+                            this.readAllRoles(request,response);
+                        }
+                        catch( Exception e)
+                        {
+                            LOG.debug("Exception message : "+e.getMessage());
+                        }
+                        break;
 
             case "create" :
-                LOG.debug("User attempts to get the create role form view");
-                this.createOneRole(request,response);
 
-                break;
-
+                        LOG.debug("User attempts to get the create role form view");
+                        MyLogUtil.exitServlet(this,new Exception());
+                        request.getRequestDispatcher(ROLE_CREATE_VIEW).forward(request, response);
+                        break;
 
             default:
-                // request.getRequestDispatcher(X) va modifier la request et rajouter X après le context, mais les parameters et attributs de la requete restent préservés
-                // tandis que response.sendRedirect(une URI) va détruire la requete en cours et forcer le client à en faire une nouvelle GET, les attributs et paramètres de l'ancienne requête seront perdus
-                // Si la requete etait une POST, ca deviendra une GET
-                request.getRequestDispatcher(request.getServletPath()+"/readall").forward(request,response);
+
+                        MyLogUtil.exitServlet(this,new Exception());
+                        request.getRequestDispatcher(request.getServletPath()).forward(request,response);
+
+                        // request.getRequestDispatcher(X) va modifier la request et rajouter X après le context comme ça reste au sein du meme contexte, mais les parameters et attributs de la requete restent préservés
+                        // tandis que response.sendRedirect(une URI) va détruire la requete en cours et forcer le client à en faire une nouvelle GET, les attributs et paramètres de l'ancienne requête seront perdus
+                        // dans le cas du sendRedirect(une URI) il faut bien mettre une URI complète car on pourrait amener le client à requeter vers une autre application donc un autre contexte
+                        // pour faire l'URI :   request.getContextPath()+"/urlPattern géré par l'appli"
+                        // Si la requete etait une POST, ca deviendra une GET
         }
-
-
 
     }
 
@@ -215,13 +208,6 @@ public class RoleManagerServlet extends HttpServlet {
     //////               //////
 
 
-
-    // Creer 1 role
-    private void createOneRole (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher(ROLE_CREATE_VIEW).forward(request, response);
-    }
-
-
     // NE PAS UTILISER - ANCIENNE VERSION
     // Lister tous les roles
     private List<PermissionEntity> readAllPermissions_Old() {
@@ -246,12 +232,16 @@ public class RoleManagerServlet extends HttpServlet {
         RoleService myRoleService = new RoleService();
         List<RoleEntity> myRoleList = myRoleService.selectAllOrNull();
         request.setAttribute("myRoleListRequestKey", myRoleList);
+        MyLogUtil.exitServlet(this,new Exception());
         request.getRequestDispatcher(ROLE_LIST_VIEW).forward(request, response);
 
     }
 
 
+    // Creer 1 role
+    private void createOneRole (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    }
 
 
 

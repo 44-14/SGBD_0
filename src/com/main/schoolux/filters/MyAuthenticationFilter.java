@@ -118,7 +118,9 @@ public class MyAuthenticationFilter implements Filter {
             if (scindedURI.startsWith(myItem.getValue())){
                 //LOG.debug("Inside IF structure in FOREACH loop");
                 LOG.debug("Filter transmitting the request targeting a FREE ACCESS WITHOUT CONTEXT URI");
+                MyLogUtil.exitFilter();
                 chain.doFilter(request, response);
+
                 return;
             }
         }
@@ -141,12 +143,13 @@ public class MyAuthenticationFilter implements Filter {
 
         if (isSignedIn) {
             // Affichage des infos de l'user connecté via un override de la méthode toString() dans UserEntity.class
-            UserEntity signedUser = (UserEntity) mySession.getAttribute("signedUser");
-            LOG.debug("Signed user informations: " + signedUser.toString());
-            LOG.debug("Filter transmitting the request to "+request);
+            //UserEntity signedUser = (UserEntity) mySession.getAttribute("signedUser");
+            //LOG.debug("Signed user informations: " + signedUser.toString());  //
+            LOG.debug("User signed in ==> Filter transmitting the request to "+request.getServletPath());
+            MyLogUtil.exitFilter();
             chain.doFilter(request, response);
         } else {
-            LOG.debug("Filter redirecting client-side to /signin");
+            LOG.debug("No signed in user ==> Filter redirecting client-side to /signin");
 
             // Les 2 fonctionnent donc on peut mettre des chemins vers des fichiers ou des mapping servlet d'url pattern
             //request.getRequestDispatcher("WEB-INF/views/signIn/signInForm.jsp").forward(request,myHttpResponse);
@@ -154,6 +157,7 @@ public class MyAuthenticationFilter implements Filter {
 
             // Voir diff entre getRequestDispatcher et sendRedirect dans Notes.txt
             //request.getRequestDispatcher(SIGNIN_URI_WITHOUT_CONTEXT).forward(request,myHttpResponse);
+            MyLogUtil.exitFilter();
             response.sendRedirect(AppConfig.myFreeAccessWIthoutContextURIList.get("SIGNIN_URI"));
 
             /*

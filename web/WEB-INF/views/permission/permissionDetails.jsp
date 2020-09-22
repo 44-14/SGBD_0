@@ -26,8 +26,8 @@
     <!-- Table contenant les données de la permissions -->
     <table>
             <tr>
-                <td>${requestScope.myPermissionRequestKey.id}</td>
-                <td><c:out value="${requestScope.myPermissionRequestKey.abbreviation}" /></td>
+                <td><c:out value="${requestScope.myPermissionRequestKey.id}"/> </td>
+                <td><c:out value="${requestScope.myPermissionRequestKey.abbreviation}"/></td>
                 <td><c:out value="${requestScope.myPermissionRequestKey.label}" /></td>
                 <td><c:out value="${requestScope.myPermissionRequestKey.description}" /></td>
 

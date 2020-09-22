@@ -62,7 +62,7 @@ public class MyHTTPRequestListener implements ServletRequestListener {
             */
 
             LOG.log(Level.DEBUG, "===========================================================================\n" +
-                    "                   "+ ((HttpServletRequest) sre.getServletRequest()).getMethod()+"REQUEST DESTROYED :  "+
+                    "                   "+ ((HttpServletRequest) sre.getServletRequest()).getMethod()+" REQUEST DESTROYED :  "+
                     "   URI : "+((HttpServletRequest) sre.getServletRequest()).getRequestURI()+
                     "\n        ===========================================================================");
 

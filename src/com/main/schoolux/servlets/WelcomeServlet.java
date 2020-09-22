@@ -11,34 +11,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "AccountServlet" , urlPatterns = {"/account","/account/*"}, loadOnStartup = -1)
-public class AccountServlet extends HttpServlet {
-
+// Voir : https://docs.roguewave.com/en/hydraexpress/4.6.0/html/rwsfservletug/4-4.html
+// Tout en bas pour la raison de cette servlet
+@WebServlet(name = "WelcomeServlet", urlPatterns = {"/"}, loadOnStartup = -1)
+public class WelcomeServlet extends HttpServlet {
 
     // LOGGER + PATH CONSTANTS + SERVLET MESSAGES LISTS
     private final static Logger LOG = Logger.getLogger(AccountServlet.class);
 
-    public final static String ACCOUNT_VIEW = AppConfig.ACCOUNT_VIEWS_ROOT_PATH+"account.jsp";
-
-
+    public final static String WELCOME_VIEW = AppConfig.WELCOME_VIEWS_ROOT_PATH+"welcome.jsp";
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         MyLogUtil.enterServlet(this,new Exception(),request);
-
-        request.getRequestDispatcher(ACCOUNT_VIEW).forward(request,response);
+        request.getRequestDispatcher(WELCOME_VIEW).forward(request,response);
 
     }
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         MyLogUtil.enterServlet(this,new Exception(),request);
-
-        /* if  hidden id du post = id du userConnecté en session  on dispatch vers /user en rajoutant les attributs nécessaires dans la request pour faire editer là bas
-         */
+        this.doGet(request,response);
     }
-
-
 }

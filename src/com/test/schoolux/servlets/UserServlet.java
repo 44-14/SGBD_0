@@ -66,7 +66,7 @@ public class UserServlet extends HttpServlet {
         Et on analysera ce qu'est exactement xyz via un switch qui dispatchera dans un case correspondant  create - read - update - delete avec verif permissions
          */
 
-        action = MyURLUtil.URL_AfterLastSlash(request);
+        action = MyURLUtil.URI_AfterLastSlash(request);
         LOG.info("Action de la requête : "+action);
 
         switch (action) {
