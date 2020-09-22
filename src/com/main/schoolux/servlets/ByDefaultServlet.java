@@ -35,14 +35,17 @@ public class ByDefaultServlet extends HttpServlet {
     // LOGGER + PATH CONSTANTS + SERVLET MESSAGES LISTS
     private final static Logger LOG = Logger.getLogger(ByDefaultServlet.class);
 
-    public final static String WELCOME_VIEW = AppConfig.DEFAULT_VIEWS_ROOT_PATH+"default.jsp";
+    public final static String BYDEFAULT_VIEW = AppConfig.BYDEFAULT_VIEWS_ROOT_PATH+"byDefault.jsp";
+
+
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         MyLogUtil.enterServlet(this,new Exception(),request);
 
-        request.getRequestDispatcher(WELCOME_VIEW).forward(request, response);
+        request.getRequestDispatcher(BYDEFAULT_VIEW).forward(request, response);
     }
+
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

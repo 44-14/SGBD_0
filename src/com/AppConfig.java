@@ -20,7 +20,7 @@ public final class AppConfig {
     public final static String PERMISSION_VIEWS_ROOT_PATH =  VIEWS_ROOT_PATH+"permission/";
     public final static String ROLE_VIEWS_ROOT_PATH =        VIEWS_ROOT_PATH+"role/";
     public final static String USER_VIEWS_ROOT_PATH =        VIEWS_ROOT_PATH+"user/";
-    public final static String DEFAULT_VIEWS_ROOT_PATH =     VIEWS_ROOT_PATH+"default/";
+    public final static String BYDEFAULT_VIEWS_ROOT_PATH =     VIEWS_ROOT_PATH+"byDefault/";
 
     public final static Map<String, String> myFreeAccessWIthoutContextURIList = new HashMap<String,String>();
 

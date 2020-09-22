@@ -18,6 +18,7 @@ public class HomeServlet extends HttpServlet {
 
     public final static String HOME_VIEW = AppConfig.HOME_VIEWS_ROOT_PATH+"home.jsp";
 
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         request.getRequestDispatcher(HOME_VIEW).forward(request,response);
