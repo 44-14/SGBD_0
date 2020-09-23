@@ -88,87 +88,101 @@ public class MyAuthenticationFilter implements Filter {
     public void doFilter(ServletRequest receivedReq, ServletResponse receivedResp, FilterChain chain) throws ServletException, IOException {
 
         /* CAST DES PARAMETRES car la méthode doFilter() de l'interface implémentée Filter
-           requiert ServletRequest et ServletResponse en paramètres */
+        requiert ServletRequest et ServletResponse en paramètres */
         HttpServletRequest request = (HttpServletRequest) receivedReq;
         HttpServletResponse response = (HttpServletResponse) receivedResp;
 
         MyLogUtil.enterFilter(request);
 
-        // stocke /SGBD_0_war_exploded/signin dans la hashmap
-        if (requestCounter==0) {
-            AppConfig.myFreeAccessWIthoutContextURIList.put("CONTEXT_PATH",request.getContextPath());
-            AppConfig.myFreeAccessWIthoutContextURIList.put("SIGNIN_URI",request.getContextPath()+"/signin");
-        }
-
-        LOG.info("Number of processed requests : "+ ++requestCounter);
-
-        // Récupérer tout ce qui suit le contexte /SGBD_0_war_exploded/ dans l'URI
-        String scindedURI = MyURLUtil.URI_WithoutContext(request);
-        LOG.debug("URI scindée sans contexte : "+scindedURI);
+        try {
 
 
-        // Vérification que la partie scindée de l'URI ne matche pas avec le début des URI publiquement accessibles stockées dans la Hashmap myFreeAccessWIthoutContextURIList
-        // à savoir /signin - /signup  -  /resources - /public
-        /* for ( ItemType myItem  : myCollection) {}   */
-        for ( Map.Entry <String,String> myItem   :   AppConfig.myFreeAccessWIthoutContextURIList.entrySet()) {
-            //LOG.debug("Inside FOREACH loop => Key : "+myItem.getKey() +"   Value :"+myItem.getValue());
-            // String key = myItem.getKey();
-            // String value = myItem.getValue();
-            //if (scindedURI.contentEquals(myItem.getValue()) || scindedURI.startsWith(myItem.getValue()+"/")){
-            if (scindedURI.startsWith(myItem.getValue())){
-                //LOG.debug("Inside IF structure in FOREACH loop");
-                LOG.debug("Filter transmitting the request targeting a FREE ACCESS WITHOUT CONTEXT URI");
-                MyLogUtil.exitFilter();
-                chain.doFilter(request, response);
 
-                return;
+            // stocke /SGBD_0_war_exploded/signin dans la hashmap
+            if (requestCounter==0) {
+                AppConfig.myFreeAccessWIthoutContextURIList.put("CONTEXT_PATH",request.getContextPath());
+                AppConfig.myFreeAccessWIthoutContextURIList.put("SIGNIN_URI",request.getContextPath()+"/signin");
             }
-        }
+
+            LOG.info("Number of processed requests : "+ ++requestCounter);
+
+            // Récupérer tout ce qui suit le contexte /SGBD_0_war_exploded/ dans l'URI
+            String scindedURI = MyURLUtil.URI_WithoutContext(request);
+            LOG.debug("URI scindée sans contexte : "+scindedURI);
 
 
-        /*
-        Chaque servlet va elle-même faire la gestion du restant de l'URI qui suit son mapping d'URL-Pattern une fois que la requete lui est transmise
-        avec notamment un switch qui comprend un default case qui redirige vers une uri traitée dans un case précédent, ou le default qui modifie l action à traiter et boucle sur le switch
-        Par exemple permet d'éviter que /signin/abcd/123 fasse une erreur, ce qui n'est pas traité par le switch de la signInServlet (ici la partie /abc/123)
-        passera par son default case qui se chargera d eviter l'erreur
-        */
+            // Vérification que la partie scindée de l'URI ne matche pas avec le début des URI publiquement accessibles stockées dans la Hashmap myFreeAccessWIthoutContextURIList
+            // à savoir /signin - /signup  -  /resources - /public
+            /* for ( ItemType myItem  : myCollection) {}   */
+            for ( Map.Entry <String,String> myItem   :   AppConfig.myFreeAccessWIthoutContextURIList.entrySet()) {
+                //LOG.debug("Inside FOREACH loop => Key : "+myItem.getKey() +"   Value :"+myItem.getValue());
+                // String key = myItem.getKey();
+                // String value = myItem.getValue();
+                //if (scindedURI.contentEquals(myItem.getValue()) || scindedURI.startsWith(myItem.getValue()+"/")){
+                if (scindedURI.startsWith(myItem.getValue())){
+                    //LOG.debug("Inside IF structure in FOREACH loop");
+                    LOG.debug("Filter transmitting the request targeting a FREE ACCESS WITHOUT CONTEXT URI");
+                    MyLogUtil.exitFilter();
+                    chain.doFilter(request, response);
 
+                    return;
+                }
+            }
 
-        // l'argument false de getSession() implique que s'il n'existe pas déjà une session, il n'en crée pas une et le retour est null. Dans ce cas, il faut sign out l'user et le rediriger vers la signin page
-        // Si on le met à true, une session est automatiquement crée s'il n'en existe pas.
-        HttpSession mySession = request.getSession(false);
-
-        boolean isSignedIn = mySession != null && mySession.getAttribute("signedUser") != null;
-        LOG.info("User signed in : " + isSignedIn);
-
-        if (isSignedIn) {
-            // Affichage des infos de l'user connecté via un override de la méthode toString() dans UserEntity.class
-            //UserEntity signedUser = (UserEntity) mySession.getAttribute("signedUser");
-            //LOG.debug("Signed user informations: " + signedUser.toString());  //
-            LOG.debug("User signed in ==> Filter transmitting the request to "+request.getServletPath());
-            MyLogUtil.exitFilter();
-            chain.doFilter(request, response);
-        } else {
-            LOG.debug("No signed in user ==> Filter redirecting client-side to /signin");
-
-            // Les 2 fonctionnent donc on peut mettre des chemins vers des fichiers ou des mapping servlet d'url pattern
-            //request.getRequestDispatcher("WEB-INF/views/signIn/signInForm.jsp").forward(request,myHttpResponse);
-            //request.getRequestDispatcher("/signin").forward(request,myHttpResponse);
-
-            // Voir diff entre getRequestDispatcher et sendRedirect dans Notes.txt
-            //request.getRequestDispatcher(SIGNIN_URI_WITHOUT_CONTEXT).forward(request,myHttpResponse);
-            MyLogUtil.exitFilter();
-            response.sendRedirect(AppConfig.myFreeAccessWIthoutContextURIList.get("SIGNIN_URI"));
 
             /*
-             Remarque : si on utilise ici sendRedirect(la signin uri), alors il faut impérativement avoir une partie précédente du filtre qui vérifie si cette uri est reçue
-             sinon on aura une boucle infinie avec le filtre qui sendRedirect en permanence vers la signin uri mais celle-ci n'étant pas traitée, on reviendrait tout le temps à la dernière instruction
-             qui relance une requête http://localhost:8080/SGBD_0_war_exploded/signin via le client sans qu'on atteigne jamais la servlet mappée sur /signin
-             Cette vérification n'est pas nécessaire si on utilise le getRequestDispatcher vers "/signin" vu qu'il va se charger lui-même de contacter la servlet mappée
-             mais c'est plus clean de voir le reset de l'url sur le client grâce au sendRedirect
-             */
+            Chaque servlet va elle-même faire la gestion du restant de l'URI qui suit son mapping d'URL-Pattern une fois que la requete lui est transmise
+            avec notamment un switch qui comprend un default case qui redirige vers une uri traitée dans un case précédent, ou le default qui modifie l action à traiter et boucle sur le switch
+            Par exemple permet d'éviter que /signin/abcd/123 fasse une erreur, ce qui n'est pas traité par le switch de la signInServlet (ici la partie /abc/123)
+            passera par son default case qui se chargera d eviter l'erreur
+            */
+
+
+            // l'argument false de getSession() implique que s'il n'existe pas déjà une session, il n'en crée pas une et le retour est null. Dans ce cas, il faut sign out l'user et le rediriger vers la signin page
+            // Si on le met à true, une session est automatiquement crée s'il n'en existe pas.
+            HttpSession mySession = request.getSession(false);
+
+            boolean isSignedIn = mySession != null && mySession.getAttribute("signedUser") != null;
+            LOG.info("User signed in : " + isSignedIn);
+
+            if (isSignedIn) {
+                // Affichage des infos de l'user connecté via un override de la méthode toString() dans UserEntity.class
+                //UserEntity signedUser = (UserEntity) mySession.getAttribute("signedUser");
+                //LOG.debug("Signed user informations: " + signedUser.toString());  //
+                LOG.debug("User signed in ==> Filter transmitting the request to servlet path  "+request.getServletPath());
+                MyLogUtil.exitFilter();
+                chain.doFilter(request, response);
+            } else {
+                LOG.debug("No signed in user ==> Filter redirecting client-side to /signin");
+
+                // Les 2 fonctionnent donc on peut mettre des chemins vers des fichiers ou des mapping servlet d'url pattern
+                //request.getRequestDispatcher("WEB-INF/views/signIn/signInForm.jsp").forward(request,myHttpResponse);
+                //request.getRequestDispatcher("/signin").forward(request,myHttpResponse);
+
+                // Voir diff entre getRequestDispatcher et sendRedirect dans Notes.txt
+                //request.getRequestDispatcher(SIGNIN_URI_WITHOUT_CONTEXT).forward(request,myHttpResponse);
+                MyLogUtil.exitFilter();
+                response.sendRedirect(AppConfig.myFreeAccessWIthoutContextURIList.get("SIGNIN_URI"));
+
+                /*
+                 Remarque : si on utilise ici sendRedirect(la signin uri), alors il faut impérativement avoir une partie précédente du filtre qui vérifie si cette uri est reçue
+                 sinon on aura une boucle infinie avec le filtre qui sendRedirect en permanence vers la signin uri mais celle-ci n'étant pas traitée, on reviendrait tout le temps à la dernière instruction
+                 qui relance une requête http://localhost:8080/SGBD_0_war_exploded/signin via le client sans qu'on atteigne jamais la servlet mappée sur /signin
+                 Cette vérification n'est pas nécessaire si on utilise le getRequestDispatcher vers "/signin" vu qu'il va se charger lui-même de contacter la servlet mappée
+                 mais c'est plus clean de voir le reset de l'url sur le client grâce au sendRedirect
+                 */
+            }
+
+        }catch (Exception e){
+            throw new ServletException("Dans le catch de mon filtre : Executing action failed.", e);
+            //LOG.debug("Dans le catch de mon filtre : Executing action failed."+ e.getStackTrace().toString());
+            // rediriger vers une vue par defaut ?
 
         }
+
+
+
+
     }
 }
 

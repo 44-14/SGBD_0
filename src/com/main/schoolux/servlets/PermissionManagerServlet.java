@@ -148,6 +148,7 @@ public class PermissionManagerServlet extends HttpServlet {
                         } else {
                             request.setAttribute("myPermissionRequestKey", returnedPermission);
                             request.getRequestDispatcher(PERMISSION_DETAILS_VIEW).forward(request, response);
+                            return;
                         }
                         break;
 

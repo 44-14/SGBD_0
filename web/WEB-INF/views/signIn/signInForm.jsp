@@ -69,7 +69,7 @@ Car un hacker saurait que Tototo est un utilisateur existant et forcebrute pour 
 
     <div class="mySmallContainer">
 
-        <a href="${pageContext.request.contextPath}/signup" id="signUpButton" class="btn btn-sm btn-outline-primary" name="" >
+        <a href="${pageContext.request.contextPath}/signup" id="signUpButton" class="btn btn-sm btn-outline-primary" >
                 S'inscrire
         </a>
     </div>
@@ -94,13 +94,6 @@ Car un hacker saurait que Tototo est un utilisateur existant et forcebrute pour 
 
         </a>
     </div>
-
-
-
-
-</body>
-</html>
-
 
 
 

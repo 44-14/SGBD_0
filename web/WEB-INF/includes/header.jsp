@@ -21,18 +21,25 @@
 
 
     <c:choose>
-        <c:when test="${pageContext.request.servletPath == '/WEB-INF/views/signIn/signInForm.jsp'
+        <c:when test="${pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/')
+                     || pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/')}">
+              <%--   || pageContext.request.servletPath == '/WEB-INF/views/signIn/signInForm.jsp'
                      || pageContext.request.servletPath == '/WEB-INF/views/signIn/signInConfirmation.jsp'
                      || pageContext.request.servletPath == '/WEB-INF/views/signUp/signUpForm.jsp'
                      || pageContext.request.servletPath == '/WEB-INF/views/signUp/signUpConfirmation.jsp'}">
+              --%>
 
             <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/customLandingCSS.css' />
         </c:when>
         
-        <c:when test="${pageContext.request.servletPath != '/WEB-INF/views/signIn/signInForm.jsp'
+        <c:when test="${!pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/')
+                     &&!pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/')}">
+            <%--
+                     && pageContext.request.servletPath != '/WEB-INF/views/signIn/signInForm.jsp'
                      && pageContext.request.servletPath != '/WEB-INF/views/signIn/signInConfirmation.jsp'
                      && pageContext.request.servletPath != '/WEB-INF/views/signUp/signUpForm.jsp'
                      && pageContext.request.servletPath != '/WEB-INF/views/signUp/signUpConfirmation.jsp'}">
+             --%>
             <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/customCSS.css' />
         </c:when>
     </c:choose>
@@ -43,10 +50,15 @@
 <body>
 <div class="container">
 
-    <c:if test="${pageContext.request.servletPath != '/WEB-INF/views/signIn/signInForm.jsp'
+    <!-- Include de la navbar sauf pour les signIn - signUp views -->
+    <c:if test="${!pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/')
+                &&!pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/')}">
+    <%--
+                && pageContext.request.servletPath != '/WEB-INF/views/signIn/signInConfirmation.jsp'
                 && pageContext.request.servletPath != '/WEB-INF/views/signIn/signInConfirmation.jsp'
                 && pageContext.request.servletPath != '/WEB-INF/views/signUp/signUpForm.jsp'
                 && pageContext.request.servletPath != '/WEB-INF/views/signUp/signUpConfirmation.jsp'}">
+     --%>
         <jsp:include page="/WEB-INF/includes/navbar.jsp"></jsp:include>
     </c:if>
 

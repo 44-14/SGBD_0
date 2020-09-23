@@ -92,10 +92,10 @@ Il est transparent ne s'affiche pas s'il ne figure pas une de ces classes en tan
     color : orange;
     margin : 0 auto;
 }
-.pageInfo > h2 {
+div.pageInfo > h2 {
     border : 2px solid orange;
     display : inline-block;
-    width : 50%;
+    width : 75%;
     padding : 15px;
 
 }
@@ -106,33 +106,88 @@ a.btn.alreadySignedIn {
     padding: 12px;
 }
 
+table {
+    margin-top : 50px;
+}
+
+table.permission {
+    background-color: #101010;
+}
+table.permission > thead > tr > th {
+    color : orange ;
+}
+table.permission > tbody > tr > td {
+    color : dodgerblue;
+}
 
 
+/*
+table.permission.table-hover > tbody > tr :hover {
+    background-color: dodgerblue;
+    color : black
+}
+ */
+
+/*
+table.permission.table-hover > tbody > tr > td :hover {
+        background-color: dodgerblue;
+        color : black;
+}-
+ */
+
+#aboveTableForm {
+    float : right;
+}
+
+form > button.myFormActionButton {
+
+    display : block;
+    margin : 30px 10px;
+    font-size: 20px;
+    float : right;
+}
+
+form > td > button.myFormActionButton {
+    width : 75%;  /* of <td> */
+    height: 75%;
+    font-size : 20px;
+}
 
 
+.redAlert  {
+    /*font-size : 20px;*/
+    color: red;
+    /*background-color: red;*/
+    border: solid 1px red;
+    /*padding : 5px;*/
+    animation: alert 0.5s linear infinite;  /* = le nom du @keyframe qu'on a nommé un peu plus bas */
+}
 
+.greenAlert  {
+    /*font-size : 20px;*/
+    color: green;
+    /*background-color: red;*/
+    border: solid 1px green;
+    /*padding : 5px;*/
+    animation: alert 0.5s linear infinite;
+}
 
-
-
-
-
-
-
-
-
-error
-{
+error  {
     font-size : 20px;
     color: red;
     /*background-color: red;*/
     border: solid 1px red;
     padding : 5px;
-    animation: error 0.5s linear infinite;
+    animation: alert 0.5s linear infinite;
 }
-@keyframes error {
+
+/* https://www.w3schools.com/cssref/css3_pr_animation-keyframes.asp */
+/* https://stackoverflow.com/questions/40632268/valid-to-apply-one-css-animation-to-multiple-elements */
+@keyframes alert {
     /* le premier % détermine en combien de temps il passe de 100% d opacité au x % d'opacité précisé par le deuxième %
-        mettre 75% et 40% signifie qu il mettre 75% du nbr de secondes defini dans le champ animation de .error pour passer
+        mettre 75% et 40% signifie qu il mettre 75% du nbr de secondes defini dans l'attribut animation des selecteurs css qui ont alert en 1ere paramètre pour passer
         de 100% d opacité à 40% et il restera les 25% restants de secondes pour passer 40% d opacité à 100%
+        Voir juste au-dessus le selecteur css "error"
      */
     50% { opacity: 75%; }
 }

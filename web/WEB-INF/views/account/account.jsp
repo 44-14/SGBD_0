@@ -29,10 +29,12 @@
 <c:if test="${empty object['class'].declaredMethods}">No declared methods</c:if>
 </p>
 
+
+
 <!--Liste tous les champs déclarés et leurs valeurs d'un attribut particulier mis dans un scope -->
 <c:set var="object" value="${sessionScope.signedUser}" />
 <c:if test="${not empty object['class'].declaredFields}">
-    <h2>Champs déclarés de ${object.username}</em></h2>
+    <h2>Champs déclarés de <em>${object.username}</em></h2>
     <ul>
         <c:forEach var="field" items="${object['class'].declaredFields}">
             <c:catch><li><span style="font-weight: bold">

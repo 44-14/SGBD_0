@@ -1202,9 +1202,9 @@ INSERT INTO `roles` (`id`, `label`, `abbreviation`, `description`) VALUES
 (3, 'Professeur 1', 'PRO-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que professeurs'),
 (4, 'Secretaire 1', 'SEC-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que secrétaires'),
 (5, 'Directeur 1', 'DIR-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que directeurs d\'école.'),
-(6, 'Administrateur 1', 'ADM-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant qu\'administrateur.'),
-(7, 'Stagiaire 1', 'STA-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que professeurs stagiaires.'),
-(8, 'Stagiaire 2', 'STA-02', 'Ce rôle est attribué aux utilisateurs identifiés en tant que secrétaires stagiaires.');
+(6, 'Administrateur 1', 'ADM-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant qu\'administrateurs.'),
+(7, 'Stagiaire 1', 'STA-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que professeurs-stagiaires.'),
+(8, 'Stagiaire 2', 'STA-02', 'Ce rôle est attribué aux utilisateurs identifiés en tant que secrétaires-stagiaires.');
 
 
 
