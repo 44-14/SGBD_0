@@ -70,7 +70,7 @@ public class MyLogUtil {
 
     public static void exitServlet(Object o, Exception e) {
 
-        LOG.debug("========================== EXITING "+ e.getStackTrace()[0].getMethodName()+" IN "+o.getClass()+" =============================== ");
+        LOG.debug("========================== EXITING "+ e.getStackTrace()[0].getMethodName()+" IN "+o.getClass().getSimpleName()+" =============================== ");
 
         //LOG.debug(o.getClass());
         //LOG.debug( e.getStackTrace()[0].getMethodName());

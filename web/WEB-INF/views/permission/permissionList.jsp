@@ -12,6 +12,10 @@
 -->
 
 
+<div class="errorMessage">
+
+</div>
+
 <div class="pageInfo">
     <h2 class="pageInfo"> Liste des permissions </h2>
 </div>
@@ -34,7 +38,7 @@
                 </thead>
 
                 <tbody>
-                    <c:forEach items="${requestScope.myPermissionsListRequestKey}" var="permission">
+                    <c:forEach items="${requestScope.myPermissionListRequestKey}" var="permission">
                         <tr>
                             <td>${permission.id}</td>
                             <td><c:out value="${permission.abbreviation}" /></td>

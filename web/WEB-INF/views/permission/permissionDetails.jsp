@@ -10,7 +10,7 @@
 
 
     <div class="pageInfo">
-        <h2 class="pageInfo"> Détails de la permission &nbsp;&nbsp; <c:out value="${requestScope.myPermissionRequestKey.label}"/> </h2>
+        <h2 class="pageInfo"> Détails de la permission    &nbsp;-&nbsp; <c:out value="${requestScope.myPermissionRequestKey.label}"/> </h2>
     </div>
 
 
@@ -23,7 +23,7 @@
                     type='submit' name="actionFromForm" value="editOne_getForm" > Editer </button>
 
         <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
-                    type='submit' name="actionFromForm" value="deleteOne_getForm" > Supprimer </button>
+                    type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>
     </form>
 
 

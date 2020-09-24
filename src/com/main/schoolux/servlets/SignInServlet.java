@@ -166,7 +166,7 @@ public class SignInServlet extends HttpServlet {
         MyLogUtil.enterServlet(this,new Exception(),request);
 
         // Mettre en statique le UserValidation pour pas instancier
-        UserEntity myUserToCheck = UserValidation.ToSignIn(request);
+        UserEntity myUserToCheck = UserValidation.toSignIn(request);
 
         if (myUserToCheck==null) {
             {

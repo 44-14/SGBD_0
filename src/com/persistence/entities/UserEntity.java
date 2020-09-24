@@ -225,7 +225,7 @@ public class UserEntity {
 
     @Override
     public String toString() {
-        return "UserEntity{ " +
+        return "UserEntity { " +
                 "id=" + id +
                 ",isActive=" + isActive +
                 ",firstName=" + firstName +

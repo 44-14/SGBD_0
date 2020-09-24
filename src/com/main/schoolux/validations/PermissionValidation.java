@@ -1,11 +1,10 @@
 package com.main.schoolux.validations;
 
-import com.persistence.entities.UserEntity;
+import com.persistence.entities.PermissionEntity;
+import com.persistence.entities.RoleEntity;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /* Amelioration :
@@ -18,15 +17,59 @@ et des setAttribute en request ou session etc
 refaire un switch sur la raison lors des dispatch si on a get des erreurs etc
  */
 
-public class UserValidation {
+public class PermissionValidation {
 
-    private final static Logger LOG = Logger.getLogger(UserValidation.class);
+    private final static Logger LOG = Logger.getLogger(PermissionValidation.class);
+
+
+    public static PermissionEntity toCreatePermission(HttpServletRequest request) {
+        PermissionEntity processedPermission = new PermissionEntity();
+        return processedPermission;
+    }
+
+
+    public static PermissionEntity toEditPermission(HttpServletRequest request) {
+        PermissionEntity processedPermission = new PermissionEntity();
+        return processedPermission;
+    }
+
+
+    public static PermissionEntity toPopulateEditForm(PermissionEntity dbPermission) {
+        // do something with dbPermission to transform it in populatingPermission
+        PermissionEntity populatingPermission = new PermissionEntity();
+        return populatingPermission;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
      * Validations liées à la connexion d'un utilisateur
      **/
-    public static UserEntity toSignIn(HttpServletRequest request) {
+ /*   public static UserEntity ToSignIn(HttpServletRequest request) {
 
 
         LOG.info("=== START - ToSignIn() in UserValidation ===");
@@ -116,7 +159,7 @@ public class UserValidation {
     /**
      * Validations liées à la création d'un utilisateur
      **/
-    public UserEntity UserValidation_Create(HttpServletRequest request) {
+/*    public UserEntity UserValidation_Create(HttpServletRequest request) {
 
         LOG.info("=== START - createValidation() in UserValidation ===");
 
@@ -173,7 +216,7 @@ public class UserValidation {
         // Voir notes.txt => DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
         //request.setAttribute("myErrorsRequestKey", myErrors);
         //request.setAttribute("myValidAttributesRequestKey", myValidAttributes);
-        request.setAttribute("myErrorsSessionKey", myErrors);
+/*        request.setAttribute("myErrorsSessionKey", myErrors);
         request.setAttribute("myValidAttributesSessionKey", myValidAttributes);
 
 
@@ -191,7 +234,7 @@ public class UserValidation {
 
         // mise à null de l'objet userEntity au cas où il y aurait eu une erreur
         // on teste ensuite dans le contrôleur si ce retour est null pour savoir vers quoi dispatcher
-        if (myErrors.size() != 0) {
+/*        if (myErrors.size() != 0) {
             myUser = null;
         }
 
@@ -207,3 +250,4 @@ public class UserValidation {
     ////////
 }
 
+*/

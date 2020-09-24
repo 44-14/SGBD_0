@@ -109,4 +109,17 @@ public class RoleEntity {
     public void setUsersById(Collection<UserEntity> usersById) {
         this.usersById = usersById;
     }
+
+
+    @Override
+    public String toString() {
+        return "RoleEntity { " +
+                "id=" + id +
+                ",label=" + label +
+                ",abbreviation=" + abbreviation +
+                ",description=" + description +
+                " } ";
+    }
+
+
 }

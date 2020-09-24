@@ -1,6 +1,7 @@
 package com.main.schoolux.services;
 
 
+import com.persistence.entities.RoleEntity;
 import com.persistence.entities.UserEntity;
 import com.persistence.entityFinderImplementation.EntityFinder;
 import com.persistence.entityFinderImplementation.EntityFinderImpl;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -34,6 +36,9 @@ public class UserService extends ServiceImpl<UserEntity> {
         super(em);
     }
 
+
+    // SETTER for protected em from superclass
+    public void setEm(EntityManager em) {super.em = em;}
 
 
     /*
@@ -73,26 +78,27 @@ public class UserService extends ServiceImpl<UserEntity> {
     @Override
     public UserEntity selectOneByIdOrNull(int id) {
 
-        LOG.debug("Select 1 user by the id : "+id);
+        LOG.debug("Select 1 user by the id : " + id);
 
         // find = read = select
 
         // Method 1 :
         // on place la référence de l'objet de type EntityFinderImpl dans un pointeur de type EntityFinder
         // qui est une interface implémentée par EntityFinderImpl => methodes factorisées
-        //EntityFinder<PermissionEntity> myEntityFinder = new EntityFinderImpl<PermissionEntity>();
+        EntityFinder<UserEntity> myEntityFinder = new EntityFinderImpl<UserEntity>();
 
         // on instancie un objet de type PermissionEntity dont les valeurs seront remplacées
         // au sein de la méthode findOne lors de l'instruction ** t = (T)em.find(ec, id); dans la classe EntityFinderImpl **  où t est myPermission
-        //UserEntity myuser = new UserEntity();
+        UserEntity myUser = new UserEntity();
 
-        //return myEntityFinder.findOne(myUser,id);
+        return myEntityFinder.findOne(myUser, id);
 
 
         // Method 2 :
 
-        return em.find(UserEntity.class, id);
+        //return em.find(UserEntity.class, id);
     }
+
 
 
 
@@ -101,8 +107,10 @@ public class UserService extends ServiceImpl<UserEntity> {
 
         // lire tous les users
         @Override
-    public List<UserEntity> selectAllOrNull() {
+        public List<UserEntity> selectAllOrNull() {
 
+        /*
+        // Method 1 mais qui détache la collection de l'entityManager vu que findByNamedQuery contient l'instruction em.close
             LOG.debug("Select all users ");
 
             EntityFinder<UserEntity> myEntityFinder = new EntityFinderImpl<UserEntity>();
@@ -114,8 +122,34 @@ public class UserService extends ServiceImpl<UserEntity> {
             return myEntityFinder.findByNamedQuery("User.selectAll", myUser, null);
 
 
-    }
 
+            LOG.debug("Select all Roles ");
+
+            EntityFinder<RoleEntity> myEntityFinder = new EntityFinderImpl<RoleEntity>();
+
+            // Instanciation nécessaire d'un objet de type RoleEntity pour le passer en argument de la méthode findByNamedQuery
+            // qui récupère le type de l'objet via l'instruction ==>  Class<? extends Object> ec = t.getClass();   où t est myRole
+            RoleEntity myRole = new RoleEntity();
+
+            return myEntityFinder.findByNamedQuery("Role.selectAll", myRole, null);
+
+         */
+
+            // Cette méthode et la méthode 2 dans les selectOneByIdOrNull vont permettre de tjrs passer un em dans le constructeur du service, et de tjrs utiliser le meme em
+            try {
+                //List<UserEntity> myUserList = em.createNamedQuery("User.selectAll", UserEntity.class)
+                //.getResultList();
+                Query query = em.createNamedQuery("User.selectAll", UserEntity.class);
+                List<UserEntity> myUserList = query.getResultList();
+
+                LOG.debug("List " + UserEntity.class.getSimpleName() + " size: " + myUserList.size());
+                LOG.debug("Find all roles from database: Ok");
+                return myUserList;
+            } catch (NoResultException e) {
+                LOG.debug("The query found no userlist to return", e);
+                return null;
+            }
+        }
 
 
 
@@ -149,5 +183,11 @@ public class UserService extends ServiceImpl<UserEntity> {
         }
     }
 
+
+
+    public void deleteLogically (UserEntity myUser) {
+        myUser.setActive(false);
+        this.update(myUser);
+    }
 
 }

@@ -92,4 +92,14 @@ public class PermissionEntity {
     public void setRolesPermissionsById(Collection<RolePermissionEntity> rolesPermissionsById) {
         this.rolesPermissionsById = rolesPermissionsById;
     }
+
+    @Override
+    public String toString() {
+        return "PermissionEntity { " +
+                "id=" + id +
+                ",label=" + label +
+                ",abbreviation=" + abbreviation +
+                ",description=" + description +
+                " } ";
+    }
 }

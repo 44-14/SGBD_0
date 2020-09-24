@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -22,14 +24,20 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
     // CONSTRUCTEURS //
 
     // 0 paramètre => dans le cas des select qui utilisent la classe EntityFinderImpl qui instancie elle-même son EntityManager (j utilise que pour selectAll
-    public PermissionService() {
-    }
-
+    //public PermissionService() {
+    //}
+    /* En fait il ne faut pas utiliser les classes EntityFinderImpl.class parce que les méthodes dedans génèrent et closent leurs em d'elles-mêmes, ce qui fait
+    qu'elles ne peuvent servir que pour faire des select. Si on veut faire un select d'une entité via .findOne pour ensuite la supprimer via .remove, ça ne fonctionnera pas
+    car l'em a été close au sein de .findOne et l'entité récupérée n'est donc plus attached au context vu qu'il est close
+     */
 
     // 1 paramètre => pour les autres opérations qui ne passent pas par  l'instanciation d'un EntityFinderImpl
     public PermissionService(EntityManager em) {
         super(em);
     }
+
+    // SETTER for protected em from superclass
+    public void setEm(EntityManager em) {super.em = em;}
 
 
 
@@ -54,6 +62,17 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
         newWorker.setRole(role);
         newWorker.setTeam(team);
         return newWorker;
+    }
+     */
+
+
+
+
+   /*Pas de champ isActive dans la table role donc les suppressions sont effectives
+    @Override
+    public void deleteLogically (PermissionEntity myPermission) {
+        myPermission.isActive = false ;
+        this.update(myPermission);
     }
      */
 
@@ -104,6 +123,9 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
         @Override
     public List<PermissionEntity> selectAllOrNull() {
 
+        /*
+        // Method 1 mais qui détache la collection de l'entityManager vu que findByNamedQuery contient l'instruction em.close
+
             LOG.debug("Select all Permissions ");
 
             EntityFinder<PermissionEntity> myEntityFinder = new EntityFinderImpl<PermissionEntity>();
@@ -114,9 +136,33 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
 
             return myEntityFinder.findByNamedQuery("Permission.selectAll", myPermission, null);
 
+     */
+
+        try {
+            //List<PermissionEntity> myPermissionList = em.createNamedQuery("Permission.selectAll", PermissionEntity.class)
+                //.getResultList();
+            Query query = em.createNamedQuery("Permission.selectAll", PermissionEntity.class);
+            List <PermissionEntity> myPermissionList = query.getResultList();
+
+            LOG.debug("List " + PermissionEntity.class.getSimpleName() + " size: " + myPermissionList.size());
+            LOG.debug("Find all permissions from database: Ok");
+            return myPermissionList;
+        } catch (NoResultException e) {
+            LOG.debug("The query found no permission list to return", e);
+            return null;
+        }
 
     }
 
+
+    /*
+    Pas de champ isActive dans la table role donc les suppressions sont effectives
+    @Override
+    public void deleteLogically (PermissionEntity myPermission) {
+        myPermission.isActive = false ;
+        this.update(myPermission);
+    }
+     */
 
 
 
@@ -149,6 +195,8 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
             throw new IllegalArgumentException("Label is empty or null");
         }
     }
+
+
 
 
 }
