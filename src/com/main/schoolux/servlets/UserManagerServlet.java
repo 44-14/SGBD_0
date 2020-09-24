@@ -7,9 +7,11 @@ import com.main.schoolux.utilitaries.MyLogUtil;
 import com.main.schoolux.utilitaries.MyURLUtil;
 import com.persistence.entities.RoleEntity;
 import com.persistence.entities.UserEntity;
+import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -117,8 +119,11 @@ public class UserManagerServlet extends HttpServlet {
         // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
         // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
 
+        // Instanciation de l'EntityManager context:
+        EntityManager em = EMF.getEM();
+
         // Instanciation du service adapté
-        UserService myUserService = new UserService();
+        UserService myUserService = new UserService(em);
 
         // Récuperation de la liste des users en db
         List<UserEntity> myUserList = myUserService.selectAllOrNull();

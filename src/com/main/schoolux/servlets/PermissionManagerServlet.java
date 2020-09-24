@@ -133,7 +133,7 @@ public class PermissionManagerServlet extends HttpServlet {
         //if (actionForm==null || actionForm.isEmpty())
         {
             LOG.debug("The form button action is null or empty \nRedirecting to /permission"); // POST devient GET via sendRedirect
-            request.getSession(true).setAttribute("redirectErrorMEssage","Aucune action du formulaire n'a été récupérée");
+            request.getSession(true).setAttribute("redirectErrorMessage","Aucune action du formulaire n'a été récupérée");
         }
         else {
             LOG.debug("Form button action : "+actionForm);
@@ -375,7 +375,7 @@ public class PermissionManagerServlet extends HttpServlet {
                 request.getRequestDispatcher(PERMISSION_EDIT_VIEW).forward(request, response);
             }
             else {
-                request.getSession(true).setAttribute("redirectErrorMEssage", "La permission récupérée n'a pas pu être transformé en populating permission");
+                request.getSession(true).setAttribute("redirectErrorMessage", "La permission récupérée n'a pas pu être transformé en populating permission");
             }
         }
         else {
@@ -425,7 +425,7 @@ public class PermissionManagerServlet extends HttpServlet {
 
 
     // switch POST
-    // OK
+    // fonctionne
     // Supprimer une permission (de manière effective)
     private void deleteOnePermission(HttpServletRequest request, HttpServletResponse response, int idPermission) throws ServletException, IOException {
 

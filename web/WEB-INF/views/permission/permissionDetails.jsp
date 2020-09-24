@@ -26,6 +26,10 @@
                     type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>
     </form>
 
+    <a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/permission"> Retour liste</a>
+
+
+
 
     <!-- Table contenant les données d'une permission -->
     <table class="permission table  table-dark table-hover">  <!-- autre value de attribut class : table-striped -->
@@ -33,11 +37,11 @@
         <tbody>
 
             <tr>
-                <td>ID : </td>
+                <td>ID :  </td>
                 <td> <c:out value="${requestScope.myPermissionRequestKey.id}"/> </td>
             </tr>
             <tr>
-                <td>Label : </td>
+                <td>Label :  </td>
                 <td><c:out value="${requestScope.myPermissionRequestKey.label}"/></td>
             </tr>
             <tr>

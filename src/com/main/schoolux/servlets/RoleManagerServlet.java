@@ -143,7 +143,7 @@ public class RoleManagerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         MyLogUtil.enterServlet(this,new Exception(),request);
-        LOG.debug("Invoker : " +Invoker.getInvoker().toString()); // à tester
+
 
         String actionForm = request.getParameter("actionFromForm"); // actionFromForm = button name attribute in .jsp
         LOG.debug("Form button action : " + actionForm);
@@ -152,7 +152,7 @@ public class RoleManagerServlet extends HttpServlet {
         //if (actionForm==null || actionForm.isEmpty())
         {
             LOG.debug("The form button action is null or empty \nRedirecting to /role"); // POST devient GET via sendRedirect
-            request.getSession(true).setAttribute("redirectErrorMEssage","Aucune action du formulaire n'a été récupérée");
+            request.getSession(true).setAttribute("redirectErrorMessage","Aucune action du formulaire n'a été récupérée");
         }
         else {
             LOG.debug("Form button action : "+actionForm);
@@ -241,8 +241,12 @@ public class RoleManagerServlet extends HttpServlet {
         // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
         // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
 
+
+        // Instanciation de l'EntityManager context:
+        EntityManager em = EMF.getEM();
+
         // Instanciation du service adapté
-        RoleService myRoleService = new RoleService();
+        RoleService myRoleService = new RoleService(em);
 
         // Récuperation de la liste des roles en db
         List<RoleEntity> myRoleList = myRoleService.selectAllOrNull();
@@ -289,8 +293,11 @@ public class RoleManagerServlet extends HttpServlet {
         // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
         // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
 
+        // Instanciation de l'EntityManager context:
+        EntityManager em = EMF.getEM();
+
         // Instanciation du service adapté
-        RoleService myRoleService = new RoleService();
+        RoleService myRoleService = new RoleService(em);
 
         // Recupéreration du role ayant cet id en db
         RoleEntity returnedRole = myRoleService.selectOneByIdOrNull(idRole);
@@ -369,8 +376,11 @@ public class RoleManagerServlet extends HttpServlet {
         // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
         // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
 
+        // Instanciation de l'EntityManager context:
+        EntityManager em = EMF.getEM();
+
         // Instanciation du service adapté
-        RoleService myRoleService = new RoleService();
+        RoleService myRoleService = new RoleService(em);
 
         // Recupéreration du role ayant cet id en db
         RoleEntity returnedRole = myRoleService.selectOneByIdOrNull(idRole);
@@ -382,7 +392,7 @@ public class RoleManagerServlet extends HttpServlet {
                 request.getRequestDispatcher(ROLE_EDIT_VIEW).forward(request, response);
             }
             else {
-                request.getSession(true).setAttribute("redirectErrorMEssage", "Le rôle récupéré n'a pas pu être transformé en populating role");
+                request.getSession(true).setAttribute("redirectErrorMessage", "Le rôle récupéré n'a pas pu être transformé en populating role");
             }
         }
         else {
@@ -406,8 +416,11 @@ public class RoleManagerServlet extends HttpServlet {
         // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
         // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
 
+        // Instanciation de l'EntityManager context:
+        EntityManager em = EMF.getEM();
+
         // Instanciation du service adapté
-        RoleService myRoleService = new RoleService();
+        RoleService myRoleService = new RoleService(em);
 
         // Recupéreration du role ayant cet id en db
         RoleEntity returnedRole = myRoleService.selectOneByIdOrNull(idRole);
@@ -438,15 +451,18 @@ public class RoleManagerServlet extends HttpServlet {
         // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
         // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
 
+        // Instanciation de l'EntityManager context:
+        EntityManager em = EMF.getEM();
+
         // Instanciation du service adapté
-        RoleService myRoleService = new RoleService();
+        RoleService myRoleService = new RoleService(em);
 
         // Recupéreration du role ayant cet id en db
         RoleEntity returnedRole = myRoleService.selectOneByIdOrNull(idRole);
         if (returnedRole != null) {
 
-            EntityManager em = EMF.getEM();
-            myRoleService.setEm(em); // car le service qu'on a instancié avant utilisait EntityImpl qui génère son propre em et le close , mais pour le delete on passera par ServiceImpl.class auquel il faut fourni l'em
+            //EntityManager em = EMF.getEM();
+            //myRoleService.setEm(em); // car le service qu'on a instancié avant utilisait EntityImpl qui génère son propre em et le close , mais pour le delete on passera par ServiceImpl.class auquel il faut fourni l'em
 
             EntityTransaction et = null;  // nécessaire de le faire avant le try pour pouvoir y accéder dans le finally, sinon la variable 'et' serait locale au try
 

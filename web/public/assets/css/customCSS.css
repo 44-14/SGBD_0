@@ -100,18 +100,15 @@ div.pageInfo > h2 {
 
 }
 
-a.btn.alreadySignedIn {
-    font-size : 20px;
-    width : 50%;
-    padding: 12px;
-}
+
 
 table {
     margin-top : 50px;
 }
 
 table.permission {
-    background-color: #101010;
+    background-color: #0A0A0F;
+    border : 15px solid black;
 }
 table.permission > thead > tr > th {
     color : orange ;
@@ -139,7 +136,7 @@ table.permission.table-hover > tbody > tr > td :hover {
     float : right;
 }
 
-form > button.myFormActionButton {
+form#aboveTableForm > button.myFormActionButton {
 
     display : block;
     margin : 30px 10px;
@@ -147,10 +144,32 @@ form > button.myFormActionButton {
     float : right;
 }
 
-form > td > button.myFormActionButton {
-    width : 75%;  /* of <td> */
-    height: 75%;
+#retourListe {
+    float : left;
     font-size : 20px;
+    margin : 30px 10px;
+}
+
+
+
+td > form > button.myFormActionButton {
+
+    /*display : block;*/
+    margin : 10px 10px;
+    font-size: 20px;
+    /*float : right;*/
+}
+
+td > form > button.myFormActionButton {
+    width : 22%;  /* of <td> */
+
+    font-size : 20px;
+}
+
+table.table-dark > tbody > tr > td {
+
+
+    margin : 0 auto;
 }
 
 
