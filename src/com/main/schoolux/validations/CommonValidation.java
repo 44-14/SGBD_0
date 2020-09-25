@@ -76,7 +76,7 @@ public class CommonValidation {
     }
 
 
-    public static List<Integer> CheckIds_SelectMultiple(String[] selectedRoles, String inputLabel, Map<String, String> errors, Map<String, String> valids) {
+    public static List<Integer> CheckIds_SelectMultiple(String[] selectedRoles,String inputLabel, List<Integer> selectedRolesIdList , Map<String, String> errors, Map<String, String> valids) {
 
         int startErrorsNumber = errors.size();
 
@@ -85,15 +85,13 @@ public class CommonValidation {
             return null;
         }
 
-        List<Integer> myIdsAsIntList = new ArrayList<Integer>();
-
         for (String idRole : selectedRoles) {
             int idChecked = CommonValidation.checkValid_Id(idRole);
             if (idChecked == -1) {
                 LOG.debug("Un des id n'est pas parsable");
                 return null;
             } else {
-                myIdsAsIntList.add(idChecked);
+                selectedRolesIdList.add(idChecked);
             }
         }
         if (errors.size() > startErrorsNumber) {
@@ -102,7 +100,7 @@ public class CommonValidation {
         } else {
             valids.put(inputLabel + "Valid", "Les rôles étaient valides");
         }
-        return myIdsAsIntList;
+        return selectedRolesIdList;
     }
 }
 

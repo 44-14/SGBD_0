@@ -47,13 +47,16 @@
             </div>
         </div>
     </div>
+
+
     <div class="form-row">
         <div id="roleList" class="col-md-12 mb-6">
             <label for="validationServer04">Rôles : (maintenir ctrl pour selection multiple)</label>
             <select class="custom-select is-invalid" multiple id="validationServer04" name ="rolesFromForm" aria-describedby="validationServer04Feedback" required>
+
                 <option selected disabled value="">Attribuez à un ou plusieurs rôles</option>
                 <c:forEach  var="role"    items="${sessionScope.myRoleListForSelectInputSessionKey}" >
-                    <option value="${role.label}">  <c:out value="${role.label}"/> </option>
+                    <option value="${role.id}">  <c:out value="${role.label}"/> </option>
                 </c:forEach>
             </select>
             <div id="validationServer04Feedback" class="invalid-feedback">
@@ -61,6 +64,7 @@
             </div>
         </div>
     </div>
+
 
     <button class="myFormActionButton btn btn-outline-success " name="actionFromForm" value="createOne" type="submit">Valider</button>
 </form>

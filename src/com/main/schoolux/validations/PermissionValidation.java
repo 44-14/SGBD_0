@@ -4,6 +4,7 @@ import com.main.schoolux.services.RoleService;
 import com.main.schoolux.utilitaries.MyIntUtil;
 import com.persistence.entities.PermissionEntity;
 import com.persistence.entities.RoleEntity;
+import com.persistence.entities.RolePermissionEntity;
 import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Logger;
 
@@ -43,7 +44,7 @@ public class PermissionValidation {
     }
 
 
-    public static PermissionEntity toCreatePermission(HttpServletRequest request) {
+    public static PermissionEntity toCreatePermission(HttpServletRequest request, List<Integer> selectedRolesIdList) {
 
         Map<String, String> myValidAttributes = new HashMap<String, String>();
         Map<String, String> myErrors = new HashMap<String, String>();
@@ -81,9 +82,10 @@ public class PermissionValidation {
         );
 
 
-        List<Integer> myRolesIdsChecked = CommonValidation.CheckIds_SelectMultiple(
+        selectedRolesIdList = CommonValidation.CheckIds_SelectMultiple(
                 request.getParameterValues("rolesFromForm"),
                 "rolesFromForm",
+                selectedRolesIdList,
                 myErrors,
                 myValidAttributes);
 
@@ -95,9 +97,8 @@ public class PermissionValidation {
         // si myErrors.size() !=0 alors object.data = dataInput;
 
 
-
         if (myErrors.size() != 0) {
-            LOG.debug("Errors : "+myErrors.size());
+            LOG.debug("Errors : " + myErrors.size());
             // Stockage des inputs valides et des messages d'erreur dans l'objet request ou session
             // on prend request vu que les errors et valids ne servent ici que dans la jsp de réponse
             // Voir notes.txt => DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
@@ -107,7 +108,7 @@ public class PermissionValidation {
             //request.getSession().setAttribute("myValidAttributesSessionKey", myValidAttributes);
 
             // Mise à null de l'objet qui sert de retour à la méthode
-            processedPermission=null;
+            processedPermission = null;
 
         } else {
 
@@ -115,50 +116,116 @@ public class PermissionValidation {
             processedPermission.setAbbreviation(request.getParameter("abbreviationFromForm"));
             processedPermission.setDescription(request.getParameter("descriptionFromForm"));
 
-            List <RoleEntity> myRoleList = (List<RoleEntity>) request.getSession().getAttribute("myRoleListForSelectInputSessionKey");
 
-            for (int selectedRoleId : myRolesIdsChecked)
-                for (:
-                     ) {
 
+            /*
+                PROCEDURE POUR LES ROLES DU SELECT MULTIPLE
+                DANS LA VALIDATION :
+                Recuperer les id via getParameterValues(nomAttribut) + les vérifier + modifier la List<Integer> selectedRolesIdList reçue en paramètre
+                Comme la référence ne change pas, on pourra accéder à cette liste depuis le controlleur meme sans en faire un return ici
+                Retourner la permission completée (label - abbreviation - description) ou null si fail
+                DANS LE CONTROLLER
+                Ouvrir transaction
+                Persister la permission + récupérer l'entityPermission nouvellement créer ayant aussi un id (ou est ce qu'un objet persisté est modifié directement ? à verif
+                Instancier un RoleService
+                boucler sur la liste d'id de roles selectionnés
+                faire un selectOne à chaque itération,
+                si le retour n'est pas null on instancie un RolePermissionEntity avec le role retourné par selectOne + la permission retournée qu on vient de créer
+                on persiste le RolePErmissionEntity à chaque tour
+                on ferme la transaction try catch etc
+
+            */
+
+
+
+            /* CODE A METTRE DANS LE CONTROLLEUR POUR LES ROLES DU SELECT SIMPLE
+
+            for (Integer selectedRoleId : selectedRolesIdList)
+            {
+                EntityManager em = EMF.getEM(); // ATTENTION : englober toute la transaction avec cet em
+                RoleService myRoleService = new RoleService(em);
+                 //List<RoleEntity> myRoleList = (ArrayList<RoleEntity>) request.getSession().getAttribute("myRoleListForSelectInputSessionKey"); // abandonné
+                 List<RoleEntity> myRoleList = myRoleService.selectAllOrNull();
+                for (RoleEntity myRole : myRoleList)
+                {
+                    if (selectedRoleId == myRole.getId()){
+                    RolePermissionEntity myRolePermission = new RolePermissionEntity();
+                    myRolePermission.setRolesByIdRole(myRole);
+                    myRolePermission.setPermissionsByIdPermission(newlyCreatedPermission);
+                    persis etc
+                    }
                 }
-                 ) {
-
-            }myRolesIdsChecked
-
-
-
-
-            ; String[] selected = r;
-            if (selected != null)
-            {
-                List <RoleEntity> myRoleList = (List<RoleEntity>) request.getSession().getAttribute("myRoleListForSelectInputSessionKey");
-
-                processedPermission.getRolesPermissionsById().add(myRolePermissionEntity);
-            }
-            EntityManager em = EMF.getEM();
-
-
-            for ( String role : selected)
-            {
-                request.getSession(""
             }
 
-
-
-
-
-
-
-
-
+             */
         }
-
         return processedPermission;
 
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  POUR ROLES DU SELECT MULTIPLE
+
+    List <RoleEntity> myRoleList = (List<RoleEntity>) request.getSession().getAttribute("myRoleListForSelectInputSessionKey");
+
+            for (int selectedRoleId : myRolesIdsChecked)
+                    for (:
+                    ) {
+
+                    }
+                    ) {
+
+                    }myRolesIdsChecked
+
+
+
+
+                    ; String[] selected = r;
+                    if (selected != null)
+                    {
+                    List <RoleEntity> myRoleList = (List<RoleEntity>) request.getSession().getAttribute("myRoleListForSelectInputSessionKey");
+
+        processedPermission.getRolesPermissionsById().add(myRolePermissionEntity);
+        }
+        EntityManager em = EMF.getEM();
+
+
+        for ( String role : selected)
+        {
+        request.getSession(""
+        }
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

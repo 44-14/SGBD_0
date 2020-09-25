@@ -3,6 +3,20 @@ package com.persistence.entities;
 import javax.persistence.*;
 import java.util.Objects;
 
+
+
+@NamedQueries(
+        value = {
+                @NamedQuery(name = "RolePermission.selectAll",
+                        query = "SELECT rp from RolePermissionEntity rp"),
+                @NamedQuery(name = "RolePermission.selectOneById",
+                        query = "SELECT rp from RolePermissionEntity  rp where rp.id = :id")
+
+        }
+
+)
+
+
 @Entity
 @Table(name = "roles_permissions", schema = "schoolux", catalog = "")
 public class RolePermissionEntity {

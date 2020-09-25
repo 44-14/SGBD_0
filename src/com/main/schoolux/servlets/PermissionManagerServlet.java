@@ -2,6 +2,7 @@ package com.main.schoolux.servlets;
 
 import com.AppConfig;
 import com.main.schoolux.services.PermissionService;
+import com.main.schoolux.services.RolePermissionService;
 import com.main.schoolux.services.RoleService;
 import com.main.schoolux.utilitaries.MyLogUtil;
 import com.main.schoolux.utilitaries.MyStringUtil;
@@ -11,6 +12,7 @@ import com.main.schoolux.validations.PermissionValidation;
 import com.main.schoolux.validations.RoleValidation;
 import com.persistence.entities.PermissionEntity;
 import com.persistence.entities.RoleEntity;
+import com.persistence.entities.RolePermissionEntity;
 import com.persistence.entityFinderImplementation.EMF;
 import com.sun.deploy.net.HttpRequest;
 import org.apache.log4j.Logger;
@@ -341,12 +343,28 @@ public class PermissionManagerServlet extends HttpServlet {
     // Créer une nouvelle permission
     private void createOnePermission(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // faire les validations ? donc faudrait peut-être pas recevoir le role en paramètre ici vu qu on va le créer via la request en passant par la validation
+        /*
+                PROCEDURE POUR LES ROLES DU SELECT MULTIPLE
+                DANS LA VALIDATION :
+                Recuperer les id via getParameterValues(nomAttribut) + les vérifier + modifier la List<Integer> selectedRolesIdList reçue en paramètre
+                Comme la référence ne change pas, on pourra accéder à cette liste depuis le controlleur meme sans en faire un return ici
+                Retourner la permission completée (label - abbreviation - description) ou null si fail
+                DANS LE CONTROLLER
+                Ouvrir transaction
+                Persister la permission + récupérer l'entityPermission nouvellement créer ayant aussi un id (ou est ce qu'un objet persisté est modifié directement ? à verif
+                Instancier un RoleService
+                boucler sur la liste d'id de roles selectionnés
+                faire un selectOne à chaque itération,
+                si le retour n'est pas null on instancie un RolePermissionEntity avec le role retourné par selectOne + la permission retournée qu on vient de créer
+                on persiste le RolePErmissionEntity à chaque tour
+                on ferme la transaction try catch etc
 
+            */
+        List<Integer> selectedRolesIdList = new ArrayList<Integer>();
 
-        PermissionEntity validatedPermission = PermissionValidation.toCreatePermission(request);
-        // serait le retour de la validation  // validation method statique ou pas ?
-        // sachant que chaque session appelle la meme instance de servlet qui fait un multi threading sur les doGet doPost, je pense que statique = ok vu que tout se passe dans la methode, la classe validation n a aucun champ privé qui serait propre à chaque instance en particulier
+        // Statique ou pas ?  sachant que chaque session appelle la meme instance de servlet qui fait un multi threading sur les doGet doPost, je pense que statique = ok vu que tout se passe dans la methode, la classe validation n a aucun champ privé qui serait propre à chaque instance en particulier
+        PermissionEntity validatedPermission = PermissionValidation.toCreatePermission(request,selectedRolesIdList);
+
         if (validatedPermission==null)
         {
             LOG.debug("Object failed validations");
@@ -355,20 +373,61 @@ public class PermissionManagerServlet extends HttpServlet {
         else
         {
             LOG.debug("Object successed validations");
+
             EntityManager em = EMF.getEM();
 
             // Instanciation du service adapté
-            PermissionService myPermissionService = new PermissionService(em);
-
+            //PermissionService myPermissionService = new PermissionService(em);
             EntityTransaction et = null;  // nécessaire de le faire avant le try pour pouvoir y accéder dans le finally, sinon la variable 'et' serait locale au try
 
             try {
 
                 et = em.getTransaction();
                 et.begin();
-
+                // Instanciation du service adapté
+                PermissionService myPermissionService = new PermissionService(em);
+                LOG.debug("validatedPermission id avant insert : "+validatedPermission.getId()); // retourne 0
                 myPermissionService.insert(validatedPermission);
+                LOG.debug("validatedPermission id après insert : "+validatedPermission.getId()); // retourne 0 donc pas de modif malgré le persist()
+                // POUR LES ROLES DU SELECT MULTIPLE
 
+                // Pour pas en instancier un dans chaque itération de boucle
+                RolePermissionService myRolePermissionService = new RolePermissionService(em);
+                for (Integer selectedRoleId : selectedRolesIdList)
+                {
+                    LOG.debug("Dans la boucle 1 ");
+                    RoleService myRoleService = new RoleService(em);
+                    //List<RoleEntity> myRoleList = (ArrayList<RoleEntity>) request.getSession().getAttribute("myRoleListForSelectInputSessionKey"); // abandonné
+                    //List<RoleEntity> myRoleList = myRoleService.selectAllOrNull(); // ou faire un selectOne simple sur chaque id dans la boucle, c mieux
+                    //LOG.debug("Role list size : "+myRoleList.size());
+                    RoleEntity myRole = myRoleService.selectOneByIdOrNull(selectedRoleId);
+                    if (myRole!=null)
+                    {
+                        LOG.debug("Dans le if : correspondance trouvée : selectedRoleId = "+selectedRoleId+" donne l'entité : "+myRole.toString());
+                        RolePermissionEntity myRolePermission = new RolePermissionEntity();
+                        myRolePermission.setRolesByIdRole(myRole);
+                        myRolePermission.setPermissionsByIdPermission(validatedPermission);
+                        myRolePermissionService.insert(myRolePermission);
+                    }
+
+
+                    /*for (RoleEntity myRole : myRoleList)
+                    {
+                        LOG.debug("Dans la boucle avant if : selectedRoleId = "+selectedRoleId+" et myRole.getId() = "+myRole.getId());
+                        if (selectedRoleId == myRole.getId()){
+                            LOG.debug("Dans la boucle : correspondance trouvée : selectedRoleId = "+selectedRoleId+" et myRole.getId() = "+myRole.getId());
+                            RolePermissionEntity myRolePermission = new RolePermissionEntity();
+                            myRolePermission.setRolesByIdRole(myRole);
+                            myRolePermission.setPermissionsByIdPermission(validatedPermission);
+                            RolePermissionService myRolePermissionService = new RolePermissionService(em);
+                            myRolePermissionService.insert(myRolePermission);
+
+
+                        }
+                    }
+                     */
+                }
+                // FIN SELECT MULTIPLE
                 et.commit();
                 request.getSession(true).setAttribute("redirectSuccessMessage", " La permission a bien été créé"); // en session finalement pour l'afficher meme après un sendRedirect
 
@@ -378,6 +437,12 @@ public class PermissionManagerServlet extends HttpServlet {
                 LOG.debug(e);
                 request.getSession(true).setAttribute("redirectErrorMessage", " La permission n'a pas été créé");
             } finally {
+                LOG.debug("em open ? : "+em.isOpen());
+                if (em.isOpen())
+                {
+                    em.close();
+                    LOG.debug("em open ? : "+em.isOpen());
+                }
                 if (et != null && et.isActive()) {
                     et.rollback();
                 }
