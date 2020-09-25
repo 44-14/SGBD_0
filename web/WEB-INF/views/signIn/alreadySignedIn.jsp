@@ -12,7 +12,7 @@
         <br/> Role : ${sessionScope.signedUser.rolesByIdRole.label}
     </p>
 
-    <div class ="">
+    <div class ="margin-div">
         <a href="${pageContext.request.contextPath}/home" class="btn btn-sm btn-outline-success alreadySignedIn" name="" >
                 Retour vers l'accueil
         </a>

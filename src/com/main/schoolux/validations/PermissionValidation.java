@@ -1,10 +1,18 @@
 package com.main.schoolux.validations;
 
+import com.main.schoolux.services.RoleService;
+import com.main.schoolux.utilitaries.MyIntUtil;
 import com.persistence.entities.PermissionEntity;
 import com.persistence.entities.RoleEntity;
+import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Logger;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /* Amelioration :
@@ -22,12 +30,6 @@ public class PermissionValidation {
     private final static Logger LOG = Logger.getLogger(PermissionValidation.class);
 
 
-    public static PermissionEntity toCreatePermission(HttpServletRequest request) {
-        PermissionEntity processedPermission = new PermissionEntity();
-        return processedPermission;
-    }
-
-
     public static PermissionEntity toEditPermission(HttpServletRequest request) {
         PermissionEntity processedPermission = new PermissionEntity();
         return processedPermission;
@@ -40,6 +42,122 @@ public class PermissionValidation {
         return populatingPermission;
     }
 
+
+    public static PermissionEntity toCreatePermission(HttpServletRequest request) {
+
+        Map<String, String> myValidAttributes = new HashMap<String, String>();
+        Map<String, String> myErrors = new HashMap<String, String>();
+
+        PermissionEntity processedPermission = new PermissionEntity();
+
+
+        /// APPELS AUX METHODES DE VALIDATION POUR CHAQUE PARAMETRE
+
+        CommonValidation.checkEmptyAndLength_Input(
+                request.getParameter("labelFromForm"),
+                "labelFromForm",
+                5,
+                100,
+                myErrors,
+                myValidAttributes
+        );
+
+        CommonValidation.checkEmptyAndLength_Input(
+                request.getParameter("abbreviationFromForm"),
+                "abbreviationFromForm",
+                6,
+                10,
+                myErrors,
+                myValidAttributes
+        );
+
+        CommonValidation.checkLength_Input(
+                request.getParameter("descriptionFromForm"),
+                "descriptionFromForm",
+                0,
+                2000,
+                myErrors,
+                myValidAttributes
+        );
+
+
+        List<Integer> myRolesIdsChecked = CommonValidation.CheckIds_SelectMultiple(
+                request.getParameterValues("rolesFromForm"),
+                "rolesFromForm",
+                myErrors,
+                myValidAttributes);
+
+
+        // ParticularValidation pour des champs précis qui eux retourneraient cette validation
+        // genre en méthode privée ici
+        // private String checkData_Input ( request,myErrors,myValidAttributes)
+        // appel :  String dataInput = this.checkData_Input(req,myErrors,myValidAttributs)
+        // si myErrors.size() !=0 alors object.data = dataInput;
+
+
+
+        if (myErrors.size() != 0) {
+            LOG.debug("Errors : "+myErrors.size());
+            // Stockage des inputs valides et des messages d'erreur dans l'objet request ou session
+            // on prend request vu que les errors et valids ne servent ici que dans la jsp de réponse
+            // Voir notes.txt => DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
+            request.setAttribute("myErrorsRequestKey", myErrors);
+            request.setAttribute("myValidAttributesRequestKey", myValidAttributes);
+            //request.getSession().setAttribute("myErrorsSessionKey", myErrors);
+            //request.getSession().setAttribute("myValidAttributesSessionKey", myValidAttributes);
+
+            // Mise à null de l'objet qui sert de retour à la méthode
+            processedPermission=null;
+
+        } else {
+
+            processedPermission.setLabel(request.getParameter("labelFromForm"));
+            processedPermission.setAbbreviation(request.getParameter("abbreviationFromForm"));
+            processedPermission.setDescription(request.getParameter("descriptionFromForm"));
+
+            List <RoleEntity> myRoleList = (List<RoleEntity>) request.getSession().getAttribute("myRoleListForSelectInputSessionKey");
+
+            for (int selectedRoleId : myRolesIdsChecked)
+                for (:
+                     ) {
+
+                }
+                 ) {
+
+            }myRolesIdsChecked
+
+
+
+
+            ; String[] selected = r;
+            if (selected != null)
+            {
+                List <RoleEntity> myRoleList = (List<RoleEntity>) request.getSession().getAttribute("myRoleListForSelectInputSessionKey");
+
+                processedPermission.getRolesPermissionsById().add(myRolePermissionEntity);
+            }
+            EntityManager em = EMF.getEM();
+
+
+            for ( String role : selected)
+            {
+                request.getSession(""
+            }
+
+
+
+
+
+
+
+
+
+        }
+
+        return processedPermission;
+
+
+    }
 }
 
 
@@ -48,91 +166,7 @@ public class PermissionValidation {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Validations liées à la connexion d'un utilisateur
-     **/
- /*   public static UserEntity ToSignIn(HttpServletRequest request) {
-
-
-        LOG.info("=== START - ToSignIn() in UserValidation ===");
-
-        Map<String, String> myValidAttributes = new HashMap<String, String>();
-        Map<String, String> myErrors = new HashMap<String, String>();
-
-        UserEntity myUser = new UserEntity();
-
-
-        //////////
-        /// APPELS AUX METHODES DE VALIDATION POUR CHAQUE PARAMETRE
-        //////////
-
-
-        CommonValidation.checkEmptyAndLength_Input(
-                request.getParameter("usernameFromForm"),
-                "usernameFromForm",
-                5,
-                50,
-                myErrors,
-                myValidAttributes
-        );
-
-
-        CommonValidation.checkEmptyAndLength_Input(
-                request.getParameter("passwordFromForm"),
-                "passwordFromForm",
-                3,
-                50,
-                myErrors,
-                myValidAttributes
-        );
-
-
-        if (myErrors.size() != 0) {
-            LOG.debug("Errors : "+myErrors.size());
-            // Stockage des inputs valides et des messages d'erreur dans l'objet request ou session  (choisir) : on prend request vu que les errors et valids ne servent ici que dans la jsp de réponse
-            // Voir notes.txt => DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
-            request.setAttribute("myErrorsRequestKey", myErrors);
-            request.setAttribute("myValidAttributesRequestKey", myValidAttributes);
-            //request.getSession().setAttribute("myErrorsSessionKey", myErrors);
-            //request.getSession().setAttribute("myValidAttributesSessionKey", myValidAttributes);
-
-            // Mise à null de l'objet qui sert de retour à la méthode
-            myUser = null;
-
-        } else {
-            myUser.setUsername(request.getParameter("usernameFromForm"));
-            myUser.setPassword(request.getParameter("passwordFromForm"));
-        }
-
-        LOG.info("=== END -  ToSignIn() in UserValidation ===");
-        return myUser;
-
-
-    }
-
-
-
-
-
-
+/*
 
 
     /////////

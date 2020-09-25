@@ -9,33 +9,40 @@
 
 -->
 
-    <c:when test="${not empty sessionScope.redirectErrorMessage">
-        <div class="errorMessage">
-            <p class="redAlert> <c:out value="${sessionScope.redirectErrorMessage}"/> </p>
-        </div>
-    </c:>
-    <c:when test="${not empty sessionScope.redirectSuccessMessage}">
-        <div class="successMessage">
-        <p class="redAlert> <c:out value="${sessionScope.redirectErrorMessage}"/> </p>
-        </div>
-        </c:>
-
-
-
 <div class="pageInfo">
     <h2 class="pageInfo"> Liste des permissions </h2>
+    <a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/permission/createOne_getForm"> Créer une nouvelle permission</a>
 </div>
 
 
 
+<c:choose>
+    <c:when test="${not empty sessionScope.redirectErrorMessage}">
+        <div class="errorMessage">
+            <p class="redAlert>"> <c:out value="${sessionScope.redirectErrorMessage}"/> </p>
+        </div>
+    </c:when>
+    <c:when test="${not empty sessionScope.redirectSuccessMessage}">
+        <div class="successMessage">
+        <p class="greenAlert"> <c:out value="${sessionScope.redirectSuccessMessage}"/> </p>
+        </div>
+    </c:when>
+</c:choose>
+
+
+
+
+
+
+
         <!-- Table contenant listant les permissions avec infos sommaires -->
-        <table class="permission table  table-dark table-hover">  <!-- autre value de attribut class : table-striped -->
+        <table class="dataList table  table-dark table-hover">  <!-- autre value de attribut class : table-striped -->
 
                 <thead>
                     <tr>
                         <th> ID </th>
-                        <th> Label</th>
                         <th> Code</th>
+                        <th> Label</th>
                         <th> Action</th>
                     </tr>
                 </thead>

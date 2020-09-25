@@ -113,7 +113,7 @@ public class RoleEntity {
 
     @Override
     public String toString() {
-        return "RoleEntity { " +
+        return "\nRoleEntity { " +
                 "id=" + id +
                 ",label=" + label +
                 ",abbreviation=" + abbreviation +

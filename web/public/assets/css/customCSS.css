@@ -101,32 +101,48 @@ div.pageInfo > h2 {
 }
 
 
+.successMessage,.errorMessage {
+    margin-top : 80px;
+}
+
+.margin-div-1 {
+    margin-top: 80px;
+    margin-bottom: 30px;
+}
+.alreadySignedIn {
+    width : 50%;
+    font-size: 25px;
+}
+
+
 
 table {
     margin-top : 50px;
 }
 
-table.permission {
+table.dataList, table.role {
     background-color: #0A0A0F;
     border : 15px solid black;
 }
-table.permission > thead > tr > th {
+table.dataList > thead > tr > th {
     color : orange ;
 }
-table.permission > tbody > tr > td {
+table.dataList > tbody > tr > td {
     color : dodgerblue;
 }
 
 
+
+
 /*
-table.permission.table-hover > tbody > tr :hover {
+table.dataList.table-hover > tbody > tr :hover {
     background-color: dodgerblue;
     color : black
 }
  */
 
 /*
-table.permission.table-hover > tbody > tr > td :hover {
+table.dataList.table-hover > tbody > tr > td :hover {
         background-color: dodgerblue;
         color : black;
 }-
@@ -136,6 +152,11 @@ table.permission.table-hover > tbody > tr > td :hover {
     float : right;
 }
 
+
+.myFormActionButton {
+    font-size : 20px;
+    margin : 30px;
+}
 form#aboveTableForm > button.myFormActionButton {
 
     display : block;
@@ -147,7 +168,7 @@ form#aboveTableForm > button.myFormActionButton {
 #retourListe {
     float : left;
     font-size : 20px;
-    margin : 30px 10px;
+    margin : 20px 10px;
 }
 
 
@@ -170,6 +191,31 @@ table.table-dark > tbody > tr > td {
 
 
     margin : 0 auto;
+}
+
+
+#roleList {
+    margin-top : 50px;
+}
+
+select.custom-select.is-invalid {
+    color : orange;
+    background-color: black;
+    border: 1px solid orange;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px white;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px white;
 }
 
 

@@ -21,8 +21,8 @@
 
 
     <c:choose>
-        <c:when test="${pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/')
-                     || pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/')}">
+        <c:when test="${pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/signIn')
+                     || pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/signIn')}">
               <%--   || pageContext.request.servletPath == '/WEB-INF/views/signIn/signInForm.jsp'
                      || pageContext.request.servletPath == '/WEB-INF/views/signIn/signInConfirmation.jsp'
                      || pageContext.request.servletPath == '/WEB-INF/views/signUp/signUpForm.jsp'
@@ -32,8 +32,8 @@
             <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/public/assets/css/customLandingCSS.css' />
         </c:when>
         
-        <c:when test="${!pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/')
-                     &&!pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/')}">
+        <c:when test="${!pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/signIn')
+                     &&!pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/signUp')}">
             <%--
                      && pageContext.request.servletPath != '/WEB-INF/views/signIn/signInForm.jsp'
                      && pageContext.request.servletPath != '/WEB-INF/views/signIn/signInConfirmation.jsp'
@@ -51,8 +51,8 @@
 <div class="container">
 
     <!-- Include de la navbar sauf pour les signIn - signUp views -->
-    <c:if test="${!pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/')
-                &&!pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/')}">
+    <c:if test="${!pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/signIn')
+                &&!pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/signUp')}">
     <%--
                 && pageContext.request.servletPath != '/WEB-INF/views/signIn/signInConfirmation.jsp'
                 && pageContext.request.servletPath != '/WEB-INF/views/signIn/signInConfirmation.jsp'

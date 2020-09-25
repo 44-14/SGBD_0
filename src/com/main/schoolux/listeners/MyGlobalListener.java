@@ -124,7 +124,7 @@ public class MyGlobalListener implements ServletContextListener,
          is removed from a session.
       */
         LOG.log(Level.DEBUG,
-                "LISTENER *** Session attribute deleted : ***  : \nAttribute key "+sbe.getName()+"\nAttribute value : "+sbe.getValue());
+                "LISTENER *** Session attribute deleted : ***  : \nRemoved attribute key "+sbe.getName()+"\nRemoved attribute value : "+sbe.getValue());
 
 
     }

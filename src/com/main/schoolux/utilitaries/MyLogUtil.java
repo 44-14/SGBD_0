@@ -5,6 +5,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
@@ -20,6 +21,11 @@ public class MyLogUtil {
     LOG.log(Level.DEBUG,"monMessage");
      */
 
+    /**
+     * Log formatting :  display some request informations
+     * @param req
+     */
+
     public static void enterFilter(HttpServletRequest req) {
 
         LOG.debug("========================== ENTERING AUTHENTICATION FILTER ===============================" +
@@ -32,17 +38,21 @@ public class MyLogUtil {
     }
 
 
+    /**
+     * Log formatting
+     */
     public static void exitFilter() {
         LOG.debug("========================== EXITING AUTHENTICATION FILTER ===============================");
     }
 
 
     /**
-     * Permet d'afficher la méthode et le type de la servlet en cours d'exécution
-     * @param o l'instance de la servlet this
+     * Log formatting :  display the current running method and the current running servlet type
+     * @param o servlet instance this
      * @param e new exception ()
+     * @param req
      */
-    public static void enterServlet(Object o, Exception e) {
+    public void enterServlet(Object o, Exception e) {
 
 
         LOG.debug("========================== ENTERING "+ e.getStackTrace()[0].getMethodName()+" IN "+o.getClass().getSimpleName()+" =============================== ");
@@ -53,27 +63,61 @@ public class MyLogUtil {
 
 
     /**
-     * Permet d'afficher la méthode et le type de la servlet en cours d'exécution ainsi que des informations sur la requête en cours de traitement
-     * @param o l'instance de la servlet this
+     * Log formatting :  display the current running method and the running servlet type + current processed request informations
+     * @param o servlet instance this
      * @param e new exception ()
-     * @param req la requete reçue par la servlet
+     * @param req
      */
     public static void enterServlet(Object o, Exception e,HttpServletRequest req) {
 
 
         LOG.debug("========================== ENTERING "+ e.getStackTrace()[0].getMethodName()+" IN "+o.getClass().getSimpleName()+" =============================== " +
-                  "\n Requested Servlet path : " + req.getServletPath() +
-                  "\n Request URI : " + req.getRequestURI());
+                  "\nRequested Servlet path : " + req.getServletPath() +
+                  "\nRequest URI : " + req.getRequestURI());
     }
 
 
-
+    /**
+     * Log formatting :  display the current running method and the current running servlet type
+     * @param o servlet instance this
+     * @param e new exception ()
+     * @param req
+     */
     public static void exitServlet(Object o, Exception e) {
 
         LOG.debug("========================== EXITING "+ e.getStackTrace()[0].getMethodName()+" IN "+o.getClass().getSimpleName()+" =============================== ");
 
         //LOG.debug(o.getClass());
         //LOG.debug( e.getStackTrace()[0].getMethodName());
+    }
+
+
+    /**
+     * Removes attribute after checking if it exists in the given scope
+     * @param request current processed request
+     * @param scope page - request - session
+     * @param nameAttribute the attribute to remove if exists
+     */
+
+    public static void removeAttribute (HttpServletRequest request, String scope , String nameAttribute) {
+
+        if (nameAttribute != null)
+        {
+
+            if (scope.toLowerCase()=="session") {
+                HttpSession mySession = request.getSession();
+                if (mySession.getAttribute(nameAttribute) != null) {
+                    LOG.debug("Removing session attribute : "+nameAttribute);
+                    mySession.removeAttribute(nameAttribute);
+                }
+                else if (scope.toLowerCase()=="request") {
+                    if(request.getAttribute(nameAttribute)!=null) {
+                        LOG.debug("Removing request attribute : "+nameAttribute);
+                        request.removeAttribute(nameAttribute);
+                    }
+                }
+            }
+        }
     }
 
 

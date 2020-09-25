@@ -4,6 +4,7 @@ import com.main.schoolux.utilitaries.MyStringUtil;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
@@ -14,32 +15,45 @@ public class CommonValidation {
     }
 
 
-
-    public static void checkEmpty_Input(String input, String inputLabel, Map<String,String> errors, Map <String,String> valids)  {
+    public static void checkEmpty_Input(String input, String inputLabel, Map<String, String> errors, Map<String, String> valids) {
 
         if (!MyStringUtil.hasContent(input)) {
-            errors.put(inputLabel+"Error", "Ce champ est requis");
+            errors.put(inputLabel + "Error", "Ce champ est requis");
         } else {
-            valids.put(inputLabel+"Valid", input);
+            valids.put(inputLabel + "Valid", input);
         }
         return;
     }
 
 
-    public static void checkEmptyAndLength_Input(String input, String inputLabel,int minLength, int maxLength, Map<String,String> errors, Map <String,String> valids )  {
+    public static void checkEmptyAndLength_Input(String input, String inputLabel, int minLength, int maxLength, Map<String, String> errors, Map<String, String> valids) {
 
         if (!MyStringUtil.hasContent(input)) {
-            errors.put(inputLabel+"Error", "Ce champ est requis");
+            errors.put(inputLabel + "Error", "Ce champ est requis");
         } else {
             if (input.length() < minLength || input.length() > maxLength) {
-                errors.put(inputLabel+"Error", "Ce champ requiert entre"+minLength + " et " + maxLength + " caractères.");
-            }
-            else
-            {
-                valids.put(inputLabel+"Valid", input);
+                errors.put(inputLabel + "Error", "Ce champ requiert entre" + minLength + " et " + maxLength + " caractères.");
+            } else {
+                valids.put(inputLabel + "Valid", input);
             }
         }
-        return ;
+        return;
+    }
+
+
+    public static void checkLength_Input(String input, String inputLabel, int minLength, int maxLength, Map<String, String> errors, Map<String, String> valids) {
+
+        if (!MyStringUtil.hasContent(input)) {
+            //errors.put(inputLabel+"Error", "Ce champ est requis");
+            return;
+        } else {
+            if (input.length() < minLength || input.length() > maxLength) {
+                errors.put(inputLabel + "Error", "Ce champ requiert entre" + minLength + " et " + maxLength + " caractères.");
+            } else {
+                valids.put(inputLabel + "Valid", input);
+            }
+        }
+        return;
     }
 
 
@@ -53,14 +67,49 @@ public class CommonValidation {
 
         try {
             id = Integer.parseInt(input);
-            }
-        catch (NumberFormatException e) {
-            LOG.debug("id : "+e.getMessage());
+        } catch (NumberFormatException e) {
+            LOG.debug("id : " + e.getMessage());
             //e.getMessage();
             //errors.add(e.getMessage());
-            }
+        }
         return id;
     }
+
+
+    public static List<Integer> CheckIds_SelectMultiple(String[] selectedRoles, String inputLabel, Map<String, String> errors, Map<String, String> valids) {
+
+        int startErrorsNumber = errors.size();
+
+        if (selectedRoles==null || selectedRoles.length==0) {
+            //errors.put(inputLabel + "Error", "Ce champ est requis");
+            return null;
+        }
+
+        List<Integer> myIdsAsIntList = new ArrayList<Integer>();
+
+        for (String idRole : selectedRoles) {
+            int idChecked = CommonValidation.checkValid_Id(idRole);
+            if (idChecked == -1) {
+                LOG.debug("Un des id n'est pas parsable");
+                return null;
+            } else {
+                myIdsAsIntList.add(idChecked);
+            }
+        }
+        if (errors.size() > startErrorsNumber) {
+            errors.put(inputLabel + "Error", "Au moins un des rôles sélectionnés n'est pas valide");
+            return null;
+        } else {
+            valids.put(inputLabel + "Valid", "Les rôles étaient valides");
+        }
+        return myIdsAsIntList;
+    }
+}
+
+
+
+
+
 
 
 
@@ -105,7 +154,7 @@ public class CommonValidation {
      * WARNING: This method is extremely common, and should be in a utility class.
      * (It really should be in the JDK, as a static method of the String class.)
      */
-    public static boolean hasContent(String string) {
+ /*   public static boolean hasContent(String string) {
         LOG.debug("Contenu de la chaîne de caractères fournie : " + string);
         return (string != null && string.trim().length() > 0);
     }
@@ -113,7 +162,7 @@ public class CommonValidation {
     /**
      * Returns true only if the field passes the test, and is NOT null.
      */
-    private boolean ensureNotNull(Object field, String errorMsg, List<String> errors) {
+ /*   private boolean ensureNotNull(Object field, String errorMsg, List<String> errors) {
         boolean result = true;
         if (field == null) {
             errors.add(errorMsg);
@@ -122,3 +171,6 @@ public class CommonValidation {
         return result;
     }
 }
+}
+
+  */

@@ -95,7 +95,7 @@ public class PermissionEntity {
 
     @Override
     public String toString() {
-        return "PermissionEntity { " +
+        return "\nPermissionEntity { " +
                 "id=" + id +
                 ",label=" + label +
                 ",abbreviation=" + abbreviation +

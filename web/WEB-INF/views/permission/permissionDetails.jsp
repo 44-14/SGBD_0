@@ -32,7 +32,7 @@
 
 
     <!-- Table contenant les données d'une permission -->
-    <table class="permission table  table-dark table-hover">  <!-- autre value de attribut class : table-striped -->
+    <table class="dataList table  table-dark table-hover">  <!-- autre value de attribut class : table-striped -->
 
         <tbody>
 

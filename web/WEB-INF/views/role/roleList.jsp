@@ -1,3 +1,5 @@
+
+
 <%--
   Created by IntelliJ IDEA.
   User: Code
@@ -5,42 +7,79 @@
   Time: 12:32
   To change this template use File | Settings | File Templates.
 --%>
+<!-- Source : https://stackoverflow.com/questions/5967564/form-inside-a-table
 
-    <!-- Table contenant les données des roles -->
-    <table>
-        <c:forEach  var="role"   items="${requestScope.myRoleListRequestKey}">
-
-            <tr>
-                <td>${role.id}</td>
-                <td>${role.label}</td>
-                <td><c:out value="${role.label}" /></td>
-                <td><c:out value="${role.abbreviation}" /></td>
-                <td><c:out value="${role.description}" /></td>
-                <td><c:out value="${role.rolesPermissionsById}" /></td>
-                <td><c:out value="${role.usersById}" /></td>
-                <td>
-
-                    <form method="post">
-                        <input type="hidden" id="idRoleFormShow" name="idRoleFromForm"  value="${role.id}">
-                        <button type='submit' name="actionFromForm" value="readOne" > Afficher </button>
-                    </form>
-                    <form method="post">
-                        <input type="hidden" id="idRoleFormEdit" name="idRoleFromForm"  value="${role.id}">
-                        <button type='submit' name="actionFromForm" value="editOne" > Editer </button>
-                    </form>
-                    <form method="post">
-                        <input type="hidden" id="idRoleFormDelete" name="idRoleFromForm"  value="${role.id}">
-                        <button type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>
-                    </form>
-
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
+-->
+<c:choose>
+    <c:when test="${not empty sessionScope.redirectErrorMessage}">
+        <div class="errorMessage">
+            <p class="redAlert>"> <c:out value="${sessionScope.redirectErrorMessage}"/> </p>
+        </div>
+    </c:when>
+    <c:when test="${not empty sessionScope.redirectSuccessMessage}">
+        <div class="successMessage">
+            <p class="greenAlert"> <c:out value="${sessionScope.redirectErrorMessage}"/> </p>
+        </div>
+    </c:when>
+</c:choose>
 
 
 
 
+<div class="pageInfo">
+    <h2 class="pageInfo"> Liste des permissions </h2>
+</div>
+
+
+
+<!-- Table listant les roles avec infos sommaires -->
+<table class="dataList table  table-dark table-hover">  <!-- autre value de attribut class : table-striped -->
+
+    <thead>
+    <tr>
+        <th> ID </th>
+        <th> Code</th>
+        <th> Label</th>
+        <th> Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <c:forEach var="role"  items="${requestScope.myRoleListRequestKey}">
+        <tr>
+            <td><c:out value="${role.id}" /></td>
+            <td><c:out value="${role.abbreviation}" /></td>
+            <td><c:out value="${role.label}" /></td>
+
+            <td>
+                <form method="post"  action="${pageContext.request.contextPath}/role" >
+                    <input type="hidden" id="idRoleForm" name="idRoleFromForm"  value="${role.id}">
+                    <!-- Pour chaque button :retirer redAlert ou greenAlert pour eviter le clignotement
+                    et remplacer -danger ou -success par -primary quand tout sera implémenté -->
+                    <button class="myFormActionButton btn btn-sm btn-outline-success greenAlert"
+                            type='submit' name="actionFromForm" value="readOne" > Afficher </button>
+                    <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
+                            type='submit' name="actionFromForm" value="editOne" > Editer </button>
+
+                    <!-- Pour retirer la possibilité de suppression du rôle correspondant à celui de l'utilisateur actuellement connecté -->
+                    <c:if test="${sessionScope.signedUser.rolesByIdRole.label!=role.label}">
+                    <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
+                            type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>
+                    </c:if>
+
+                </form>
+            </td>
+
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
 
 
 
