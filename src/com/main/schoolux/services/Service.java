@@ -16,8 +16,8 @@ public interface Service<T> {
 
 
 
-
     void insert(T t);
+    void insertAndFlush(T t);
 
     void update(T t);
 

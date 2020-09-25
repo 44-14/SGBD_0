@@ -168,6 +168,10 @@ public class RolePermissionService extends ServiceImpl<RolePermissionEntity> {
 
 
 
+
+
+
+
 /*  PAS POUR CETTE ENTITY
 
     // lire 1 RolePermission via le label name

@@ -135,7 +135,7 @@ public class PermissionManagerServlet extends HttpServlet {
         MyLogUtil.removeAttribute(request, "session", "redirectSuccessMessage");
 
         String actionForm = request.getParameter("actionFromForm"); // "actionFromForm" = button name attribute in .jsp
-        LOG.debug("===========================  FORM BUTTON ACTION :  " + actionForm +" ===============");
+        LOG.debug("=========================== =========================================================================== FORM BUTTON ACTION :  " + actionForm +" ===============");
 
         if (!MyStringUtil.hasContent(actionForm))
         //if (actionForm==null || actionForm.isEmpty())
@@ -386,28 +386,41 @@ public class PermissionManagerServlet extends HttpServlet {
                 et.begin();
                 // Instanciation du service adapté
                 PermissionService myPermissionService = new PermissionService(em);
-                LOG.debug("validatedPermission id avant insert : "+validatedPermission.getId()); // retourne 0
-                myPermissionService.insert(validatedPermission);
-                LOG.debug("validatedPermission id après insert : "+validatedPermission.getId()); // retourne 0 donc pas de modif malgré le persist()
+                LOG.debug("validatedPermission avant insert flush : "+validatedPermission.toString()); // retourne 0
+                myPermissionService.insertAndFlush(validatedPermission); // le flush fait que l'objet envoyé pour être attaché pointe directement vers l'objet attaché une fois la méthode terminée, alors que sans , il continue de pointer vers l'objet détaché sans id actualisé par le generation.TYPE
+                LOG.debug("validatedPermission après insert flush : "+validatedPermission.toString()); // retourne 0 donc pas de modif malgré le persist()
                 // POUR LES ROLES DU SELECT MULTIPLE
 
                 // Pour pas en instancier un dans chaque itération de boucle
+                RoleService myRoleService = new RoleService(em);
                 RolePermissionService myRolePermissionService = new RolePermissionService(em);
                 for (Integer selectedRoleId : selectedRolesIdList)
                 {
                     LOG.debug("Dans la boucle 1 ");
-                    RoleService myRoleService = new RoleService(em);
+
                     //List<RoleEntity> myRoleList = (ArrayList<RoleEntity>) request.getSession().getAttribute("myRoleListForSelectInputSessionKey"); // abandonné
                     //List<RoleEntity> myRoleList = myRoleService.selectAllOrNull(); // ou faire un selectOne simple sur chaque id dans la boucle, c mieux
                     //LOG.debug("Role list size : "+myRoleList.size());
                     RoleEntity myRole = myRoleService.selectOneByIdOrNull(selectedRoleId);
-                    if (myRole!=null)
+                    if (myRole!=null && validatedPermission!=null)
                     {
                         LOG.debug("Dans le if : correspondance trouvée : selectedRoleId = "+selectedRoleId+" donne l'entité : "+myRole.toString());
+
                         RolePermissionEntity myRolePermission = new RolePermissionEntity();
+                        //myRolePermissionService.insertAndFlush(myRolePermission);
+
                         myRolePermission.setRolesByIdRole(myRole);
                         myRolePermission.setPermissionsByIdPermission(validatedPermission);
-                        myRolePermissionService.insert(myRolePermission);
+                        //myRolePermissionService.update(myRolePermission);
+                        myRolePermissionService.insertAndFlush(myRolePermission);
+
+                        myRole.getRolesPermissionsById().add(myRolePermission);
+                        myRoleService.update(myRole);
+
+                        validatedPermission.getRolesPermissionsById().add(myRolePermission);
+                        myPermissionService.update(validatedPermission);
+
+
                     }
 
 
@@ -437,6 +450,7 @@ public class PermissionManagerServlet extends HttpServlet {
                 LOG.debug(e);
                 request.getSession(true).setAttribute("redirectErrorMessage", " La permission n'a pas été créé");
             } finally {
+                em.clear();
                 LOG.debug("em open ? : "+em.isOpen());
                 if (em.isOpen())
                 {

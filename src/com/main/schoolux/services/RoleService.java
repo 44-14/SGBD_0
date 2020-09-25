@@ -106,18 +106,18 @@ public class RoleService extends ServiceImpl<RoleEntity> {
         // Method 1 :
         // on place la référence de l'objet de type EntityFinderImpl dans un pointeur de type EntityFinder
         // qui est une interface implémentée par EntityFinderImpl => methodes factorisées
-        EntityFinder<RoleEntity> myEntityFinder = new EntityFinderImpl<RoleEntity>();
+        //EntityFinder<RoleEntity> myEntityFinder = new EntityFinderImpl<RoleEntity>();
 
         // on instancie un objet de type RoleEntity dont les valeurs seront remplacées
         // au sein de la méthode findOne lors de l'instruction ** t = (T)em.find(ec, id); dans la classe EntityFinderImpl **  où t est myPermission
         RoleEntity myRole = new RoleEntity();
 
-        return myEntityFinder.findOne(myRole,id);
+        //return myEntityFinder.findOne(myRole,id);
 
 
         // Method 2 :
 
-        //return em.find(RoleEntity.class, id);
+        return em.find(RoleEntity.class, id);
     }
 
 

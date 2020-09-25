@@ -35,6 +35,14 @@ public abstract class ServiceImpl<T> implements Service<T> {
 
     }
 
+    public void insertAndFlush(T t) {
+        LOG.debug("Insert and flush " + t.toString());
+        em.persist(t);
+        em.flush();
+
+
+    }
+
     public void update(T t) {
         LOG.debug("Update :" + t.toString());
         em.merge(t);
