@@ -1,5 +1,6 @@
 package com.main.schoolux.validations;
 
+import com.main.schoolux.viewModels.UserVM;
 import com.persistence.entities.UserEntity;
 import org.apache.log4j.Logger;
 
@@ -63,7 +64,7 @@ public class UserValidation {
 
 
         if (myErrors.size() != 0) {
-            LOG.debug("Errors : "+myErrors.size());
+            LOG.debug("Errors : " + myErrors.size());
             // Stockage des inputs valides et des messages d'erreur dans l'objet request ou session  (choisir) : on prend request vu que les errors et valids ne servent ici que dans la jsp de réponse
             // Voir notes.txt => DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
             request.setAttribute("myErrorsRequestKey", myErrors);
@@ -86,6 +87,114 @@ public class UserValidation {
     }
 
 
+    public static UserEntity toCreateUser(HttpServletRequest request, int selectedRoleId) {
+        return null;
+    }
+
+    public static UserVM toPopulateEditForm(UserEntity myUserEntity) {
+        return null;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -96,7 +205,7 @@ public class UserValidation {
     /// METHODES DE VALIDATION DES PARAMETRES DE LA REQUETE
     //////////
 
-
+/*
     private String validationPassword(String password, String confirmationPassword) throws Exception {
 
 
@@ -113,9 +222,7 @@ public class UserValidation {
     }
 
 
-    /**
-     * Validations liées à la création d'un utilisateur
-     **/
+
     public UserEntity UserValidation_Create(HttpServletRequest request) {
 
         LOG.info("=== START - createValidation() in UserValidation ===");
@@ -169,11 +276,11 @@ public class UserValidation {
 
 
 
-        /* Stockage du résultat et des messages d'erreur dans l'objet request ou session  (choisir)*/
+        // Stockage du résultat et des messages d'erreur dans l'objet request ou session  (choisir)*/
         // Voir notes.txt => DIFFERENCE ATTRIBUTS ET PARAMETRES DANS LA REQUETE
         //request.setAttribute("myErrorsRequestKey", myErrors);
         //request.setAttribute("myValidAttributesRequestKey", myValidAttributes);
-        request.setAttribute("myErrorsSessionKey", myErrors);
+   /*     request.setAttribute("myErrorsSessionKey", myErrors);
         request.setAttribute("myValidAttributesSessionKey", myValidAttributes);
 
 
@@ -191,7 +298,7 @@ public class UserValidation {
 
         // mise à null de l'objet userEntity au cas où il y aurait eu une erreur
         // on teste ensuite dans le contrôleur si ce retour est null pour savoir vers quoi dispatcher
-        if (myErrors.size() != 0) {
+   /*     if (myErrors.size() != 0) {
             myUser = null;
         }
 
@@ -207,3 +314,4 @@ public class UserValidation {
     ////////
 }
 
+*/

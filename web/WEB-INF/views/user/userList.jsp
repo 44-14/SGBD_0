@@ -10,11 +10,13 @@
 -->
 
 <div class="pageInfo">
-    <h2 class="pageInfo"> Liste des rôles </h2>
+    <h2 class="pageInfo"> Liste des utlisateurs </h2>
     <div>
-    <a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/role/createOne_getForm"> Créer un nouveau rôle</a>
+    <a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/user/createOne_getForm"> Créer un nouvel utilisateur </a>
     </div>
 </div>
+
+
 
 
 
@@ -24,25 +26,30 @@
     <thead>
     <tr>
         <th> ID </th>
-        <th> Abbréviation</th>
-        <th> Label</th>
+        <th> Username</th>
+        <th> Prénom</th>
+        <th> Nom</th>
+        <th> Rôle</th>
         <th> Action</th>
     </tr>
     </thead>
 
     <tbody>
     <tr>
-        <td colspan="4"> </td>
+        <td colspan="6"> </td>
+
     </tr>
-    <c:forEach  var="role"  items="${requestScope.myRoleListRequestKey}">
+    <c:forEach  var="user"  items="${requestScope.myUserListRequestKey}">
         <tr>
-            <td><c:out value="${role.id}" /></td>
-            <td><c:out value="${role.abbreviation}" /></td>
-            <td><c:out value="${role.label}" /></td>
+            <td><c:out value="${user.id}" /></td>
+            <td><c:out value="${user.username}" /></td>
+            <td><c:out value="${user.firstName}" /></td>
+            <td><c:out value="${user.lastName}" /></td>
+            <td><c:out value="${user.rolesByIdRole.label}" /></td>
 
             <td>
-                <form method="post"  action="${pageContext.request.contextPath}/role" >
-                    <input type="hidden" id="idRoleForm" name="idRoleFromForm"  value="${role.id}">
+                <form method="post"  action="${pageContext.request.contextPath}/user" >
+                    <input type="hidden" id="idUserForm" name="idUserFromForm"  value="${user.id}">
                     <!-- Pour chaque button :retirer redAlert ou greenAlert pour eviter le clignotement
                     et remplacer -danger ou -success par -primary quand tout sera implémenté -->
                     <button class="myFormActionButton btn btn-sm btn-outline-success greenAlert"
@@ -51,7 +58,7 @@
                             type='submit' name="actionFromForm" value="editOne" > Editer </button>
 
                     <!-- Pour retirer la possibilité de suppression du rôle correspondant à celui de l'utilisateur actuellement connecté -->
-                    <c:if test="${sessionScope.signedUser.rolesByIdRole.label!=role.label}">
+                    <c:if test="${sessionScope.signedUser.rolesByIdRole.id != user.rolesByIdRole.id}">
                     <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
                             type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>
                     </c:if>

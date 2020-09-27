@@ -174,8 +174,10 @@ public class MyAuthenticationFilter implements Filter {
             }
 
         }catch (Exception e){
-            throw new ServletException("Dans le catch de mon filtre : Executing action failed.", e);
-            //LOG.debug("Dans le catch de mon filtre : Executing action failed."+ e.getStackTrace().toString());
+            //throw new ServletException("Dans le catch de mon filtre : Executing action failed.", e); // fait crash
+            LOG.debug("Dans le catch de mon filtre : Executing action failed."+ e.getStackTrace().toString());
+            request.getSession().setAttribute("redirectErrorMessage","Filtre global : Error message => "+e.getMessage());
+            response.sendRedirect(request.getContextPath()+"/home");
             // rediriger vers une vue par defaut ?
 
         }

@@ -1,6 +1,7 @@
 package com.main.schoolux.servlets;
 
 import com.AppConfig;
+import com.main.schoolux.utilitaries.MyLogUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -21,6 +22,7 @@ public class HomeServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        MyLogUtil.enterServlet(this,new Exception(),request);
         request.getRequestDispatcher(HOME_VIEW).forward(request,response);
 
     }

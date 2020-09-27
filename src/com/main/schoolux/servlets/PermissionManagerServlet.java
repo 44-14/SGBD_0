@@ -51,7 +51,7 @@ import java.util.List;
 @WebServlet(name = "PermissionManagerServlet", urlPatterns = "/permission/*", loadOnStartup = -1)
 public class PermissionManagerServlet extends HttpServlet {
 
-    // LOGGER + PATH CONSTANTS + SERVLET MESSAGES LISTS
+    // LOGGER + PATH CONSTANTS
     private final static Logger LOG = Logger.getLogger(PermissionManagerServlet.class);
 
     public final static String PERMISSION_CREATE_VIEW = AppConfig.PERMISSION_VIEWS_ROOT_PATH + "permissionCreate.jsp";
@@ -80,16 +80,33 @@ public class PermissionManagerServlet extends HttpServlet {
 
         MyLogUtil.enterServlet(this,new Exception(),request);
 
+        /*
+        // Messages engendrés lors de la méthode doPost()
+        List<String> getErrorMessages = new ArrayList<>();
+        List<String> getSuccessMessages = new ArrayList<>();
+
+        request.getSession(true).setAttribute("getErrorMessages",getErrorMessages);
+        request.getSession(true).setAttribute("getSuccessMessages",getSuccessMessages);
+
+        //Pas efficace , dans les methodes hors doGet() ou doPost() car tjrs besoin de cast le session Attribute en List
+        //avant de pouvoir faire un .add puis de le remettre en sessionAttribute
+        //Cela donnait :
+        List<String> previousMessages = ( ( List<String> ) request.getSession(true).getAttribute("myError") );
+        previousMessages.add("myNewMessage");
+        request.getSession(true).setAttribute("myErrors", previousMessages);
+        // trop lourd pour juste ajouter le message dans la list
+         */
+
 
         String actionURI = MyURLUtil.URI_LastExploitablePart(request);
         LOG.debug("URI action = " +actionURI);
 
-        if (actionURI == null) {actionURI="permission";}
+        if (actionURI == null) { actionURI="permission"; }
 
         switch (actionURI) {
 
             case "permission": // same as readall case
-            case "readAll": //OK
+            case "readAll":
                 LOG.debug("Case readAll : user attempts to get the permission list view");
                 this.readAllPermissions(request, response);
 
@@ -105,7 +122,7 @@ public class PermissionManagerServlet extends HttpServlet {
                 LOG.debug("Entering default case");
                 //throw new IllegalStateException("Unexpected value: " + actionURI);
                 MyLogUtil.exitServlet(this, new Exception());
-                request.getRequestDispatcher(request.getServletPath()).forward(request, response);
+                request.getRequestDispatcher(request.getServletPath()).forward(request, response); // renvoie une GET vers /permission
                 /* send the request to /permission
                  Avec getRequestDispatcher, la methode reste la meme, si c'etait post ça restera un post vers /permission
                  ==> For a RequestDispatcher obtained via getRequestDispatcher(), the ServletRequest object has
@@ -135,7 +152,7 @@ public class PermissionManagerServlet extends HttpServlet {
         MyLogUtil.removeAttribute(request, "session", "redirectSuccessMessage");
 
         String actionForm = request.getParameter("actionFromForm"); // "actionFromForm" = button name attribute in .jsp
-        LOG.debug("=========================== =========================================================================== FORM BUTTON ACTION :  " + actionForm +" ===============");
+        LOG.debug("*=*=*=*=*=*=*=*=*=*=*=*=*=*   FORM BUTTON ACTION :  " + actionForm +"   *=*=*=*=*=*=*=*=*=*=*=*=*=*");
 
         if (!MyStringUtil.hasContent(actionForm))
         //if (actionForm==null || actionForm.isEmpty())
@@ -146,10 +163,10 @@ public class PermissionManagerServlet extends HttpServlet {
         }
         else {
             int id = CommonValidation.checkValid_Id(request.getParameter("idPermissionFromForm"));
-            LOG.debug("returned id in controller : "+id);
+            LOG.debug("Returned id from id validation : "+id);
             if (id == -1 && !actionForm.equals("createOne")) // la 2eme condition car createOne ne nécessite pas de récupérer d'id vu qu'il sera auto-généré à l'insert
             {
-                LOG.debug("Form submmitted hidden id input cannot be parsed into an int type variable\nRedirecting to /permission");
+                LOG.debug("Form submmitted hidden id input cannot be parsed into an int type variable\nRedirecting to /permission");// POST devient GET via sendRedirect
                 request.getSession(true).setAttribute("redirectErrorMessage","Aucun id n'a été récupéré");
                 response.sendRedirect("/permission");
             }
@@ -167,8 +184,8 @@ public class PermissionManagerServlet extends HttpServlet {
 
                         break;
 
-                    case "readOne"://OK
-                        LOG.debug("User attempts to get the details of one permission");
+                    case "readOne":
+                        LOG.debug("User attempts to get the details of a permission");
                         this.readOnePermission(request,response,id);
                         break;
 
@@ -188,7 +205,7 @@ public class PermissionManagerServlet extends HttpServlet {
                         break;
 
                     default:
-                        request.getSession(true).setAttribute("postErrorMessage","L'action sollicitée par le bouton n'est pas encore traitable\nRedirecting to /permission");
+                        request.getSession(true).setAttribute("redirectErrorMessage","L'action sollicitée par le bouton n'est pas encore traitable\nRedirecting to /permission");
                         response.sendRedirect("/permission");
 
                 }
@@ -224,8 +241,17 @@ public class PermissionManagerServlet extends HttpServlet {
     // En fait on pourrait faire un Service entier générique appelé CRUD service qui factoriserait toutes les méthodes communes
 
 
-    // switch GET
-    // OK
+
+
+
+
+    ////
+    // SWITCH GET
+    ////
+
+
+
+
     // Lister toutes les permissions
     private void readAllPermissions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // PLUS MTN
@@ -252,7 +278,7 @@ public class PermissionManagerServlet extends HttpServlet {
         {
             LOG.debug("Could not get the permission list");
             // on retourne vers la page de la liste en affichant un message d'erreur  => faire un if  errorMessage n est pas empty => afficher le msg  else afficher la table
-            request.setAttribute("dispatchErrorMessage", "Le service n'a pas su récupérer la liste de permissions");
+            request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer la liste de permissions");
             MyLogUtil.exitServlet(this, new Exception());
             request.getRequestDispatcher(PERMISSION_LIST_VIEW).forward(request, response); // mais affichera que l error message via un if dans la .jsp
         }
@@ -262,13 +288,10 @@ public class PermissionManagerServlet extends HttpServlet {
 
 
 
-
-    // switch GET
-    // OK
     // Envoyer le formulaire de création d'une permission
     private void createOnePermission_getForm (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        MyLogUtil.exitServlet(this, new Exception());
 
+        MyLogUtil.exitMethod(this, new Exception());
 
         // Instanciation de l'EntityManager context:
         EntityManager em = EMF.getEM();
@@ -281,14 +304,14 @@ public class PermissionManagerServlet extends HttpServlet {
             // mise en session attribute de la liste (  la valeur des attributs sont des Object.class  ; la valeur des paramètres sont des String.class )
             request.getSession().setAttribute("myRoleListForSelectInputSessionKey", myRoleList);
             request.setAttribute("pageTitle","Permission Creation");
-            MyLogUtil.exitServlet(this, new Exception());
+            MyLogUtil.exitMethod(this, new Exception());
             request.getRequestDispatcher(PERMISSION_CREATE_VIEW).forward(request, response);
         }
         else
         {
             LOG.debug("Could not get the role list");
             // on retourne vers la page de la liste en affichant un message d'erreur  => faire un if  errorMessage n est pas empty => afficher le msg  else afficher la table
-            request.setAttribute("dispatchErrorMessage", "Le service n'a pas su récupérer le formulaire de création de permission");
+            request.setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer le formulaire de création de permission");
             MyLogUtil.exitServlet(this, new Exception());
             request.getRequestDispatcher(PERMISSION_CREATE_VIEW).forward(request, response); // mais affichera que l error message via un if dans la .jsp
         }
@@ -299,11 +322,21 @@ public class PermissionManagerServlet extends HttpServlet {
 
 
 
-    // switch POST
-    // OK
+
+
+    ////
+    // SWITCH POST
+    ////
+
+
+
+
+
+
     // Afficher les détails d'une seule permission
     private void readOnePermission(HttpServletRequest request, HttpServletResponse response, int idPermission) throws ServletException, IOException {
 
+        MyLogUtil.enterMethod(this,new Exception());
         // PLUS MTN
         // Pas besoin d'instancier un EntityManager ici car la methode selectOneByIdOrNull() du service utilise EntityFinderImpl.class instancie son propre EntityManager em
         // PLUS MTN
@@ -319,7 +352,7 @@ public class PermissionManagerServlet extends HttpServlet {
         PermissionEntity returnedPermission = myPermissionService.selectOneByIdOrNull(idPermission);
         if (returnedPermission != null) {
             request.setAttribute("myPermissionRequestKey", returnedPermission);
-            MyLogUtil.exitServlet(this, new Exception());
+            MyLogUtil.exitMethod(this, new Exception());
             request.getRequestDispatcher(PERMISSION_DETAILS_VIEW).forward(request, response);
         }
         else {
@@ -338,11 +371,10 @@ public class PermissionManagerServlet extends HttpServlet {
 
 
 
-    // switch POST
-    // PermissionValidation.toCreatePermission() à faire
     // Créer une nouvelle permission
     private void createOnePermission(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        MyLogUtil.enterMethod(this,new Exception());
         /*
                 PROCEDURE POUR LES ROLES DU SELECT MULTIPLE
                 DANS LA VALIDATION :
@@ -360,6 +392,7 @@ public class PermissionManagerServlet extends HttpServlet {
                 on ferme la transaction try catch etc
 
             */
+
         List<Integer> selectedRolesIdList = new ArrayList<Integer>();
 
         // Statique ou pas ?  sachant que chaque session appelle la meme instance de servlet qui fait un multi threading sur les doGet doPost, je pense que statique = ok vu que tout se passe dans la methode, la classe validation n a aucun champ privé qui serait propre à chaque instance en particulier
@@ -388,7 +421,7 @@ public class PermissionManagerServlet extends HttpServlet {
                 PermissionService myPermissionService = new PermissionService(em);
                 LOG.debug("validatedPermission avant insert flush : "+validatedPermission.toString()); // retourne 0
                 myPermissionService.insertAndFlush(validatedPermission); // le flush fait que l'objet envoyé pour être attaché pointe directement vers l'objet attaché une fois la méthode terminée, alors que sans , il continue de pointer vers l'objet détaché sans id actualisé par le generation.TYPE
-                LOG.debug("validatedPermission après insert flush : "+validatedPermission.toString()); // retourne 0 donc pas de modif malgré le persist()
+                LOG.debug("validatedPermission après insert flush : "+validatedPermission.toString()); // retourne 0 sans le flush, retourne les infos de l'objet attaché avec le flush
                 // POUR LES ROLES DU SELECT MULTIPLE
 
                 // Pour pas en instancier un dans chaque itération de boucle
@@ -474,6 +507,8 @@ public class PermissionManagerServlet extends HttpServlet {
     // Retourner la vue du formulaire d'édition d'une permission avec valeurs existantes en db pré complétées
     private void editOnePermission_getForm(HttpServletRequest request, HttpServletResponse response, int idPermission) throws ServletException, IOException {
 
+        MyLogUtil.enterMethod(this,new Exception());
+
         // PLUS MTN
         // Pas besoin d'instancier un EntityManager ici car la methode selectOneByIdOrNull() du service utilise EntityFinderImpl.class instancie son propre EntityManager em
         // PLUS MTN
@@ -486,26 +521,27 @@ public class PermissionManagerServlet extends HttpServlet {
         PermissionService myPermissionService = new PermissionService(em);
 
         // Recupéreration de la permission ayant cet id en db
-        PermissionEntity returnedPermission = myPermissionService.selectOneByIdOrNull(idPermission);
-        if (returnedPermission != null) {
-            PermissionEntity populatingPermission = PermissionValidation.toPopulateEditForm(returnedPermission);
+        PermissionEntity attachedPermission = myPermissionService.selectOneByIdOrNull(idPermission);
+        if (attachedPermission != null) {
+            PermissionEntity populatingPermission = PermissionValidation.toPopulateEditForm(attachedPermission);
             if(populatingPermission != null) {
                 request.setAttribute("myPermissionRequestKey", populatingPermission);
-                MyLogUtil.exitServlet(this, new Exception());
+                MyLogUtil.exitMethod(this,new Exception());
                 request.getRequestDispatcher(PERMISSION_EDIT_VIEW).forward(request, response);
             }
             else {
-                request.getSession(true).setAttribute("redirectErrorMessage", "La permission récupérée n'a pas pu être transformé en populating permission");
+                MyLogUtil.exitMethod(this,new Exception());
+                request.getSession(true).setAttribute("redirectErrorMessage", "La permission récupérée n'a pas pu être transformée pour peupler le formulaire");
             }
         }
         else {
             LOG.debug("No existing permission with id = " + idPermission + "\n Redirecting to /permission");
-            request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer la permission en vue de peupler le formulaire d'édition");
-            MyLogUtil.exitServlet(this, new Exception());
+            request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer la permission en db en vue de peupler le formulaire d'édition");
+            MyLogUtil.exitMethod(this, new Exception());
             // On sait pas envoyer vers la methode doGet vu que c est une POST request qu'on a, getRequestDispatcher ne modifie pas la methode de la requete donc ça restera un POST
             // Si on fait un sendRedirect qui permet de modifier un POST en GET, alors on perdre le errorMessage mis en request attribute
             // Donc le mieux c'est d'envoyer vers la page details.jsp malgré qu'on ne les ai pas, faire un if error not empty on l affiche, else on affiche la table de details
-            response.sendRedirect("/permission");
+            response.sendRedirect(request.getContextPath()+"/permission");
         }
     }
 
@@ -514,6 +550,8 @@ public class PermissionManagerServlet extends HttpServlet {
     // switch POST
     // Editer un permission
     private void editOnePermission(HttpServletRequest request, HttpServletResponse response, int idPermission) throws ServletException, IOException {
+
+        MyLogUtil.enterMethod(this,new Exception());
 
         // Pas besoin d'instancier un EntityManager ici car la methode selectOneByIdOrNull() du service utilise EntityFinderImpl.class instancie son propre EntityManager em
         // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
@@ -524,10 +562,10 @@ public class PermissionManagerServlet extends HttpServlet {
         // Instanciation du service adapté
         PermissionService myPermissionService = new PermissionService(em);
 
-        // Recupéreration du role ayant cet id en db
-        PermissionEntity returnedPermission = myPermissionService.selectOneByIdOrNull(idPermission);
-        if (returnedPermission != null) {
-            request.setAttribute("myPermissionRequestKey", returnedPermission);
+        // Recupéreration de la permission ayant cet id en db
+        PermissionEntity attachedPermission = myPermissionService.selectOneByIdOrNull(idPermission);
+        if (attachedPermission != null) {
+            request.setAttribute("myPermissionRequestKey", attachedPermission);
             MyLogUtil.exitServlet(this, new Exception());
             request.getRequestDispatcher(PERMISSION_EDIT_VIEW).forward(request, response);
         }
@@ -538,7 +576,7 @@ public class PermissionManagerServlet extends HttpServlet {
             // On sait pas envoyer vers la methode doGet vu que c est une POST request qu'on a, getRequestDispatcher ne modifie pas la methode de la requete donc ça restera un POST
             // Si on fait un sendRedirect qui permet de modifier un POST en GET, alors on perdre le errorMessage mis en request attribute
             // Donc le mieux c'est d'envoyer vers la page details.jsp malgré qu'on ne les ai pas, faire un if error not empty on l affiche, else on affiche la table de details
-            response.sendRedirect("/role");
+            response.sendRedirect(request.getContextPath()+"/role");
         }
     }
 
@@ -560,32 +598,32 @@ public class PermissionManagerServlet extends HttpServlet {
         // Instanciation du service adapté
         PermissionService myPermissionService = new PermissionService(em);
 
-        // Recupéreration de la permssion ayant cet id en db
-        PermissionEntity returnedPermission = myPermissionService.selectOneByIdOrNull(idPermission);
-        if (returnedPermission != null) {
-            String displayMessageLabel = returnedPermission.getLabel();
+        // Recupéreration de la permission ayant cet id en db
+        PermissionEntity attachedPermission = myPermissionService.selectOneByIdOrNull(idPermission);
+        if (attachedPermission != null) {
+            //String displayMessageLabel = attachedPermission.getLabel();
             // PLUS MAINTENANT
             //myPermissionService.setEm(em); // car le service qu'on a instancié avant utilisait EntityImpl qui génère son propre em et le close , mais pour le delete on passera par ServiceImpl.class auquel il faut fourni l'em
 
             EntityTransaction et = null;  // nécessaire de le faire avant le try pour pouvoir y accéder dans le finally, sinon la variable 'et' serait locale au try
 
             try {
-                LOG.debug("begin try ");
                 et = em.getTransaction();
                 et.begin();
-                myPermissionService.delete(returnedPermission);
+
+                myPermissionService.delete(attachedPermission);
                 et.commit();
-                request.getSession(true).setAttribute("redirectSuccessMessage", " La permission  "+returnedPermission.getLabel()+"  a bien été supprimée"); // en session finalement pour l'afficher meme après un sendRedirect
-                LOG.debug("end try");
+                request.getSession(true).setAttribute("redirectSuccessMessage", " La permission  "+attachedPermission.getLabel()+"  a bien été supprimée"); // en session finalement pour l'afficher meme après un sendRedirect
+
             } catch (Exception e) {
                 LOG.debug(e.getMessage());
                 LOG.debug(e);
-                request.getSession(true).setAttribute("redirectErrorMessage", " La permission n'a pas été supprimée");
+                request.getSession(true).setAttribute("redirectErrorMessage", " La permission "+attachedPermission.getLabel()+"  n'a pas été supprimée");
             } finally {
                 if (et != null && et.isActive()) {
                     et.rollback();
                 }
-                MyLogUtil.exitServlet(this, new Exception());
+                MyLogUtil.exitMethod(this, new Exception());
                 response.sendRedirect(request.getContextPath()+"/permission");
             }
         }
@@ -593,7 +631,7 @@ public class PermissionManagerServlet extends HttpServlet {
         else {
             LOG.debug("No existing permission with id = " + idPermission + "\n Redirecting to /permission");
             request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer la permission en vue de la supprimer");
-            MyLogUtil.exitServlet(this, new Exception());
+            MyLogUtil.exitMethod(this, new Exception());
             // On sait pas envoyer vers la methode doGet vu que c est une POST request qu'on a, getRequestDispatcher ne modifie pas la methode de la requete donc ça restera un POST
             // Si on fait un sendRedirect qui permet de modifier un POST en GET, alors on perdre le errorMessage mis en request attribute
             // Donc le mieux c'est d'envoyer vers la page details.jsp malgré qu'on ne les ai pas, faire un if error not empty on l affiche, else on affiche la table de details

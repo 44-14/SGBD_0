@@ -963,17 +963,28 @@ ALTER TABLE users
 
 	ADD(
 	  CONSTRAINT FK_USERS_ADDRESSES FOREIGN KEY (`id_address`) REFERENCES `addresses` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-	  CONSTRAINT FK_USERS_ROLES FOREIGN KEY (`id_role`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+	  CONSTRAINT FK_USERS_ROLES FOREIGN KEY (`id_role`) REFERENCES `roles` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
 	  CONSTRAINT FK_USERS_SCHOOLS FOREIGN KEY (`id_school`) REFERENCES `schools` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-	  CONSTRAINT FK_USERS_USERS FOREIGN KEY (`id_parent`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+	  CONSTRAINT FK_USERS_USERS FOREIGN KEY (`id_parent`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 	);
 
 
 
 
--- Le on delete cascade => si on supprime un role de la table roles, ca supprimera aussi les records dans roles_permissions où id_role = id du role qui vient d etre supprimé
--- Sans ce on delete cascade => si on supprime un role de la table role, alors les records dans roles_permissions où id_role était l id du role supprimé vont désormais pointer vers une valeur inexistante
--- Hors une clé référentielle ne pointe jamais vers un null, ca s'appelle la contrainte d'intégrité référentielle
+-- Le on delete cascade => si on supprime un role de la table roles, ca supprimera aussi les records (l entiereté de la ligne) dans roles_permissions où id_role = id du role qui vient d etre supprimé
+-- C est ok pour les tables intermédiaires quand on veut la clean de tous les records liés au record qu on supprime dans une des tables dont elle est la jointure
+--  Mais si c'est une relation n à 1, c'est dangereux .
+-- Par exemple si un user Eleve a son champ idParent qui pointe vers un autre user Parent
+-- Si je supprime user Parent, ça supprimera aussi entièrement le user Eleve
+-- Une alternative pour le n à 1 est le ON DELETE SET NULL, qui mettra le champ qui pointe ailleurs à NULL en cas de suppression du record vers lequel il pointait
+
+-- Intégrité référentielle :
+-- En informatique, et plus particulièrement dans les bases de données relationnelles, l´intégrité référentielle est une situation dans laquelle
+-- pour chaque information d'une table A qui fait référence à une information d'une table B, l'information référencée existe dans la table B.
+-- L'intégrité référentielle est un gage de cohérence du contenu de la base de données.
+
+-- Donc si USER.role pointe vers un ROLE.id   , il peut être null. Mais si il pointe vers 2, alors le record de ROLE où ROLE.id = 2 doit existe et ne pas être null
+
 
 
 ALTER TABLE roles_permissions 	

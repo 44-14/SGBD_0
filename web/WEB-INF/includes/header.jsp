@@ -63,6 +63,25 @@
     </c:if>
 
 
+    <c:choose>
+        <c:when test="${not empty sessionScope.redirectErrorMessage}">
+            <div class="errorMessage">
+                <p class="redAlert>"> <c:out value="${sessionScope.redirectErrorMessage}"/></p>
+
+                 <%-- permet de supprimer l'attribut en session et de ne plus afficher le message nulle part --%>
+                 <c:remove var="redirectErrorMessage" scope="session" />
+            </div>
+        </c:when>
+
+        <c:when test="${not empty sessionScope.redirectSuccessMessage}">
+            <div class="successMessage">
+                <p class="greenAlert"> <c:out value="${sessionScope.redirectSuccessMessage}"/> </p>
+                <c:remove var="redirectSuccessMessage" scope="session" />
+            </div>
+        </c:when>
+    </c:choose>
+
+
     <%--
     pageContext permet d acceder à la requête reçue par la view.jsp qui est aussi une servlet
     via pageContext.request  => on peut donc accèder aux paramètres de la requête issus de base du formulaire submitted par le client (client-side)

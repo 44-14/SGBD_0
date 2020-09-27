@@ -1,6 +1,7 @@
 package com.main.schoolux.services;
 
 
+import com.main.schoolux.services.factorisation.ServiceImpl;
 import com.persistence.entities.RolePermissionEntity;
 import org.apache.log4j.Logger;
 

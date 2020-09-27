@@ -26,7 +26,6 @@ public class AccountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         MyLogUtil.enterServlet(this,new Exception(),request);
-
         request.getRequestDispatcher(ACCOUNT_VIEW).forward(request,response);
 
     }

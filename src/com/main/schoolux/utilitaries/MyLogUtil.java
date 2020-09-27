@@ -52,7 +52,7 @@ public class MyLogUtil {
      * @param e new exception ()
      * @param req
      */
-    public void enterServlet(Object o, Exception e) {
+    public static void enterServlet(Object o, Exception e) {
 
 
         LOG.debug("========================== ENTERING "+ e.getStackTrace()[0].getMethodName()+" IN "+o.getClass().getSimpleName()+" =============================== ");
@@ -84,6 +84,38 @@ public class MyLogUtil {
      * @param req
      */
     public static void exitServlet(Object o, Exception e) {
+
+        LOG.debug("========================== EXITING "+ e.getStackTrace()[0].getMethodName()+" IN "+o.getClass().getSimpleName()+" =============================== ");
+
+        //LOG.debug(o.getClass());
+        //LOG.debug( e.getStackTrace()[0].getMethodName());
+    }
+
+
+    /**
+     * Log formatting :  display the current running method and the current running object type
+     * @param o instance this
+     * @param e new exception ()
+     * @param req
+     */
+    public static void enterMethod(Object o, Exception e) {
+
+
+        LOG.debug("========================== ENTERING "+ e.getStackTrace()[0].getMethodName()+" IN "+o.getClass().getSimpleName()+" =============================== ");
+
+        //LOG.debug(o.getClass());
+        //LOG.debug( e.getStackTrace()[0].getMethodName());
+    }
+
+
+
+    /**
+     * Log formatting :  display the current running method and the current running object type
+     * @param o servlet instance this
+     * @param e new exception ()
+     * @param req
+     */
+    public static void exitMethod(Object o, Exception e) {
 
         LOG.debug("========================== EXITING "+ e.getStackTrace()[0].getMethodName()+" IN "+o.getClass().getSimpleName()+" =============================== ");
 

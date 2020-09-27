@@ -1,15 +1,14 @@
 package com.main.schoolux.services;
 
 
+import com.main.schoolux.services.factorisation.ServiceImpl;
+import com.main.schoolux.utilitaries.MyStringUtil;
 import com.persistence.entities.PermissionEntity;
-import com.persistence.entityFinderImplementation.EntityFinder;
-import com.persistence.entityFinderImplementation.EntityFinderImpl;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -17,7 +16,7 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
 
     private final static Logger LOG = Logger.getLogger(PermissionService.class);
 
-    // methode insert - update - delete définies dans la classe parent
+    // methode insert - update - delete - insertAndFlush définies dans la classe parent
 
 
     ///////////////////
@@ -69,6 +68,7 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
 
 
    /*Pas de champ isActive dans la table role donc les suppressions sont effectives
+
     @Override
     public void deleteLogically (PermissionEntity myPermission) {
         myPermission.isActive = false ;
@@ -76,8 +76,11 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
     }
      */
 
+
+
+
     // sert à vérifier si une entrée existe déjà en db avant de la créer
-    @Override
+    // amélioration : rendre générique (object toCheck, string uniqueConstraint)
     public boolean alreadyExist(PermissionEntity myPermission ) {
         // label et abbreviation uniques keys  => passé la méthode qui check en argument de celle-ci ?
         // ou on verifie ici les retours de chaque methode selectPermissionByLabelOrNull / selectPermissionByAbbreviationOrNull
@@ -89,11 +92,11 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
 
 
 
-    // lire 1 Permission via l'id
+    // sélectionner 1 permission via l'id
     @Override
     public PermissionEntity selectOneByIdOrNull(int id) {
 
-        LOG.debug("Select 1 Permission by the id : "+id);
+        LOG.debug("Select a role by the id : "+id);
 
         // find = read = select
 
@@ -119,8 +122,8 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
 
 
 
-        // lire tous les Permissions
-        @Override
+    // lire toutes les permissions
+    @Override
     public List<PermissionEntity> selectAllOrNull() {
 
         /*
@@ -145,7 +148,7 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
             List <PermissionEntity> myPermissionList = query.getResultList();
 
             LOG.debug("List " + PermissionEntity.class.getSimpleName() + " size: " + myPermissionList.size());
-            LOG.debug("Find all permissions from database: Ok");
+            LOG.debug("Selected all permissions from database ");
             return myPermissionList;
         } catch (NoResultException e) {
             LOG.debug("The query found no permission list to return", e);
@@ -155,26 +158,13 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
     }
 
 
-    /*
-    Pas de champ isActive dans la table role donc les suppressions sont effectives
-    @Override
-    public void deleteLogically (PermissionEntity myPermission) {
-        myPermission.isActive = false ;
-        this.update(myPermission);
-    }
-     */
 
-
-
-
-
-
-
-    // lire 1 Permission via le label name
+    // lire une permission via le label name
     public PermissionEntity selectPermissionByLabelOrNull(String label) throws IllegalArgumentException {
-        LOG.debug("Select 1 Permission by the label : " + label);
+        LOG.debug("Select a permission by the label : " + label);
 
-        if (label != null && !label.isEmpty()) {
+        //if (label != null && !label.isEmpty()) {
+        if (MyStringUtil.hasContent(label)){
 
             // fonctionne pas car findByNamedQuery retourne une liste => on peut garder ça et check si la taille est supérieure à 0, ou seconde méthode avec createNamedQuery
             //EntityFinder<PermissionEntity> myEntityFinder = new EntityFinderImpl<PermissionEntity>();
@@ -187,7 +177,7 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
                         .setParameter("label", label)
                         .getSingleResult();
             } catch (NoResultException e) {
-                LOG.debug("The query found no role to return", e);
+                LOG.debug("The query found no permission to return", e);
                 return null;
             }
         } else {

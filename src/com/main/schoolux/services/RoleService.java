@@ -1,10 +1,8 @@
 package com.main.schoolux.services;
 
 
-import com.persistence.entities.PermissionEntity;
+import com.main.schoolux.services.factorisation.ServiceImpl;
 import com.persistence.entities.RoleEntity;
-import com.persistence.entityFinderImplementation.EntityFinder;
-import com.persistence.entityFinderImplementation.EntityFinderImpl;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -95,11 +93,11 @@ public class RoleService extends ServiceImpl<RoleEntity> {
 
 
 
-    // lire 1 Role via l'id
+    // sélectionner un role via l'id
     @Override
     public RoleEntity selectOneByIdOrNull(int id) {
 
-        LOG.debug("Select 1 Role by the id : "+id);
+        LOG.debug("Select a role by the id : "+id);
 
         // find = read = select
 
@@ -149,8 +147,8 @@ public class RoleService extends ServiceImpl<RoleEntity> {
                 Query query = em.createNamedQuery("Role.selectAll", RoleEntity.class);
                 List <RoleEntity> myRoleList = query.getResultList();
 
-                LOG.debug("List " + RoleEntity.class.getSimpleName() + " size: " + myRoleList.size());
-                LOG.debug("Find all roles from database: Ok");
+                LOG.debug("List <" + RoleEntity.class.getSimpleName() + ">  size: " + myRoleList.size());
+                LOG.debug("Select all roles from database: Ok");
                 return myRoleList;
             } catch (NoResultException e) {
                 LOG.debug("The query found no role list to return", e);
@@ -161,16 +159,20 @@ public class RoleService extends ServiceImpl<RoleEntity> {
 
 
 
+    /* Pas de champ isActive dans la table role donc les suppressions sont effectives
+    @Override
+    public void deleteLogically (RoleEntity myRole) {
+        myRole.isActive = false ;
+        this.update(myRole);
+    }
+     */
 
 
 
 
-
-
-
-    // lire 1 Role via le label name
+    // lire un role via le label name
     public RoleEntity selectRoleByLabelOrNull(String label) throws IllegalArgumentException {
-        LOG.debug("Select 1 Role by the label : " + label);
+        LOG.debug("Select a role by the label : " + label);
 
         if (label != null && !label.isEmpty()) {
 
@@ -195,13 +197,7 @@ public class RoleService extends ServiceImpl<RoleEntity> {
     }
 
 
-    /* Pas de champ isActive dans la table role donc les suppressions sont effectives
-    @Override
-    public void deleteLogically (RoleEntity myRole) {
-        myRole.isActive = false ;
-        this.update(myRole);
-    }
-     */
+
 
 
 

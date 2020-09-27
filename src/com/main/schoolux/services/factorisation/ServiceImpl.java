@@ -1,4 +1,4 @@
-package com.main.schoolux.services;
+package com.main.schoolux.services.factorisation;
 
 import org.apache.log4j.Logger;
 

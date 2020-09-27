@@ -9,9 +9,12 @@
 
 
 
-    <div class="pageInfo">
-        <h2 class="pageInfo"> Détails de la permission    &nbsp;-&nbsp; <c:out value="${requestScope.myPermissionRequestKey.label}"/> </h2>
-    </div>
+<div class="pageInfo">
+    <h2 class="pageInfo"> Détails de la permission    &nbsp;-&nbsp; <c:out value="${requestScope.myPermissionRequestKey.label}"/> </h2>
+</div>
+
+
+
 
 
     <form  id ="aboveTableForm"  method="post"  action="${pageContext.request.contextPath}/permission" >
@@ -45,7 +48,7 @@
                 <td><c:out value="${requestScope.myPermissionRequestKey.label}"/></td>
             </tr>
             <tr>
-                <td>Code : </td>
+                <td>Abbréviation : </td>
                 <td> <c:out value="${requestScope.myPermissionRequestKey.abbreviation}" /></td>
             </tr>
             <tr>
@@ -54,7 +57,7 @@
             </tr>
 
             <tr>
-                <td>Permission attribuée aux roles : </td>
+                <td>La permission est attribuée aux rôles : </td>
                 <td>
                 <c:forEach  var="rolePermission"    items="${requestScope.myPermissionRequestKey.rolesPermissionsById}" >
                     <c:out value="${rolePermission.rolesByIdRole.label}"/> <br>

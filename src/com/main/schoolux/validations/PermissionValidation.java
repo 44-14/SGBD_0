@@ -15,16 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-/* Amelioration :
-faire une methode generale de validation
-passer en paramètre String la raison de la validation (tosignin, tosignup, toedit , etc) + la requete
-faire un switch sur la raison
-invoquer une methode liée à cette raison
-cela permettrait d avoir le code factorisé par rapport au check des erreurs.size >0
-et des setAttribute en request ou session etc
-refaire un switch sur la raison lors des dispatch si on a get des erreurs etc
- */
+// Ce qui est lié à la PermissionServlet contient toutes les infos en commentaires
 
 public class PermissionValidation {
 
@@ -81,7 +72,7 @@ public class PermissionValidation {
                 myValidAttributes
         );
 
-
+        // selectedRolesIdList sera accessible par la méthode qui a appelé toCreatePermission car elle a envoyé sa référence en argument vers ici
         selectedRolesIdList = CommonValidation.CheckIds_SelectMultiple(
                 request.getParameterValues("rolesFromForm"),
                 "rolesFromForm",
@@ -160,8 +151,6 @@ public class PermissionValidation {
              */
         }
         return processedPermission;
-
-
     }
 }
 

@@ -1,21 +1,23 @@
 <%--
   Created by IntelliJ IDEA.
   User: Code
-  Date: 30-08-20
-  Time: 15:32
+  Date: 10-09-20
+  Time: 09:32
   To change this template use File | Settings | File Templates.
 --%>
 
     <div class="pageInfo">
-        <h2 class="pageInfo"> Formulaire de création - permission  </h2>
+        <h2 class="pageInfo"> Formulaire de création - role  </h2>
     </div>
 
+
+
 <div class="row">
-<a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/permission"> Retour liste</a>
+<a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/role"> Retour liste</a>
 </div>
 
 
-<form method="post"  action="${pageContext.request.contextPath}/permission" >
+<form method="post"  action="${pageContext.request.contextPath}/role" >
     <div class="form-row">
         <div class="col-md-6 mb-3">
 
@@ -51,12 +53,12 @@
 
     <div class="form-row">
         <div id="roleList" class="col-md-12 mb-6">
-            <label for="validationServer04">Rôles attribués : (maintenir ctrl pour sélection multiple)</label>
+            <label for="validationServer04">Permissions attribuées: (maintenir ctrl pour sélection multiple)</label>
             <select class="custom-select is-invalid" multiple id="validationServer04" name ="rolesFromForm" aria-describedby="validationServer04Feedback" required>
 
                 <option selected disabled value="">Attribuez à un ou plusieurs rôles</option>
-                <c:forEach  var="role"    items="${sessionScope.myRoleListForSelectInputSessionKey}" >
-                    <option value="${role.id}">  <c:out value="${role.label}"/> </option>
+                <c:forEach  var="permission"    items="${sessionScope.myPermissionListForSelectInputSessionKey}" >
+                    <option value="${permission.id}">  <c:out value="${permission.label}"/> </option>
                 </c:forEach>
             </select>
             <div id="validationServer04Feedback" class="invalid-feedback">
