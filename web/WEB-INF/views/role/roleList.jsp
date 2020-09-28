@@ -48,7 +48,7 @@
                     <button class="myFormActionButton btn btn-sm btn-outline-success greenAlert"
                             type='submit' name="actionFromForm" value="readOne" > Afficher </button>
                     <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
-                            type='submit' name="actionFromForm" value="editOne" > Editer </button>
+                            type='submit' name="actionFromForm" value="editOne_getForm" > Editer </button>
 
                     <!-- Pour retirer la possibilité de suppression du rôle correspondant à celui de l'utilisateur actuellement connecté -->
                     <c:if test="${sessionScope.signedUser.rolesByIdRole.label!=role.label}">

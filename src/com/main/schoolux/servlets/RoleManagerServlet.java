@@ -9,6 +9,7 @@ import com.main.schoolux.utilitaries.MyStringUtil;
 import com.main.schoolux.utilitaries.MyURLUtil;
 import com.main.schoolux.validations.CommonValidation;
 import com.main.schoolux.validations.RoleValidation;
+import com.main.schoolux.viewModels.RoleVM;
 import com.persistence.entities.PermissionEntity;
 import com.persistence.entities.RoleEntity;
 import com.persistence.entities.RolePermissionEntity;
@@ -430,25 +431,41 @@ public class RoleManagerServlet extends HttpServlet {
 
         // Recupéreration du role ayant cet id en db
         RoleEntity attachedRole = myRoleService.selectOneByIdOrNull(idRole);
+
         if (attachedRole != null) {
-            RoleEntity populatingRole = RoleValidation.toPopulateEditForm(attachedRole);
+            // Transformation en view model
+            RoleVM populatingRole = RoleValidation.toPopulateEditForm(attachedRole);
             if(populatingRole != null) {
-                request.setAttribute("myRoleRequestKey", populatingRole);
-                MyLogUtil.exitMethod(this,new Exception());
-                request.getRequestDispatcher(ROLE_EDIT_VIEW).forward(request, response);
+                request.setAttribute("myRoleVMRequestKey", populatingRole);
+
+                // Recupération de l'ensemble des permissions du contexte pour sertir le select-multiple du formulaire d'édition du role
+                PermissionService myPermissionService = new PermissionService(em);
+                List <PermissionEntity> myPermissionList = myPermissionService.selectAllOrNull();
+                if (myPermissionList!=null) {
+                    request.getSession(true).setAttribute("myPermissionListForSelectInputSessionKey", myPermissionList);
+                    MyLogUtil.exitMethod(this, new Exception());
+                    request.getRequestDispatcher(ROLE_EDIT_VIEW).forward(request, response);
+                    return;
+                }
+                else
+                {
+                    request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer l'ensemble des permissions pour sertir le select multiple");
+                }
+
             }
             else {
-                MyLogUtil.exitMethod(this,new Exception());
+
                 request.getSession(true).setAttribute("redirectErrorMessage", "Le rôle récupéré n'a pas pu être transformé pour peupler le formulaire");
             }
         }
         else {
             LOG.debug("No existing role with id = " + idRole + "\n Redirecting to /role");
-            request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer le role en db en vue de peupler le formulaire d'édition");
-
-            MyLogUtil.exitMethod(this,new Exception());
-            response.sendRedirect(request.getContextPath()+"/role");
+            request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer le role dans le contexte en vue de peupler le formulaire d'édition");
         }
+
+        MyLogUtil.exitMethod(this,new Exception());
+        response.sendRedirect(request.getContextPath()+"/role");
+
     }
 
 

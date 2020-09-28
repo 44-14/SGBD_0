@@ -10,6 +10,7 @@ import com.main.schoolux.utilitaries.MyURLUtil;
 import com.main.schoolux.validations.CommonValidation;
 import com.main.schoolux.validations.PermissionValidation;
 import com.main.schoolux.validations.RoleValidation;
+import com.main.schoolux.viewModels.PermissionVM;
 import com.persistence.entities.PermissionEntity;
 import com.persistence.entities.RoleEntity;
 import com.persistence.entities.RolePermissionEntity;
@@ -522,27 +523,44 @@ public class PermissionManagerServlet extends HttpServlet {
 
         // Recupéreration de la permission ayant cet id en db
         PermissionEntity attachedPermission = myPermissionService.selectOneByIdOrNull(idPermission);
+
         if (attachedPermission != null) {
-            PermissionEntity populatingPermission = PermissionValidation.toPopulateEditForm(attachedPermission);
+            // Transformation en view model
+
+            PermissionVM populatingPermission = PermissionValidation.toPopulateEditForm(attachedPermission);
             if(populatingPermission != null) {
-                request.setAttribute("myPermissionRequestKey", populatingPermission);
-                MyLogUtil.exitMethod(this,new Exception());
-                request.getRequestDispatcher(PERMISSION_EDIT_VIEW).forward(request, response);
+                request.setAttribute("myPermissionVMRequestKey", populatingPermission);
+
+                // Recupération de l'ensemble des rôles du contexte pour sertir le select-multiple du formulaire d'édition du role
+                RoleService myRoleService = new RoleService(em);
+                List <RoleEntity> myRoleList = myRoleService.selectAllOrNull();
+                if (myRoleList!=null) {
+                    request.getSession(true).setAttribute("myRoleListForSelectInputSessionKey", myRoleList);
+                    MyLogUtil.exitMethod(this, new Exception());
+                    request.getRequestDispatcher(PERMISSION_EDIT_VIEW).forward(request, response);
+                    return;
+                }
+                else
+                {
+                    request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer l'ensemble des rôles pour sertir le select multiple");
+                }
+
             }
             else {
-                MyLogUtil.exitMethod(this,new Exception());
                 request.getSession(true).setAttribute("redirectErrorMessage", "La permission récupérée n'a pas pu être transformée pour peupler le formulaire");
             }
         }
         else {
             LOG.debug("No existing permission with id = " + idPermission + "\n Redirecting to /permission");
             request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer la permission en db en vue de peupler le formulaire d'édition");
-            MyLogUtil.exitMethod(this, new Exception());
-            // On sait pas envoyer vers la methode doGet vu que c est une POST request qu'on a, getRequestDispatcher ne modifie pas la methode de la requete donc ça restera un POST
-            // Si on fait un sendRedirect qui permet de modifier un POST en GET, alors on perdre le errorMessage mis en request attribute
-            // Donc le mieux c'est d'envoyer vers la page details.jsp malgré qu'on ne les ai pas, faire un if error not empty on l affiche, else on affiche la table de details
-            response.sendRedirect(request.getContextPath()+"/permission");
+
+
         }
+        // On sait pas envoyer vers la methode doGet vu que c est une POST request qu'on a, getRequestDispatcher ne modifie pas la methode de la requete donc ça restera un POST
+        // Si on fait un sendRedirect qui permet de modifier un POST en GET, alors on perdre le errorMessage mis en request attribute
+        // Donc le mieux c'est d'envoyer vers la page details.jsp malgré qu'on ne les ai pas, faire un if error not empty on l affiche, else on affiche la table de details
+        MyLogUtil.exitMethod(this, new Exception());
+        response.sendRedirect(request.getContextPath()+"/permission");
     }
 
 

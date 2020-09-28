@@ -10,24 +10,26 @@
 
 
 <div class="pageInfo">
-     <h2 class="pageInfo"> Détails de l'utilisateur    &nbsp;-&nbsp; <c:out value="${requestScope.myUserRequestKey.label}"/> </h2>
+     <h2 class="pageInfo"> Détails de l'utilisateur    &nbsp;-&nbsp; <c:out value="${requestScope.myUserRequestKey.username}"/> </h2>
 </div>
 
 
 
 
 
-<form  id ="aboveTableForm"  method="post"  action="${pageContext.request.contextPath}/permission" >
-    <input type="hidden" id="idPermissionForm" name="idPermissionFromForm"  value="${requestScope.myPermissionRequestKey.id}">
+<form  id ="aboveTableForm"  method="post"  action="${pageContext.request.contextPath}/user" >
+    <input type="hidden" id="idUserForm" name="idUserFromForm"  value="${requestScope.myUserRequestKey.id}">
     <!-- Pour chaque button :
    retirer redAlert ou greenAlert pour eviter le clignotement
    et remplacer -danger ou -success par -primary quand tout sera implémenté -->
     <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
                 type='submit' name="actionFromForm" value="editOne_getForm" > Editer </button>
+<c:if test="${sessionScope.signedUser.id != requestScope.myUserRequestKey.id}">
     <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
                 type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>
+</c:if>
 </form>
-<a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/permission"> Retour liste</a>
+<a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/user"> Retour liste</a>
 
 
 
@@ -38,28 +40,46 @@
     <tbody>
         <tr>
             <td>ID :  </td>
-            <td> <c:out value="${requestScope.myRoleRequestKey.id}"/> </td>
+            <td> <c:out value="${requestScope.myUserRequestKey.id}"/> </td>
         </tr>
         <tr>
-            <td>Label :  </td>
-            <td><c:out value="${requestScope.myRoleRequestKey.label}"/></td>
+            <td>Username :  </td>
+            <td><c:out value="${requestScope.myUserRequestKey.username}"/></td>
         </tr>
         <tr>
-            <td>Abbréviation : </td>
-            <td> <c:out value="${requestScope.myRoleRequestKey.abbreviation}" /></td>
+            <td>Prénom : </td>
+            <td> <c:out value="${requestScope.myUserRequestKey.firstName}" /></td>
         </tr>
         <tr>
-            <td> Description : </td>
-            <td> <c:out value="${requestScope.myRoleRequestKey.description}" /></td>
+            <td> Nom : </td>
+            <td> <c:out value="${requestScope.myUserRequestKey.lastName}" /></td>
         </tr>
         <tr>
-            <td>Le rôle détient les permissions : </td>
-            <td>
-            <c:forEach  var="rolePermission"    items="${requestScope.myRoleRequestKey.rolesPermissionsById}" >
-                <c:out value="${rolePermission.permissionsByIdPermission.label}"/> <br>
-            </c:forEach>
-            </td>
+            <td> Password : </td>
+            <td> <c:out value="${requestScope.myUserRequestKey.password}" /></td>
         </tr>
+
+        <tr>
+            <td> Date de naissance : AAAA-MM-JJ </td>
+            <td> <c:out value="${requestScope.myUserRequestKey.birthdate}" /></td>
+        </tr>
+
+        <tr>
+            <td> Genre : </td>
+            <td> <c:out value="${requestScope.myUserRequestKey.gender}" /></td>
+        </tr>
+
+        <tr>
+            <td> Adresse email : </td>
+            <td> <c:out value="${requestScope.myUserRequestKey.emailAddress}" /></td>
+        </tr>
+
+        <tr>
+            <td> Rôle : </td>
+            <td> <c:out value="${requestScope.myUserRequestKey.rolesByIdRole.label}" /></td>
+        </tr>
+
+
     </tbody>
 </table>
 

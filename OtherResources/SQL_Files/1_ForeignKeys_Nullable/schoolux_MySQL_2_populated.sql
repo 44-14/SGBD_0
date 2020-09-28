@@ -1211,14 +1211,15 @@ INSERT INTO `permissions` (`id`, `label`, `abbreviation`, `description`) VALUES
 
 
 INSERT INTO `roles` (`id`, `label`, `abbreviation`, `description`) VALUES
-(1, 'Eleve 1', 'ELE-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant qu\'élèves de l\'école'),
-(2, 'Parent 1', 'PAR-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que parents d\'élève'),
-(3, 'Professeur 1', 'PRO-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que professeurs'),
-(4, 'Secretaire 1', 'SEC-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que secrétaires'),
-(5, 'Directeur 1', 'DIR-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que directeurs d\'école.'),
-(6, 'Administrateur 1', 'ADM-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant qu\'administrateurs.'),
-(7, 'Stagiaire 1', 'STA-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que professeurs-stagiaires.'),
-(8, 'Stagiaire 2', 'STA-02', 'Ce rôle est attribué aux utilisateurs identifiés en tant que secrétaires-stagiaires.');
+(1, 'Default', 'DEF-01', 'Ce rôle est attribué aux utilisateurs par défaut lors de l\'inscription'),
+(2, 'Eleve 1', 'ELE-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant qu\'élèves de l\'école'),
+(3, 'Parent 1', 'PAR-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que parents d\'élève'),
+(4, 'Professeur 1', 'PRO-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que professeurs'),
+(5, 'Secretaire 1', 'SEC-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que secrétaires'),
+(6, 'Directeur 1', 'DIR-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que directeurs d\'école.'),
+(7, 'Administrateur 1', 'ADM-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant qu\'administrateurs.'),
+(8, 'Stagiaire 1', 'STA-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que professeurs-stagiaires.'),
+(9, 'Stagiaire 2', 'STA-02', 'Ce rôle est attribué aux utilisateurs identifiés en tant que secrétaires-stagiaires.');
 
 
 
@@ -1272,6 +1273,15 @@ COMMIT;
 
 
 
+create trigger RolesTrigger on Roles
+    after delete as
+begin
+    If Exists(SELECT 1 FROM deleted WHERE label = Default)
+BEGIN
+ROLLBACK TRANSACTION;
+RAISERROR('Not Allowed to delete role label : Default as is a protected role', 16, 1);
+END;
+end;
 
 
 

@@ -94,6 +94,19 @@ input, select {
 
 }
 
+/*
+input:invalid {
+    border: 5px solid red;
+    animation: error 0.5s linear infinite;
+}
+*/
+
+input:valid, select:valid {
+    background-color: green;
+    color:black;
+    /*border: 5px solid green;*/
+}
+
 
 .error
  {

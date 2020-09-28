@@ -429,9 +429,10 @@ public class UserManagerServlet extends HttpServlet {
         if (attachedUser != null) {
             UserVM populatingUser = UserValidation.toPopulateEditForm(attachedUser);
             if(populatingUser != null) {
-                request.setAttribute("myUSerRequestKey", populatingUser);
+                request.setAttribute("myUSerVMRequestKey", populatingUser);
                 MyLogUtil.exitMethod(this,new Exception());
                 request.getRequestDispatcher(USER_EDIT_VIEW).forward(request, response);
+                return;
             }
             else {
                 MyLogUtil.exitMethod(this,new Exception());
@@ -441,10 +442,10 @@ public class UserManagerServlet extends HttpServlet {
         else {
             LOG.debug("No existing user with id = " + idUser + "\n Redirecting to /user");
             request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer l'user dans le contexte en vue de peupler le formulaire d'édition");
-
+        }
             MyLogUtil.exitMethod(this,new Exception());
             response.sendRedirect(request.getContextPath()+"/user");
-        }
+
     }
 
 

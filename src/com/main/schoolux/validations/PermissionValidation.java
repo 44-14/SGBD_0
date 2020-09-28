@@ -2,6 +2,8 @@ package com.main.schoolux.validations;
 
 import com.main.schoolux.services.RoleService;
 import com.main.schoolux.utilitaries.MyIntUtil;
+import com.main.schoolux.viewModels.PermissionVM;
+import com.main.schoolux.viewModels.RoleVM;
 import com.persistence.entities.PermissionEntity;
 import com.persistence.entities.RoleEntity;
 import com.persistence.entities.RolePermissionEntity;
@@ -28,10 +30,24 @@ public class PermissionValidation {
     }
 
 
-    public static PermissionEntity toPopulateEditForm(PermissionEntity dbPermission) {
-        // do something with dbPermission to transform it in populatingPermission
-        PermissionEntity populatingPermission = new PermissionEntity();
-        return populatingPermission;
+    public static PermissionVM toPopulateEditForm(PermissionEntity attachedPermission) {
+        // do something with attachedRole to transform it in populatingRole to populate the edit form
+        PermissionVM populatingPermission = new PermissionVM();
+
+        // Amélioration => méthode de validation pour chaque champ
+        // Intérêt limité vu que tout matche en terme de types et de values, les null sont acceptés etc mais cela pourrait changer donc il faut respecter le pattern
+        try {
+            populatingPermission.setId(attachedPermission.getId());
+            populatingPermission.setLabel(attachedPermission.getLabel());
+            populatingPermission.setAbbreviation(attachedPermission.getAbbreviation());
+            populatingPermission.setDescription(attachedPermission.getDescription());
+            populatingPermission.setRolesPermissionsById(attachedPermission.getRolesPermissionsById());
+            return populatingPermission;
+        } catch (Exception e){
+            LOG.debug(e.getMessage());
+            return null;
+        }
+
     }
 
 

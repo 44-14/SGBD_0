@@ -55,10 +55,10 @@
                     <button class="myFormActionButton btn btn-sm btn-outline-success greenAlert"
                             type='submit' name="actionFromForm" value="readOne" > Afficher </button>
                     <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
-                            type='submit' name="actionFromForm" value="editOne" > Editer </button>
+                            type='submit' name="actionFromForm" value="editOne_getForm" > Editer </button>
 
-                    <!-- Pour retirer la possibilité de suppression du rôle correspondant à celui de l'utilisateur actuellement connecté -->
-                    <c:if test="${sessionScope.signedUser.rolesByIdRole.id != user.rolesByIdRole.id}">
+                    <!-- Pour retirer la possibilité de suppression de l utilisateur correspondant à  l'utilisateur actuellement connecté -->
+                    <c:if test="${sessionScope.signedUser.id != user.id}">
                     <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
                             type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>
                     </c:if>

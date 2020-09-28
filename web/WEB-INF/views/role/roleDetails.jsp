@@ -17,17 +17,19 @@
 
 
 
-<form  id ="aboveTableForm"  method="post"  action="${pageContext.request.contextPath}/permission" >
-    <input type="hidden" id="idPermissionForm" name="idPermissionFromForm"  value="${requestScope.myPermissionRequestKey.id}">
+<form  id ="aboveTableForm"  method="post"  action="${pageContext.request.contextPath}/role" >
+    <input type="hidden" id="idRoleForm" name="idRoleFromForm"  value="${requestScope.myRoleRequestKey.id}">
     <!-- Pour chaque button :
    retirer redAlert ou greenAlert pour eviter le clignotement
    et remplacer -danger ou -success par -primary quand tout sera implémenté -->
     <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
                 type='submit' name="actionFromForm" value="editOne_getForm" > Editer </button>
+<c:if test="${sessionScope.signedUser.rolesByIdRole.id != requestScope.myRoleRequestKey.id}">
     <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
                 type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>
+</c:if>
 </form>
-<a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/permission"> Retour liste</a>
+<a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/role"> Retour liste</a>
 
 
 

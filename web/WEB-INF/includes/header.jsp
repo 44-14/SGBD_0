@@ -22,7 +22,7 @@
 
     <c:choose>
         <c:when test="${pageContext.request.servletPath.startsWith('/WEB-INF/views/signIn/signIn')
-                     || pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/signIn')}">
+                     || pageContext.request.servletPath.startsWith('/WEB-INF/views/signUp/signUp')}">
               <%--   || pageContext.request.servletPath == '/WEB-INF/views/signIn/signInForm.jsp'
                      || pageContext.request.servletPath == '/WEB-INF/views/signIn/signInConfirmation.jsp'
                      || pageContext.request.servletPath == '/WEB-INF/views/signUp/signUpForm.jsp'

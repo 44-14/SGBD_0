@@ -50,7 +50,7 @@
                             <button class="myFormActionButton btn btn-sm btn-outline-success greenAlert"
                                     type='submit' name="actionFromForm" value="readOne" > Afficher </button>
                             <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
-                                    type='submit' name="actionFromForm" value="editOne" > Editer </button>
+                                    type='submit' name="actionFromForm" value="editOne_getForm" > Editer </button>
                             <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
                                     type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>
                         </form>

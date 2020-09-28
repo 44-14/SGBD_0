@@ -1,5 +1,6 @@
 package com.main.schoolux.validations;
 
+import com.main.schoolux.viewModels.RoleVM;
 import com.persistence.entities.PermissionEntity;
 import com.persistence.entities.RoleEntity;
 import org.apache.log4j.Logger;
@@ -26,16 +27,36 @@ public class RoleValidation {
 
 
     public static RoleEntity toEditRole(HttpServletRequest request) {
+
         RoleEntity processedRole = new RoleEntity();
         return processedRole;
     }
 
 
-    public static RoleEntity toPopulateEditForm(RoleEntity dbRole) {
-        // do something with dbRole to transform it in populatingRole
-        RoleEntity populatingRole = new RoleEntity();
-        return populatingRole;
+
+    public static RoleVM toPopulateEditForm(RoleEntity attachedRole) {
+        // do something with attachedRole to transform it in populatingRole to populate the edit form
+        RoleVM populatingRole = new RoleVM();
+
+
+        // Amélioration => méthode de validation pour chaque champ
+        // Intérêt limité vu que tout matche en terme de types et de values, les null sont acceptés etc mais cela pourrait changer donc il faut respecter le pattern
+        try {
+            populatingRole.setId(attachedRole.getId());
+            populatingRole.setLabel(attachedRole.getLabel());
+            populatingRole.setAbbreviation(attachedRole.getAbbreviation());
+            populatingRole.setDescription(attachedRole.getDescription());
+            populatingRole.setRolesPermissionsById(attachedRole.getRolesPermissionsById());
+            populatingRole.setUsersById(attachedRole.getUsersById());
+            return populatingRole;
+        } catch (Exception e){
+            LOG.debug(e.getMessage());
+            return null;
+        }
+
     }
+
+
 
 
     public static RoleEntity toCreateRole(HttpServletRequest request, List<Integer> selectedPermissionsIdList) {

@@ -1,8 +1,10 @@
 package com.main.schoolux.validations;
 
+import com.main.schoolux.enumerations.Gender;
 import com.main.schoolux.utilitaries.MyStringUtil;
 import org.apache.log4j.Logger;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +57,51 @@ public class CommonValidation {
         }
         return;
     }
+
+
+
+
+    public static void checkEmptyAndLengthAndContainingString_Input(String input, String inputLabel, int minLength, int maxLength, String stringToCheck, Map<String, String> errors, Map<String, String> valids) {
+
+        if (!MyStringUtil.hasContent(input)) {
+            errors.put(inputLabel + "Error", "Ce champ est requis");
+        } else {
+            if (input.length() < minLength || input.length() > maxLength) {
+                errors.put(inputLabel + "Error", "Ce champ requiert entre" + minLength + " et " + maxLength + " caractères.");
+            } else {
+                if (!input.contains(stringToCheck)) {
+                    errors.put(inputLabel + "Error", "Ce champ doit contenir : " + stringToCheck);
+                }
+                else{
+                    valids.put(inputLabel + "Valid", input);
+                }
+            }
+        }
+        return;
+    }
+
+
+
+
+    public static void checkEmptyAndValidDate_Input(String input, String inputLabel,Map<String, String> errors, Map<String, String> valids)  {
+
+
+        if (!MyStringUtil.hasContent(input)) {
+            errors.put(inputLabel+"Error", "Ce champ est requis");
+        } else {
+            try{
+                Date myBirthdate = Date.valueOf(input);
+            }catch (IllegalArgumentException e)
+            {
+                errors.put(inputLabel + "Error","La date sélectionnée"+input+"n'est pas tranformable en un type Date");
+                LOG.debug("Le date sélectionné"+input+"n'est pas tranformable en un type Date",e);
+
+            }
+            valids.put(inputLabel + "Valid", input);
+        }
+
+    }
+
 
 
     /**
