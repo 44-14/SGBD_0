@@ -22,8 +22,10 @@
         <!-- Pour chaque button :
        retirer redAlert ou greenAlert pour eviter le clignotement
        et remplacer -danger ou -success par -primary quand tout sera implémenté -->
+        <%--
         <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
                     type='submit' name="actionFromForm" value="editOne_getForm" > Editer </button>
+                    --%>
 
         <button class="myFormActionButton btn btn-sm btn-outline-danger redAlert"
                     type='submit' name="actionFromForm" value="deleteOne" > Supprimer </button>

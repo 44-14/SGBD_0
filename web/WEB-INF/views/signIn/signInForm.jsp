@@ -80,7 +80,7 @@ Car un hacker saurait que Tototo est un utilisateur existant et forcebrute pour 
          Pour un bouton qui pointe juste vers une url, il ne faut pas utiliser la balise button
          juste faire un <a href="maRef" class=" celles d'un des bouton ci-dessous
     -->
-
+<%--
     <div class="mySmallContainer">
         <a href="${pageContext.request.contextPath}/signup">
             <button class="btn btn-sm btn-outline-primary" type="button">S'inscrire</button> <!-- blue -->
@@ -94,7 +94,7 @@ Car un hacker saurait que Tototo est un utilisateur existant et forcebrute pour 
 
         </a>
     </div>
-
+--%>
 
 
 

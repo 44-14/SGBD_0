@@ -13,12 +13,14 @@
 
     </c:if>
 
-
+<aqa></aqa>
 
     <div class="mySmallContainer">
         <div class="mySmallContainer">
             <span class="title1"> School UX </span>
         </div>
+
+
 
 
         <div class="mySmallContainer">
@@ -85,7 +87,6 @@
                         </c:forEach>
                 </select>
                 <span class="error">${requestScope.myErrorsRequestKey['genderFromFormError']}</span>
-                <aqa> à vérifier la manière de proposer les entrées de l'enum</aqa>
                 <br/>
                 </c:if>
 
@@ -123,8 +124,17 @@
                 <button id="signInButton" class="btn btn-sm btn-outline-success" value="CreateOne" name="ActionForm" type="submit">Valider</button>
 
             </form>
+
+
         </div>
     </div>
 
+
+<div class="mySmallContainer">
+
+        <a href="${pageContext.request.contextPath}/signin" id="signInButton" class="btn btn-sm btn-outline-primary" >
+                Retour à la page de connexion
+        </a>
+    </div>
 
 

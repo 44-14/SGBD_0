@@ -2,9 +2,12 @@ package com.main.schoolux.validations;
 
 import com.main.schoolux.enumerations.Gender;
 import com.main.schoolux.services.RoleService;
+import com.main.schoolux.services.UserService;
 import com.main.schoolux.utilitaries.MyLogUtil;
 import com.main.schoolux.utilitaries.MyStringUtil;
+import com.main.schoolux.viewModels.RoleVM;
 import com.main.schoolux.viewModels.UserVM;
+import com.persistence.entities.RoleEntity;
 import com.persistence.entities.UserEntity;
 import com.persistence.entityFinderImplementation.EMF;
 import org.apache.log4j.Logger;
@@ -33,8 +36,10 @@ public class UserValidation {
 
 
     /**
-     * Validations liées à la connexion d'un utilisateur
-     **/
+     * buils up a user entity in order to check the authentication.
+     * @param request
+     * @return
+     */
     public static UserEntity toSignIn(HttpServletRequest request) {
 
         //MyLogUtil.enterStaticMethod(new Exception());
@@ -92,6 +97,13 @@ public class UserValidation {
 
 
     }
+
+
+    /**
+     * builds up a user entity out of the http request. Must be persisted once returned
+     * @param request
+     * @return
+     */
 
 
 
@@ -204,7 +216,10 @@ public class UserValidation {
             // On met le role nommé "Default" par defaut
             EntityManager em = EMF.getEM();
             RoleService myRoleService = new RoleService(em);
-            myUser.setRolesByIdRole(myRoleService.selectRoleByLabelOrNull("Default"));
+            RoleEntity myRole = myRoleService.selectRoleByLabelOrNull("Default0");
+            if (myRole!=null) {
+                myUser.setRolesByIdRole(myRole);
+            }
 
 
         }
@@ -224,24 +239,129 @@ public class UserValidation {
 
 
 
-
+    /* Passe par signUp
     public static UserEntity toCreateUser(HttpServletRequest request, int selectedRoleId) {
         return null;
     }
 
-    public static UserVM toPopulateEditForm(UserEntity myUserEntity) {
-        return null;
+
+     */
+
+    /**
+     * builds up a user view model to be displayed in the edit form
+     * @param attachedUser
+     * @return
+     */
+
+
+    public static UserVM toPopulateEditForm(UserEntity attachedUser) {
+
+        UserVM populatingUser = new UserVM();
+
+        // Amélioration => méthode de validation pour chaque champ
+        // Intérêt limité vu que tout matche en terme de types et de values, les null sont acceptés etc mais cela pourrait changer donc il faut respecter le pattern
+        try {
+            populatingUser.setId(attachedUser.getId());
+
+            populatingUser.setId(attachedUser.getId());
+            populatingUser.setUsername(attachedUser.getUsername());
+            populatingUser.setPassword(attachedUser.getPassword());
+            populatingUser.setRolesByIdRole(attachedUser.getRolesByIdRole());
+
+            return populatingUser;
+        } catch (Exception e){
+            LOG.debug(e.getMessage());
+            return null;
+        }
     }
 
 
+    /**
+     * Builds up a user entity to be updated once returned
+     * @param request
+     * @param idUserToEdit
+     * @return
+     */
+    public static UserEntity toEdit(HttpServletRequest request, int idUserToEdit){
+
+
+        Map<String, String> myValidAttributes = new HashMap<String, String>();
+        Map<String, String> myErrors = new HashMap<String, String>();
+
+        UserEntity validatedUser =null;
+
+
+        //////////
+        /// APPELS AUX METHODES DE VALIDATION POUR CHAQUE REQUEST PARAMETER
+        //////////
+
+
+        CommonValidation.checkEmptyAndLength_Input(
+                request.getParameter("usernameFromForm"),
+                "usernameFromForm",
+                5,
+                50,
+                myErrors,
+                myValidAttributes
+        );
+
+
+        CommonValidation.checkEmptyAndLength_Input(
+                request.getParameter("passwordFromForm"),
+                "passwordFromForm",
+                3,
+                50,
+                myErrors,
+                myValidAttributes
+        );
+
+
+        if (myErrors.size() != 0){
+            LOG.debug("Errors size() : " + myErrors.size());
+            LOG.debug("Error descriptif : " + myErrors.toString());
+            request.setAttribute("myErrorsRequestKey", myErrors);
+            request.setAttribute("myValidAttributesRequestKey", myValidAttributes);
+
+        }
+        else {
+
+            // Validation du rôle :
+            int idChecked = CommonValidation.checkValid_Id(request.getParameter("roleFromForm"));
+            if (idChecked!= -1) {
+                EntityManager em = EMF.getEM();
+                RoleService myRoleService = new RoleService(em);
+                RoleEntity myRole = myRoleService.selectOneByIdOrNull(idChecked);
+
+                if (myRole != null) {
+
+                    UserService myUserService = new UserService(em);
+                    validatedUser = myUserService.selectOneByIdOrNull(idUserToEdit);
+                    if (validatedUser!=null) {
+
+                        validatedUser.setRolesByIdRole(myRole);
+                        validatedUser.setUsername(request.getParameter("usernameFromForm"));
+                        validatedUser.setPassword(request.getParameter("passwordFromForm"));
+                    }
+                }
+
+            }
+        }
+
+        MyLogUtil.exitServlet(UserValidation.class.getSimpleName(),new Exception());
+        return validatedUser;
 
 
 
+    }
 
 
-
-
-
+    /**
+     * Check if the parameter input is empty, and if it isnt, check the value does exist in the Enum
+     * @param input
+     * @param inputLabel
+     * @param errors
+     * @param valids
+     */
     public static void checkEmptyAndValidEnumValue_Input(String input, String inputLabel, Map<String, String> errors, Map<String, String> valids){
 
         if (!MyStringUtil.hasContent(input)) {

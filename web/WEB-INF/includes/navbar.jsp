@@ -58,7 +58,7 @@ Roles
                 <li class="nav-item active">
                     <a class="nav-link btn-outline-dark" href="${pageContext.request.contextPath}/home">Accueil <span class="sr-only">(current)</span></a>
                 </li>
-
+<!--
                 <li class="nav-item">
                     <a  class="nav-link btn-outline-dark" href="#">Lorem</a>
                 </li>
@@ -75,6 +75,7 @@ Roles
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>
+ -->
             </ul>
         </div>
 

@@ -176,14 +176,17 @@ public class PermissionManagerServlet extends HttpServlet {
                 // instancier l 'EntityManager em et les differents services dans les methodes remplacant chaque case
                 switch (actionForm) {
 
-                    case "editOne_getForm":
+                    /*case "editOne_getForm":
                         LOG.debug("User attempts to get the permission editing form");
                         this.editOnePermission_getForm(request,response,id);
                         // la méthode doit envoyer vers la permissionEdit.jsp avec des inputs auto completés par les valeurs du role récupéré
                         // ici on a pas de model intermédiaire, on voit pq c'est interessant d'en faire afin d'avoir un objet qui correspond bien aux inputs du formulaire sans les champs inutiles
                         // c le meme que pour le roleDetails.jsp donc le case readOne sauf que la vue sera un formulaire avec input pré-rempli et pas une table
 
+
                         break;
+
+                     */
 
                     case "readOne":
                         LOG.debug("User attempts to get the details of a permission");
@@ -195,10 +198,12 @@ public class PermissionManagerServlet extends HttpServlet {
                         this.createOnePermission(request,response);
                         break;
 
-                    case "editOne":
+                    /*case "editOne": Pas dans le cahier charge
                         LOG.debug("User attempts to edit a permission");
                         this.editOnePermission(request,response,id);
                         break;
+
+                     */
 
                     case "deleteOne": //OK
                         LOG.debug("User attempts to delete a permission");
@@ -448,10 +453,10 @@ public class PermissionManagerServlet extends HttpServlet {
                         //myRolePermissionService.update(myRolePermission);
                         myRolePermissionService.insertAndFlush(myRolePermission);
 
-                        myRole.getRolesPermissionsById().add(myRolePermission);
-                        myRoleService.update(myRole);
-
+                        //myRole.getRolesPermissionsById().add(myRolePermission);
                         validatedPermission.getRolesPermissionsById().add(myRolePermission);
+
+                        myRoleService.update(myRole);
                         myPermissionService.update(validatedPermission);
 
 

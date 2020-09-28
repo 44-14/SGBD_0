@@ -20,18 +20,18 @@
         <div class="col-md-6 mb-3">
 
             <label for="validationServer01">Label (*)</label>
-            <input type="text" class="form-control is-valid" id="validationServer01" name ="labelFromForm" value="" required  minlength="5" maxlength="100">
+            <input type="text" class="form-control " id="validationServer01" name ="labelFromForm" value="" required  minlength="5" maxlength="100">
             <div class="valid-feedback">
-                Looks good!
+
             </div>
 
         </div>
         <div class="col-md-6 mb-3">
 
             <label for="validationServer02">Abbreviation (*)</label>
-            <input type="text" class="form-control is-valid" id="validationServer02"  name ="abbreviationFromForm" placeholder="U-USER-01" value="" required minlength="6" maxlength="10">
+            <input type="text" class="form-control " id="validationServer02"  name ="abbreviationFromForm" placeholder="U-USER-01" value="" required minlength="6" maxlength="10">
             <div class="valid-feedback">
-                Looks good!
+
             </div>
 
         </div>
@@ -43,7 +43,7 @@
             <label for="validationServer03">Description</label>
             <input type="text" class="form-control is-invalid" id="validationServer03" name ="descriptionFromForm" aria-describedby="validationServer03Feedback"  maxlength="2000" >
             <div id="validationServer03Feedback" class="invalid-feedback">
-                Please provide a valid city.
+
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
     <div class="form-row">
         <div id="roleList" class="col-md-12 mb-6">
             <label for="validationServer04">Rôles attribués : (maintenir ctrl pour sélection multiple)</label>
-            <select class="custom-select is-invalid" multiple id="validationServer04" name ="rolesFromForm" aria-describedby="validationServer04Feedback" required>
+            <select class="custom-select " multiple id="validationServer04" name ="rolesFromForm" aria-describedby="validationServer04Feedback" required>
 
                 <option selected disabled value="">Attribuez à un ou plusieurs rôles</option>
                 <c:forEach  var="role"    items="${sessionScope.myRoleListForSelectInputSessionKey}" >
@@ -60,7 +60,7 @@
                 </c:forEach>
             </select>
             <div id="validationServer04Feedback" class="invalid-feedback">
-                Please select a valid state.
+
             </div>
         </div>
     </div>

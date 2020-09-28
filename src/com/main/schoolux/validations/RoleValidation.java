@@ -33,7 +33,11 @@ public class RoleValidation {
     }
 
 
-
+    /**
+     * Make a role view model out of a role entity
+     * @param attachedRole the role entity
+     * @return
+     */
     public static RoleVM toPopulateEditForm(RoleEntity attachedRole) {
         // do something with attachedRole to transform it in populatingRole to populate the edit form
         RoleVM populatingRole = new RoleVM();
@@ -57,7 +61,12 @@ public class RoleValidation {
     }
 
 
-
+    /**
+     * Makes a role entity to be persisted once returned
+     * @param request
+     * @param selectedPermissionsIdList
+     * @return
+     */
 
     public static RoleEntity toCreateRole(HttpServletRequest request, List<Integer> selectedPermissionsIdList) {
 

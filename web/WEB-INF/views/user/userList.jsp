@@ -11,10 +11,13 @@
 
 <div class="pageInfo">
     <h2 class="pageInfo"> Liste des utlisateurs </h2>
+    <%-- Pas eu le temps de faire createUser via userManagerServlet
     <div>
     <a id="retourListe" class="btn btn-sm btn-outline-primary" href="${pageContext.request.contextPath}/user/createOne_getForm"> Créer un nouvel utilisateur </a>
     </div>
+    --%>
 </div>
+
 
 
 

@@ -86,6 +86,7 @@ public class SignUpServlet extends HttpServlet {
         UserEntity myUser = UserValidation.toSignUp(request);
         if (myUser == null) {
             // alors il y a eu des erreurs, celles-ci sont placées dans la HashMap myErrors en session
+            LOG.debug("Object failed validations");
             request.getRequestDispatcher(SIGNUP_FORM_VIEW).forward(request, response);
         } else {
 
@@ -104,14 +105,15 @@ public class SignUpServlet extends HttpServlet {
                 myRoleService.update(myRoleToUpdate);
 
                 et.commit();
-                request.getSession(true).setAttribute("redirectSuccessMessage", " L'utilisateur a bien été créé");
+                //request.getSession(true).setAttribute("redirectSuccessMessage", " L'utilisateur a bien été créé");
+                request.getSession(true).setAttribute("signedUser",myUser);
                 request.getRequestDispatcher(SIGNUP_CONFIRMATION_VIEW).forward(request, response);
             } catch (Exception e) {
                 //LOG.debug(e.getMessage());
                 //LOG.debug("\n\n\n\n\n");
                 LOG.debug(e);
-                request.getSession(true).setAttribute("redirectErrorMessage", " L'utilisateur n'a pas été créé");
-
+                request.getSession(true).setAttribute("redirectErrorMessage", " L'utilisateur n'a pas été créé\n"+e.getMessage());
+                request.getRequestDispatcher(SIGNUP_FORM_VIEW).forward(request, response);
             } finally {
                 em.clear();
 

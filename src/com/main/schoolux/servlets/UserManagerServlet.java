@@ -146,15 +146,17 @@ public class UserManagerServlet extends HttpServlet {
                         break;
 
 
-                    case "createOne" :
+                    /*case "createOne" : // Passe par signUpServlet
                         LOG.debug("User attempts to create a new user");
                         this.createOneUser(request,response);
                         break;
 
+                     */
+
 
                     case "editOne":
                         LOG.debug("User attempts to edit an user");
-                        //this.editOneUser(request,response,id);
+                        this.editOneUser(request,response,id);
                         break;
 
 
@@ -314,7 +316,7 @@ public class UserManagerServlet extends HttpServlet {
 
 
 
-
+    /* Formulaire à faire mais on passe par signUp pour le moment
     // switch POST
     // Créer un nouveau utilisateur
     private void createOneUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -397,7 +399,7 @@ public class UserManagerServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath()+"/user");
     }
 
-
+*/
 
 
 
@@ -416,7 +418,7 @@ public class UserManagerServlet extends HttpServlet {
     // Retourner la vue du formulaire d'édition d'un role avec valeurs existantes en db pré complétées
     private void editOneUser_getForm(HttpServletRequest request, HttpServletResponse response, int idUser) throws ServletException, IOException {
 
-        MyLogUtil.enterMethod(this,new Exception());
+        MyLogUtil.enterMethod(this, new Exception());
 
         // Instanciation de l'EntityManager context:
         EntityManager em = EMF.getEM();
@@ -425,27 +427,32 @@ public class UserManagerServlet extends HttpServlet {
         UserService myUserService = new UserService(em);
 
         // Recupéreration de l'user ayant cet id dans le contexte
-        UserEntity attachedUser =  myUserService.selectOneByIdOrNull(idUser);
+        UserEntity attachedUser = myUserService.selectOneByIdOrNull(idUser);
         if (attachedUser != null) {
             UserVM populatingUser = UserValidation.toPopulateEditForm(attachedUser);
-            if(populatingUser != null) {
-                request.setAttribute("myUSerVMRequestKey", populatingUser);
-                MyLogUtil.exitMethod(this,new Exception());
-                request.getRequestDispatcher(USER_EDIT_VIEW).forward(request, response);
-                return;
-            }
-            else {
-                MyLogUtil.exitMethod(this,new Exception());
+            if (populatingUser != null) {
+                RoleService myRoleService = new RoleService(em);
+                List<RoleEntity> myRoleList = myRoleService.selectAllOrNull();
+                if (myRoleList != null) {
+                    request.setAttribute("myUserVMRequestKey", populatingUser);
+                    request.setAttribute("myRoleListForSelectInputRequestKey", myRoleList);
+                    MyLogUtil.exitMethod(this, new Exception());
+                    request.getRequestDispatcher(USER_EDIT_VIEW).forward(request, response);
+                    return;
+                } else {
+                    request.getSession(true).setAttribute("redirectErrorMessage", "La liste de rôles n'a pas pu être récupérée en vue de peupler le select du formulaire");
+                }
+            } else {
                 request.getSession(true).setAttribute("redirectErrorMessage", "L'user récupéré n'a pas pu être transformé pour peupler le formulaire");
             }
-        }
-        else {
+
+        } else {
             LOG.debug("No existing user with id = " + idUser + "\n Redirecting to /user");
             request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer l'user dans le contexte en vue de peupler le formulaire d'édition");
         }
-            MyLogUtil.exitMethod(this,new Exception());
-            response.sendRedirect(request.getContextPath()+"/user");
 
+        MyLogUtil.exitMethod(this, new Exception());
+        response.sendRedirect(request.getContextPath() + "/user");
     }
 
 
@@ -454,40 +461,62 @@ public class UserManagerServlet extends HttpServlet {
 
 
 
-    /*
+
+
+
+
     // switch POST  // TO DO // CLOSE TO createOne
-    // Editer un role
-    private void editOneRole(HttpServletRequest request, HttpServletResponse response, int idRole) throws ServletException, IOException {
+    // Editer un user
+    private void editOneUser(HttpServletRequest request, HttpServletResponse response,int idUserToEdit) throws ServletException, IOException {
 
-        MyLogUtil.enterMethod(this, new Exception());
+        UserEntity validatedUserToAttach = UserValidation.toEdit(request, idUserToEdit);
+        if (validatedUserToAttach == null) {
+            // alors il y a eu des erreurs
+            LOG.debug("Object failed validations");
+            request.getSession(true).setAttribute("redirectErrorMessage", "L'utilisateur n'a pas été édité");
 
+        } else {
 
-        List<Integer> selectedPermissionsIdList = new ArrayList<Integer>();
+            EntityManager em = EMF.getEM();
+            UserService myUserService = new UserService(em);
+            EntityTransaction et = null;
 
-        RoleEntity validatedRole = RoleValidation.toCreateRole(request, selectedPermissionsIdList);
+            try {
+                et = em.getTransaction();
+                et.begin();
+                myUserService.update(validatedUserToAttach);
 
+                RoleService myRoleService = new RoleService(em);
+                RoleEntity myRoleToUpdate = myRoleService.selectOneByIdOrNull(validatedUserToAttach.getRolesByIdRole().getId());
+                myRoleToUpdate.getUsersById().add(validatedUserToAttach);
+                myRoleService.update(myRoleToUpdate);
 
-        // Instanciation de l'EntityManager context:
-        EntityManager em = EMF.getEM();
+                et.commit();
+                request.getSession(true).setAttribute("redirectSuccessMessage", " L'utilisateur a bien été édité");
 
-        // Instanciation du service adapté
-        RoleService myRoleService = new RoleService(em);
+            } catch (Exception e) {
+                //LOG.debug(e.getMessage());
+                //LOG.debug("\n\n\n\n\n");
+                LOG.debug(e);
+                request.getSession(true).setAttribute("redirectErrorMessage", " L'utilisateur n'a pas été édité\n" + e.getMessage());
 
-        // Recupéreration du role ayant cet id en db
-        RoleEntity attachedRole = myRoleService.selectOneByIdOrNull(idRole);
-        if (attachedRole != null) {
-            request.setAttribute("myRoleRequestKey", attachedRole);
-            MyLogUtil.exitMethod(this, new Exception());
-            request.getRequestDispatcher(ROLE_EDIT_VIEW).forward(request, response);
+            } finally {
+                em.clear();
+
+                LOG.debug("em open ? : " + em.isOpen());
+                if (em.isOpen()) {
+                    em.close();
+                    LOG.debug("em open ? : " + em.isOpen());
+                }
+
+                if (et != null && et.isActive()) {
+                    et.rollback();
+                }
+            }
+
         }
-        else {
-            LOG.debug("No existing role with id = " + idRole + "\n Redirecting to /role");
-            request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer le role en vue de l'éditer en db");
-            MyLogUtil.exitServlet(this, new Exception());
-            response.sendRedirect(request.getContextPath()+"/pzemiqqionssion");
-        }
+        response.sendRedirect(request.getContextPath() + "/user");
     }
-    */
 
 
 

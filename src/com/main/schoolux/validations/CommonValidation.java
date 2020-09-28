@@ -28,6 +28,15 @@ public class CommonValidation {
     }
 
 
+    /**
+     *Checks a parameter content and his length
+     * @param input
+     * @param inputLabel
+     * @param minLength
+     * @param maxLength
+     * @param errors
+     * @param valids
+     */
     public static void checkEmptyAndLength_Input(String input, String inputLabel, int minLength, int maxLength, Map<String, String> errors, Map<String, String> valids) {
 
         if (!MyStringUtil.hasContent(input)) {
@@ -42,6 +51,16 @@ public class CommonValidation {
         return;
     }
 
+
+    /**
+     * checks the length of a parameter
+     * @param input
+     * @param inputLabel
+     * @param minLength
+     * @param maxLength
+     * @param errors
+     * @param valids
+     */
 
     public static void checkLength_Input(String input, String inputLabel, int minLength, int maxLength, Map<String, String> errors, Map<String, String> valids) {
 
@@ -59,7 +78,16 @@ public class CommonValidation {
     }
 
 
-
+    /**
+     * checks the content of a parameter, his length and the presence or not of a special string in it
+     * @param input
+     * @param inputLabel
+     * @param minLength
+     * @param maxLength
+     * @param stringToCheck
+     * @param errors
+     * @param valids
+     */
 
     public static void checkEmptyAndLengthAndContainingString_Input(String input, String inputLabel, int minLength, int maxLength, String stringToCheck, Map<String, String> errors, Map<String, String> valids) {
 
@@ -81,8 +109,13 @@ public class CommonValidation {
     }
 
 
-
-
+    /**
+     * Checks the content of a request parameter processed in order to produce a Date variable
+     * @param input
+     * @param inputLabel
+     * @param errors
+     * @param valids
+     */
     public static void checkEmptyAndValidDate_Input(String input, String inputLabel,Map<String, String> errors, Map<String, String> valids)  {
 
 
@@ -123,6 +156,15 @@ public class CommonValidation {
     }
 
 
+    /**
+     * Buils a list of selected id from a select multiple input out of the http request parameter
+     * @param selectedRoles the http parameter values
+     * @param inputLabel key of the parameter
+     * @param selectedRolesIdList
+     * @param errors
+     * @param valids
+     * @return
+     */
     public static List<Integer> CheckIds_SelectMultiple(String[] selectedRoles,String inputLabel, List<Integer> selectedRolesIdList , Map<String, String> errors, Map<String, String> valids) {
 
         int startErrorsNumber = errors.size();

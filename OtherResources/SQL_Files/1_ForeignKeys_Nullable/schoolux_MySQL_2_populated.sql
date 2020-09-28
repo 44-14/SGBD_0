@@ -929,6 +929,29 @@ CREATE TABLE IF NOT EXISTS `documents_users` (
 
 
 
+-- Cette table empeche la suppresion du role Default0 mais doit être remplacée par un trigger
+
+DROP TABLE IF EXISTS `rolesDeletePrevention`;
+CREATE TABLE IF NOT EXISTS `rolesDeletePrevention` (
+
+                                                       `id` int(11) NOT NULL AUTO_INCREMENT,
+                                                       `label` varchar(100) NOT NULL,
+
+                                                       `id_RoleUndeletable` int(11) NULL DEFAULT NULL,
+
+
+
+                                                       CONSTRAINT PK_ROLES PRIMARY KEY (`id`),
+                                                       CONSTRAINT UNIQUE_CONSTRAINT_ROLES_label UNIQUE (`label`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
+
+
+
 
 
 
@@ -1176,10 +1199,14 @@ ALTER TABLE roles_permissions
 	ADD(
 		CONSTRAINT FK_DOCUMENTSUSERS_DOCUMENTS FOREIGN KEY (`id_document`) REFERENCES `documents` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
 		CONSTRAINT FK_DOCUMENTSUSERS_USERS FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-	);	
-	
-	
-	
+	);
+
+
+ALTER TABLE `rolesDeletePrevention`
+
+    ADD(
+        CONSTRAINT FK_ROLESDELETEPREVENTION_ROLES FOREIGN KEY (`id_RoleUndeletable`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+	);
 	
 	
 	
@@ -1211,7 +1238,7 @@ INSERT INTO `permissions` (`id`, `label`, `abbreviation`, `description`) VALUES
 
 
 INSERT INTO `roles` (`id`, `label`, `abbreviation`, `description`) VALUES
-(1, 'Default', 'DEF-01', 'Ce rôle est attribué aux utilisateurs par défaut lors de l\'inscription'),
+(1, 'Default0', 'DEF-01', 'Ce rôle est attribué aux utilisateurs par défaut lors de l\'inscription'),
 (2, 'Eleve 1', 'ELE-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant qu\'élèves de l\'école'),
 (3, 'Parent 1', 'PAR-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que parents d\'élève'),
 (4, 'Professeur 1', 'PRO-01', 'Ce rôle est attribué aux utilisateurs identifiés en tant que professeurs'),
@@ -1257,35 +1284,43 @@ INSERT INTO `roles_permissions` (`id`, `id_role`, `id_permission`) VALUES
 
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `password`, `phone_number`, `birthdate`, `gender`, `email_address`, `active`, `inscription_date`, `title`, `photo`, `id_address`, `id_role`, `id_school`, `id_parent`) VALUES
-(1, 'Viktor', 'Ganise', 'ladministrateur01', 'mdp', NULL, '1991-01-01', 'Neutre', 'viktor.ganise@gmail.com', 1, '2020-08-09 17:46:03', 'Mr. l\'Administrateur', NULL, NULL, 6, NULL, NULL),
-(2, 'Jean', 'Seigne', 'leprofesseur01', 'mdp', NULL, '1990-01-01', 'Masculin', 'jean.seigne@gmail.com', 1, '2020-08-09 17:46:03', '', NULL, NULL, 3, NULL, NULL),
-(3, 'Arya', 'Secret', 'lasecretaire01', 'mdp', NULL, '1994-01-01', 'Féminin', 'arya.secret@gmail.com', 1, '2020-08-09 17:46:03', 'Mme la Secrétaire', NULL, NULL, 4, NULL, NULL),
-(4, 'Moundir', 'Ecteur', 'ledirecteur01', 'mdp', NULL, '1985-02-02', 'Masculin', 'moundir.ecteur@gmail.com', 1, '2020-08-09 17:46:03', 'Mr. le Directeur', NULL, NULL, 5, NULL, NULL),
-(5, 'Gaspard', 'Ent', 'leparent01', 'mdp', NULL, '1970-03-03', 'Masculin', 'gaspard.ent@gmail.com', 1, '2020-08-09 17:46:03', 'Mr. le Parent', NULL, NULL, 2, NULL, NULL),
-(6, 'Michael', 'Eve', 'leleve01', 'mdp', NULL, '2005-05-05', 'Masculin', 'michael.eve@gmail.com', 1, '2020-08-09 17:46:03', 'L\'Élève', NULL, NULL, 1, NULL, NULL),
-(7, 'Callista', 'Giaire', 'lastagiaire01', 'mdp', NULL, '2002-02-02', 'Féminin', 'callista.giaire@gmail.com', 1, '2020-08-09 17:46:03', 'Mme la Stagiaire-professeure', NULL, NULL, 7, NULL, NULL),
-(8, 'Kosta', 'Giaire', 'lestagiaire01', 'mdp', NULL, '2001-01-01', 'Masculin', 'kosta.giaire@gmail.com', 1, '2020-08-09 17:46:03', 'Mr le Stagiaire-secrétaire', NULL, NULL, 8, NULL, NULL),
-(9, 'Enf', 'Ent', 'lenfant01', 'mdp', NULL, '2004-04-04', 'Masculin', 'enf.ent@gmail.com', 1, '2020-08-09 17:49:31', 'Mr.', NULL, NULL, 1, NULL, 5);
+(1, 'Viktor', 'Ganise', 'ladministrateur01', 'mdp', NULL, '1991-01-01', 'Neutre', 'viktor.ganise@gmail.com', 1, '2020-08-09 17:46:03', 'Mr. l\'Administrateur', NULL, NULL, 7, NULL, NULL),
+(2, 'Jean', 'Seigne', 'leprofesseur01', 'mdp', NULL, '1990-01-01', 'Masculin', 'jean.seigne@gmail.com', 1, '2020-08-09 17:46:03', '', NULL, NULL, 4, NULL, NULL),
+(3, 'Arya', 'Secret', 'lasecretaire01', 'mdp', NULL, '1994-01-01', 'Féminin', 'arya.secret@gmail.com', 1, '2020-08-09 17:46:03', 'Mme la Secrétaire', NULL, NULL, 5, NULL, NULL),
+(4, 'Moundir', 'Ecteur', 'ledirecteur01', 'mdp', NULL, '1985-02-02', 'Masculin', 'moundir.ecteur@gmail.com', 1, '2020-08-09 17:46:03', 'Mr. le Directeur', NULL, NULL, 6, NULL, NULL),
+(5, 'Gaspard', 'Ent', 'leparent01', 'mdp', NULL, '1970-03-03', 'Masculin', 'gaspard.ent@gmail.com', 1, '2020-08-09 17:46:03', 'Mr. le Parent', NULL, NULL, 3, NULL, NULL),
+(6, 'Michael', 'Eve', 'leleve01', 'mdp', NULL, '2005-05-05', 'Masculin', 'michael.eve@gmail.com', 1, '2020-08-09 17:46:03', 'L\'Élève', NULL, NULL, 2, NULL, NULL),
+(7, 'Callista', 'Giaire', 'lastagiaire01', 'mdp', NULL, '2002-02-02', 'Féminin', 'callista.giaire@gmail.com', 1, '2020-08-09 17:46:03', 'Mme la Stagiaire-professeure', NULL, NULL, 8, NULL, NULL),
+(8, 'Kosta', 'Giaire', 'lestagiaire01', 'mdp', NULL, '2001-01-01', 'Masculin', 'kosta.giaire@gmail.com', 1, '2020-08-09 17:46:03', 'Mr le Stagiaire-secrétaire', NULL, NULL, 9, NULL, NULL),
+(9, 'Enf', 'Ent', 'lenfant01', 'mdp', NULL, '2004-04-04', 'Masculin', 'enf.ent@gmail.com', 1, '2020-08-09 17:49:31', 'Mr.', NULL, NULL, 2, NULL, 5);
 
+
+INSERT INTO `rolesDeletePrevention` (`id`, `label`, `id_RoleUndeletable`) VALUES
+(1,'Default0', 1);
 
 COMMIT;
 
 
 
 
-create trigger RolesTrigger on Roles
-    after delete as
-begin
-    If Exists(SELECT 1 FROM deleted WHERE label = Default)
-BEGIN
-ROLLBACK TRANSACTION;
-RAISERROR('Not Allowed to delete role label : Default as is a protected role', 16, 1);
-END;
-end;
+--  create trigger rolesTrigger on roles
+--      after delete as
+--  begin
+--      If Exists(SELECT 1 FROM deleted WHERE label = Default)
+--  BEGIN
+--  ROLLBACK TRANSACTION;
+--  RAISERROR('Not Allowed to delete role label : Default as is a protected role', 16, 1);
+--  END;
+--  end;
 
 
 
-
+-- create table rolesDeletePrevention (
+--     roleId int references roles(id)
+-- );
+--
+-- insert into rolesDeletePrevention (roleId)
+-- select id from roles where roles.label='Default0';
 
 
 

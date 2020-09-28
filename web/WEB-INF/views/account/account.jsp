@@ -6,6 +6,87 @@
   To change this template use File | Settings | File Templates.
 --%>
 
+
+
+<!-- Table contenant les données de l'user connecté -->
+
+
+
+
+
+
+<table class="dataList table  table-dark table-hover">
+
+
+
+    <tr>
+        <td> ID: </td>
+        <td> ${sessionScope.signedUser.id} </td>
+    </tr>
+    <tr> <td> Username: </td>
+        <td> ${sessionScope.signedUser.username} </td>
+    </tr>
+
+
+    <tr> <td> Prénom : </td>
+        <td> ${sessionScope.signedUser.firstName} </td>
+    </tr>
+
+    <tr> <td> Nom : </td>
+        <td>${sessionScope.signedUser.lastName}     </td>
+    </tr>
+    <tr> <td> Rôle </td>
+        <td>${sessionScope.signedUser.rolesByIdRole.label} </td>
+    </tr>
+
+
+    <%--
+    <td>${requestScope.myPermissionRequestKey.id}</td>
+    <td><c:out value="${requestScope.myPermissionRequestKey.abbreviation}" /></td>
+    <td><c:out value="${requestScope.myPermissionRequestKey.label}" /></td>
+    <td><c:out value="${requestScope.myPermissionRequestKey.description}" /></td>
+
+    <c:forEach items="${requestScope.myPermissionRequestKey.rolesPermissionsById}" var="role">
+        <td><c:out value="${role.rolesByIdRole.label}"/> </td>
+    </c:forEach>
+
+
+    </tr>
+
+
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <p class="TODO <your name> PRINT OBJECT PROPERTIES">
     <c:set var="object" value="${sessionScope.signedUser}" />
 <h2><b>Object:&nbsp; ${object['class']} </b></h2>
@@ -31,6 +112,10 @@
 
 
 
+
+
+
+
 <!--Liste tous les champs déclarés et leurs valeurs d'un attribut particulier mis dans un scope -->
 <c:set var="object" value="${sessionScope.signedUser}" />
 <c:if test="${not empty object['class'].declaredFields}">
@@ -45,29 +130,39 @@
 </c:if>
 
 
-    <!-- Table contenant les données de l'user connecté -->
 
 
-    <table>
-        <tr> ${sessionScope.signedUser.id} </tr>
-        <tr> ${sessionScope.signedUser.username}</tr>
-        <tr> ${sessionScope.signedUser.firstName}</tr>
-        <tr> ${sessionScope.signedUser.lastName}</tr>
-        <tr> ${sessionScope.signedUser.rolesByIdRole}</tr>
-                <td>${requestScope.myPermissionRequestKey.id}</td>
-                <td><c:out value="${requestScope.myPermissionRequestKey.abbreviation}" /></td>
-                <td><c:out value="${requestScope.myPermissionRequestKey.label}" /></td>
-                <td><c:out value="${requestScope.myPermissionRequestKey.description}" /></td>
-
-                    <c:forEach items="${requestScope.myPermissionRequestKey.rolesPermissionsById}" var="role">
-                        <td><c:out value="${role.rolesByIdRole.label}"/> </td>
-                    </c:forEach>
 
 
-            </tr>
 
 
-    </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -224,3 +319,4 @@
 
 
 
+--%>

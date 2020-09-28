@@ -10,7 +10,6 @@ import java.util.Objects;
 
 
 
-@Table(name = "users", schema = "schoolux", catalog = "")
 public class UserVM {
     private int id;
     private String firstName;
@@ -28,9 +27,6 @@ public class UserVM {
     private RoleEntity rolesByIdRole;
     private UserVM usersByIdParent;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -39,8 +35,6 @@ public class UserVM {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "first_name", nullable = false, length = 50)
     public String getFirstName() {
         return firstName;
     }
@@ -49,8 +43,6 @@ public class UserVM {
         this.firstName = firstName;
     }
 
-    @Basic
-    @Column(name = "last_name", nullable = false, length = 50)
     public String getLastName() {
         return lastName;
     }
@@ -59,8 +51,6 @@ public class UserVM {
         this.lastName = lastName;
     }
 
-    @Basic
-    @Column(name = "username", nullable = false, length = 50)
     public String getUsername() {
         return username;
     }
@@ -69,8 +59,6 @@ public class UserVM {
         this.username = username;
     }
 
-    @Basic
-    @Column(name = "password", nullable = false, length = 50)
     public String getPassword() {
         return password;
     }
@@ -79,8 +67,6 @@ public class UserVM {
         this.password = password;
     }
 
-    @Basic
-    @Column(name = "phone_number", nullable = true, length = 25)
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -89,8 +75,6 @@ public class UserVM {
         this.phoneNumber = phoneNumber;
     }
 
-    @Basic
-    @Column(name = "birthdate", nullable = false)
     public Date getBirthdate() {
         return birthdate;
     }
@@ -99,8 +83,6 @@ public class UserVM {
         this.birthdate = birthdate;
     }
 
-    @Basic
-    @Column(name = "gender", nullable = false)
     public String getGender() {
         return gender;
     }
@@ -109,8 +91,6 @@ public class UserVM {
         this.gender = gender;
     }
 
-    @Basic
-    @Column(name = "email_address", nullable = false, length = 100)
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -119,8 +99,6 @@ public class UserVM {
         this.emailAddress = emailAddress;
     }
 
-    @Basic
-    @Column(name = "active", nullable = false)
     public boolean isActive() {
         return isActive;
     }
@@ -129,8 +107,6 @@ public class UserVM {
         this.isActive = isActive;
     }
 
-    @Basic
-    @Column(name = "inscription_date", nullable = false)
     public Timestamp getInscriptionDate() {
         return inscriptionDate;
     }
@@ -139,8 +115,6 @@ public class UserVM {
         this.inscriptionDate = inscriptionDate;
     }
 
-    @Basic
-    @Column(name = "title", nullable = true, length = 50)
     public String getTitle() {
         return title;
     }
@@ -149,8 +123,6 @@ public class UserVM {
         this.title = title;
     }
 
-    @Basic
-    @Column(name = "photo", nullable = true, length = 255)
     public String getPhoto() {
         return photo;
     }
@@ -184,8 +156,6 @@ public class UserVM {
         return Objects.hash(id, firstName, lastName, username, password, phoneNumber, birthdate, gender, emailAddress, isActive, inscriptionDate, title, photo);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "id_role", referencedColumnName = "id")
     public RoleEntity getRolesByIdRole() {
         return rolesByIdRole;
     }
@@ -194,8 +164,6 @@ public class UserVM {
         this.rolesByIdRole = rolesByIdRole;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "id_parent", referencedColumnName = "id")
     public UserVM getUsersByIdParent() {
         return usersByIdParent;
     }
