@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -113,6 +114,89 @@ public class RolePermissionService extends ServiceImpl<RolePermissionEntity> {
         // Method 2 :
 
         return em.find(RolePermissionEntity.class, id);
+    }
+
+
+
+    // Lire une RolePermission via la clé composite idRole + idPErmission
+    public RolePermissionEntity selectOneByCompositeOrNull(int idPermission, int idRole) {
+
+        LOG.debug("Select 1 RolePermission by the composite  : Permission id = "+idPermission + " and Role id = "+idRole);
+
+
+        try {
+            //List<RolePermissionEntity> myRolePermissionList = em.createNamedQuery("RolePermission.selectAll", RolePermissionEntity.class)
+            //.getResultList();
+            Query query = em.createNamedQuery("RolePermission.selectOneByComposite", RolePermissionEntity.class);
+            LOG.debug(" query.setParam");
+            query.setParameter("idPermission", idPermission);
+            query.setParameter("idRole",idRole);
+
+            LOG.debug("getResult");
+            RolePermissionEntity test = (RolePermissionEntity) query.getSingleResult();
+            return (RolePermissionEntity) query.getSingleResult();
+        } catch (NoResultException e) {
+            LOG.debug("The query found no RolePermission to return with that composite key", e);
+            return null;
+        }
+
+    }
+
+    // Lire une RolePermission via la clé composite idRole + idPErmission
+    public int deleteAllHavingIdRole(int idRole) {
+
+        LOG.debug("Delete all RolePermission having the role id  = "+idRole);
+        List <RolePermissionEntity> myListTest = this.selectAllHavingIdRole(idRole);
+        try {
+            //List<RolePermissionEntity> myRolePermissionList = em.createNamedQuery("RolePermission.selectAll", RolePermissionEntity.class)
+            //.getResultList();
+            Query query = em.createNamedQuery("RolePermission.deleteAllByIdRole", RolePermissionEntity.class);
+            LOG.debug(" query.setParam");
+            query.setParameter("idRole",idRole);
+
+            query.executeUpdate();
+
+            //Execute the delete query
+            //em.flush();
+
+            //update entity manager with changes
+            List <RolePermissionEntity> myList = this.selectAllHavingIdRole(idRole);
+            //em.refresh(this.selectAllHavingIdRole(idRole));
+
+
+            return 0;
+
+        } catch (NoResultException e) {
+            LOG.debug("The query couldnt delete the RolePermission records having the role id : "+idRole,e);
+            throw e;
+        }
+
+    }
+
+
+
+
+
+    // Lire une RolePermission via la clé composite idRole + idPErmission
+    public List <RolePermissionEntity>  selectAllHavingIdRole(int idRole) {
+
+        LOG.debug("Select all RolePermission having the role id  = "+idRole);
+
+        try {
+            //List<RolePermissionEntity> myRolePermissionList = em.createNamedQuery("RolePermission.selectAll", RolePermissionEntity.class)
+            //.getResultList();
+            Query query = em.createNamedQuery("RolePermission.selectAllByIdRole", RolePermissionEntity.class);
+            LOG.debug(" query.setParam");
+            query.setParameter("idRole",idRole);
+
+            return  query.getResultList();
+
+
+        } catch (NoResultException e) {
+            LOG.debug("The query couldnt delete the RolePermission records having the role id : "+idRole,e);
+            return null;
+        }
+
     }
 
 

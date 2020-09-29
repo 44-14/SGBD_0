@@ -10,8 +10,14 @@ import java.util.Objects;
                 @NamedQuery(name = "RolePermission.selectAll",
                         query = "SELECT rp from RolePermissionEntity rp"),
                 @NamedQuery(name = "RolePermission.selectOneById",
-                        query = "SELECT rp from RolePermissionEntity  rp where rp.id = :id")
-
+                        query = "SELECT rp from RolePermissionEntity  rp where rp.id = :id"),
+                @NamedQuery(name = "RolePermission.selectOneByComposite",
+                        query = "SELECT rp from RolePermissionEntity  rp where rp.permissionsByIdPermission.id = :idPermission " +
+                                "and rp.rolesByIdRole.id = :idRole "),
+                @NamedQuery(name = "RolePermission.selectAllByIdRole",
+                        query = "SELECT rp from RolePermissionEntity  rp where  rp.rolesByIdRole.id = :idRole "),
+                @NamedQuery(name = "RolePermission.deleteAllByIdRole",
+                        query = "DELETE from RolePermissionEntity  rp where  rp.rolesByIdRole.id = :idRole ")
         }
 
 )
@@ -67,4 +73,17 @@ public class RolePermissionEntity {
     public void setPermissionsByIdPermission(PermissionEntity permissionsByIdPermission) {
         this.permissionsByIdPermission = permissionsByIdPermission;
     }
+
+
+
+    @Override
+    public String toString() {
+        return "\nRolePermissionEntity { " +
+                "id=" + id +
+                ",\nRole lié =" + rolesByIdRole +
+                ",\npermission liée=" + permissionsByIdPermission +
+                " } ";
+    }
+
+
 }

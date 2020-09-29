@@ -96,7 +96,7 @@ public class PermissionService extends ServiceImpl<PermissionEntity> {
     @Override
     public PermissionEntity selectOneByIdOrNull(int id) {
 
-        LOG.debug("Select a role by the id : "+id);
+        LOG.debug("Select a permission by the id : "+id);
 
         // find = read = select
 

@@ -943,7 +943,7 @@ CREATE TABLE IF NOT EXISTS `rolesDeletePrevention` (
 
                                                        CONSTRAINT PK_ROLES PRIMARY KEY (`id`),
                                                        CONSTRAINT UNIQUE_CONSTRAINT_ROLES_label UNIQUE (`label`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=`latin1_general_ci`;
 
 
 

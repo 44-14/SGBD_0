@@ -482,31 +482,108 @@ public class RoleManagerServlet extends HttpServlet {
         MyLogUtil.enterMethod(this, new Exception());
 
 
-        List<Integer> selectedPermissionsIdList = new ArrayList<Integer>();
+        //List<Integer> selectedPermissionsIdList = new ArrayList<Integer>();
+        List<RolePermissionEntity> myRolePermissionList = new ArrayList<RolePermissionEntity>();
 
-        RoleEntity validatedRole = RoleValidation.toCreateRole(request, selectedPermissionsIdList);
+        RoleEntity validatedRole = RoleValidation.toEditRole(request, idRole, myRolePermissionList);
+
+        if (validatedRole == null) // returns boolean
+        {
+            LOG.debug("Object failed validations");
+            request.getSession(true).setAttribute("redirectErrorMessage", " Le role a échoué aux validations");
+        } else {
+
+            // le select des permissions dans le contexte et leur ajout dans la collection de RolePermission de l'objet role se fait dans la méthode de validation précédente
+            LOG.debug("Object successed validations : the roleEntity and the rolePermissionList are fullfilled and ready to be persisted/updated");
+
+            EntityManager em = EMF.getEM();
+            EntityTransaction et = null;  // nécessaire de le faire avant le try pour pouvoir y accéder dans le finally, sinon la variable 'et' serait locale au try
+
+            try {
+
+                et = em.getTransaction();
+                et.begin();
+
+                // Instanciation des services adaptés :
+                RoleService myRoleService = new RoleService(em);
+                RolePermissionService myRolePermissionService = new RolePermissionService(em);
 
 
-        // Instanciation de l'EntityManager context:
-        EntityManager em = EMF.getEM();
+                // delete des records de RolePermission qui ont l'idRole de notre validatedRole
 
-        // Instanciation du service adapté
-        RoleService myRoleService = new RoleService(em);
+                myRolePermissionService.deleteAllHavingIdRole(validatedRole.getId());
+                em.flush();
 
-        // Recupéreration du role ayant cet id en db
-        RoleEntity attachedRole = myRoleService.selectOneByIdOrNull(idRole);
-        if (attachedRole != null) {
-            request.setAttribute("myRoleRequestKey", attachedRole);
-            MyLogUtil.exitMethod(this, new Exception());
-            request.getRequestDispatcher(ROLE_EDIT_VIEW).forward(request, response);
+                // update du Role
+                //myRoleService.update(validatedRole);
+                em.flush();
+                LOG.debug("Id du validatedRole apres update et flush :" +validatedRole.getId());
+
+
+
+
+                // insert de chaquee RolePermission contenue dans la list <RolePermission>
+                LOG.debug("ici");
+                for (RolePermissionEntity myRP_Entity : myRolePermissionList) {
+                    {
+                        if (myRolePermissionService.selectOneByCompositeOrNull(myRP_Entity.getPermissionsByIdPermission().getId(), myRP_Entity.getRolesByIdRole().getId()) == null) {
+                            em.flush();
+                            LOG.debug("Inserting a RolePermission");
+                            myRolePermissionService.insert(myRP_Entity);
+                        }
+                    }
+                }
+
+                et.commit();
+                request.getSession(true).setAttribute("redirectSuccessMessage", " Le rôle a bien été édité"); // en session finalement pour l'afficher meme après un sendRedirect
+
+            } catch (Exception e) {
+                //LOG.debug(e.getMessage());
+                //LOG.debug("\n\n\n\n\n");
+                LOG.debug(e);
+                request.getSession(true).setAttribute("redirectErrorMessage", " La rôle n'a pas été édité");
+
+            } finally {
+                em.clear();
+
+                LOG.debug("em open ? : " + em.isOpen());
+                if (em.isOpen()) {
+                    em.close();
+                    LOG.debug("em open ? : " + em.isOpen());
+                }
+
+                if (et != null && et.isActive()) {
+                    LOG.debug("rollbacking");
+                    et.rollback();
+                }
+            }
         }
-        else {
-            LOG.debug("No existing role with id = " + idRole + "\n Redirecting to /role");
-            request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer le role en vue de l'éditer en db");
-            MyLogUtil.exitServlet(this, new Exception());
-           response.sendRedirect(request.getContextPath()+"/pzemiqqionssion");
-        }
+
+        MyLogUtil.exitMethod(this, new Exception());
+        response.sendRedirect(request.getContextPath() + "/role");
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

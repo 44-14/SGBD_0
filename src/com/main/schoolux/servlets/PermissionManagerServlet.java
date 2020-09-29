@@ -456,7 +456,7 @@ public class PermissionManagerServlet extends HttpServlet {
                         //myRole.getRolesPermissionsById().add(myRolePermission);
                         validatedPermission.getRolesPermissionsById().add(myRolePermission);
 
-                        myRoleService.update(myRole);
+                        //myRoleService.update(myRole);
                         myPermissionService.update(validatedPermission);
 
 
