@@ -514,13 +514,13 @@ public class RoleManagerServlet extends HttpServlet {
                 myRolePermissionService.deleteAllHavingIdRole(validatedRole.getId());
                 em.flush();
 
-                // update du Role
-                //myRoleService.update(validatedRole);
+                //update du Role
+                myRoleService.update(validatedRole);
                 em.flush();
                 LOG.debug("Id du validatedRole apres update et flush :" +validatedRole.getId());
 
 
-
+                validatedRole.getRolesPermissionsById().clear(); // Va vider la liste
 
                 // insert de chaquee RolePermission contenue dans la list <RolePermission>
                 LOG.debug("ici");
@@ -530,9 +530,13 @@ public class RoleManagerServlet extends HttpServlet {
                             em.flush();
                             LOG.debug("Inserting a RolePermission");
                             myRolePermissionService.insert(myRP_Entity);
+
+                            validatedRole.getRolesPermissionsById().add(myRP_Entity);
                         }
                     }
                 }
+
+                myRoleService.update(validatedRole);
 
                 et.commit();
                 request.getSession(true).setAttribute("redirectSuccessMessage", " Le rôle a bien été édité"); // en session finalement pour l'afficher meme après un sendRedirect

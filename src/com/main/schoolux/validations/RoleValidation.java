@@ -160,7 +160,7 @@ public class RoleValidation {
                     // On modifie le pointeur de la liste entière plutot que de vérifier si chaque RolePerm est déjà dedans
                     // donc il ne faut pas faire des myRole.getRolesPermissionsById().add(myRP_Entity) dans la boucle foreach au dessus
                     // OU alors c'est à faire dans le controller une fois que chaque RolePerm aura été inséré
-                    myRole.setRolesPermissionsById(myRolePermList);
+                    //myRole.setRolesPermissionsById(myRolePermList);
 
                     // Ici les 2 références vers myRole et myRolePermList sont les mêmes que celles passées en paramètre à l'appel de la méthode de validation
                     // Donc elles seront toutes les 2 accessibles par le controller
