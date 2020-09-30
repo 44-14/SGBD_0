@@ -34,8 +34,11 @@ public class AccountServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         MyLogUtil.enterServlet(this,new Exception(),request);
+        this.doGet(request,response);
 
-        /* if  hidden id du post = id du userConnecté en session  on dispatch vers /user en rajoutant les attributs nécessaires dans la request pour faire editer là bas
+        /*
+        Plus tard : édition du compte propre
+        if  hidden id du post = id du userConnecté en session  on dispatch vers /user en rajoutant les attributs nécessaires dans la request pour faire editer là bas
          */
     }
 

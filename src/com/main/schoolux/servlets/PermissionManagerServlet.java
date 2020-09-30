@@ -31,20 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// Rappels :
-// CRUD DANS SERVLET -  insert - selectOne / selectAll - update / updateLogically - delete etc DANS SERVICE
-// une balise dans la barre de navigation d'un user ayant la permission de gerer les permissions doit rediriger vers ici via /permissions
-// vérifier que l'utilisateur mis en session via la signInServlet a bien accès à telle permission pour gérer les permissions et les lister etc
-// verification de la presence dans la permission dans la jsp pour afficher les boutons dispo , mais aussi dans la servlet pour eviter les hacks
-// donc dans la servlet, si signedUser.role.permissions .containts (code permission) alors tu process le readAll
-// c'est bien les permissions qu'il faut directement vérifier et pas le role de l user vu que les roles sont dynamiques, il se peut que certains roles n'existent pas encore ou qu on modifie les permissions liées etc
-// on peut le faire en debut de servlet ou dans le case (mieux) avec msg d erreur
-// ou dans la jsp view meme ?
-// un user connecté qui a la perm viewAllPerm les verra
-// mais seul un user connecté qui a la perm EditPerm verra le bouton d edition
-// cependant les permissions sont statiques donc c plutot pour les roles cette reflexion
-// la seule view dispo des permissions sera celle de la liste et il faudra la permission ViewAllPErmissions
-
 
 
 
@@ -81,22 +67,6 @@ public class PermissionManagerServlet extends HttpServlet {
 
         MyLogUtil.enterServlet(this,new Exception(),request);
 
-        /*
-        // Messages engendrés lors de la méthode doPost()
-        List<String> getErrorMessages = new ArrayList<>();
-        List<String> getSuccessMessages = new ArrayList<>();
-
-        request.getSession(true).setAttribute("getErrorMessages",getErrorMessages);
-        request.getSession(true).setAttribute("getSuccessMessages",getSuccessMessages);
-
-        //Pas efficace , dans les methodes hors doGet() ou doPost() car tjrs besoin de cast le session Attribute en List
-        //avant de pouvoir faire un .add puis de le remettre en sessionAttribute
-        //Cela donnait :
-        List<String> previousMessages = ( ( List<String> ) request.getSession(true).getAttribute("myError") );
-        previousMessages.add("myNewMessage");
-        request.getSession(true).setAttribute("myErrors", previousMessages);
-        // trop lourd pour juste ajouter le message dans la list
-         */
 
 
         String actionURI = MyURLUtil.URI_LastExploitablePart(request);
@@ -124,19 +94,7 @@ public class PermissionManagerServlet extends HttpServlet {
                 //throw new IllegalStateException("Unexpected value: " + actionURI);
                 MyLogUtil.exitServlet(this, new Exception());
                 request.getRequestDispatcher(request.getServletPath()).forward(request, response); // renvoie une GET vers /permission
-                /* send the request to /permission
-                 Avec getRequestDispatcher, la methode reste la meme, si c'etait post ça restera un post vers /permission
-                 ==> For a RequestDispatcher obtained via getRequestDispatcher(), the ServletRequest object has
-                 its path elements and parameters adjusted to match the path of the target resource.
-                 donc la request garde le meme context path (à savoir /SGBD_0_war_exploded
-                 mais change l'uri en faisant context + ce qui est mis en paramètre apres le getRequestDispatcher
-                 */
 
-                // request.getRequestDispatcher(X) va modifier la request et rajouter X après le context comme ça reste au sein du meme contexte, mais les parameters et attributs de la requete restent préservés ainsi que la méthode
-                // tandis que response.sendRedirect(une URI) va détruire la requete en cours et forcer le client à en faire une nouvelle GET, les attributs et paramètres de l'ancienne requête seront perdus
-                // dans le cas du sendRedirect(une URI) il faut bien mettre une URI complète car on pourrait amener le client à requeter vers une autre application donc un autre contexte
-                // pour faire l'URI :   request.getContextPath()+"/urlPattern géré par l'appli"
-                // Si la requete etait une POST, ca deviendra une GET
         }
     }
 
@@ -260,11 +218,7 @@ public class PermissionManagerServlet extends HttpServlet {
 
     // Lister toutes les permissions
     private void readAllPermissions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // PLUS MTN
-        // Pas besoin d'instancier un EntityManager ici car la methode selectAllOrNull() du service utilise EntityFinderImpl.class instancie son propre EntityManager em
-        // PLUS MTN
-        // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
-        // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
+
 
         // Instanciation de l'EntityManager context:
         EntityManager em = EMF.getEM();
@@ -343,11 +297,6 @@ public class PermissionManagerServlet extends HttpServlet {
     private void readOnePermission(HttpServletRequest request, HttpServletResponse response, int idPermission) throws ServletException, IOException {
 
         MyLogUtil.enterMethod(this,new Exception());
-        // PLUS MTN
-        // Pas besoin d'instancier un EntityManager ici car la methode selectOneByIdOrNull() du service utilise EntityFinderImpl.class instancie son propre EntityManager em
-        // PLUS MTN
-        // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
-        // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
 
         // Instanciation de l'EntityManager context:
         EntityManager em = EMF.getEM();
@@ -381,23 +330,7 @@ public class PermissionManagerServlet extends HttpServlet {
     private void createOnePermission(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         MyLogUtil.enterMethod(this,new Exception());
-        /*
-                PROCEDURE POUR LES ROLES DU SELECT MULTIPLE
-                DANS LA VALIDATION :
-                Recuperer les id via getParameterValues(nomAttribut) + les vérifier + modifier la List<Integer> selectedRolesIdList reçue en paramètre
-                Comme la référence ne change pas, on pourra accéder à cette liste depuis le controlleur meme sans en faire un return ici
-                Retourner la permission completée (label - abbreviation - description) ou null si fail
-                DANS LE CONTROLLER
-                Ouvrir transaction
-                Persister la permission + récupérer l'entityPermission nouvellement créer ayant aussi un id (ou est ce qu'un objet persisté est modifié directement ? à verif
-                Instancier un RoleService
-                boucler sur la liste d'id de roles selectionnés
-                faire un selectOne à chaque itération,
-                si le retour n'est pas null on instancie un RolePermissionEntity avec le role retourné par selectOne + la permission retournée qu on vient de créer
-                on persiste le RolePErmissionEntity à chaque tour
-                on ferme la transaction try catch etc
 
-            */
 
         List<Integer> selectedRolesIdList = new ArrayList<Integer>();
 
@@ -463,21 +396,6 @@ public class PermissionManagerServlet extends HttpServlet {
                     }
 
 
-                    /*for (RoleEntity myRole : myRoleList)
-                    {
-                        LOG.debug("Dans la boucle avant if : selectedRoleId = "+selectedRoleId+" et myRole.getId() = "+myRole.getId());
-                        if (selectedRoleId == myRole.getId()){
-                            LOG.debug("Dans la boucle : correspondance trouvée : selectedRoleId = "+selectedRoleId+" et myRole.getId() = "+myRole.getId());
-                            RolePermissionEntity myRolePermission = new RolePermissionEntity();
-                            myRolePermission.setRolesByIdRole(myRole);
-                            myRolePermission.setPermissionsByIdPermission(validatedPermission);
-                            RolePermissionService myRolePermissionService = new RolePermissionService(em);
-                            myRolePermissionService.insert(myRolePermission);
-
-
-                        }
-                    }
-                     */
                 }
                 // FIN SELECT MULTIPLE
                 et.commit();
@@ -515,11 +433,6 @@ public class PermissionManagerServlet extends HttpServlet {
 
         MyLogUtil.enterMethod(this,new Exception());
 
-        // PLUS MTN
-        // Pas besoin d'instancier un EntityManager ici car la methode selectOneByIdOrNull() du service utilise EntityFinderImpl.class instancie son propre EntityManager em
-        // PLUS MTN
-        // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
-        // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
 
         // Instanciation de l'EntityManager context:
         EntityManager em = EMF.getEM();
@@ -576,10 +489,6 @@ public class PermissionManagerServlet extends HttpServlet {
 
         MyLogUtil.enterMethod(this,new Exception());
 
-        // Pas besoin d'instancier un EntityManager ici car la methode selectOneByIdOrNull() du service utilise EntityFinderImpl.class instancie son propre EntityManager em
-        // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
-        // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select
-
         // Instanciation de l'EntityManager context:
         EntityManager em = EMF.getEM();
         // Instanciation du service adapté
@@ -596,9 +505,7 @@ public class PermissionManagerServlet extends HttpServlet {
             LOG.debug("No existing permission with id = " + idPermission + "\n Redirecting to /permission");
             request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer la permission en vue de l'éditer en db");
             MyLogUtil.exitServlet(this, new Exception());
-            // On sait pas envoyer vers la methode doGet vu que c est une POST request qu'on a, getRequestDispatcher ne modifie pas la methode de la requete donc ça restera un POST
-            // Si on fait un sendRedirect qui permet de modifier un POST en GET, alors on perdre le errorMessage mis en request attribute
-            // Donc le mieux c'est d'envoyer vers la page details.jsp malgré qu'on ne les ai pas, faire un if error not empty on l affiche, else on affiche la table de details
+
             response.sendRedirect(request.getContextPath()+"/role");
         }
     }
@@ -610,11 +517,6 @@ public class PermissionManagerServlet extends HttpServlet {
     // Supprimer une permission (de manière effective)
     private void deleteOnePermission(HttpServletRequest request, HttpServletResponse response, int idPermission) throws ServletException, IOException {
 
-        // Pas besoin d'instancier un EntityManager ici car la methode selectOneByIdOrNull() du service utilise EntityFinderImpl.class instancie son propre EntityManager em
-        // MTN SI
-        // De plus, le try, le finally et le em.close() sont déjà dans la méthode findByNamedQuery de EntityFinderImpl.class et on en fait pas d'autres
-        // MTN NON
-        // De plus, pas de transaction pour une lecture en db donc pas nécessaire pour les read/find/select -> seulement si on fait qu'une lecture, mais une lecture suivie d'un remove = besoin que les 2 requetes utilisent un seul et meme entityManager, et qu'il n y ait pas de em.close() entre elles
 
         // Instanciation de l'EntityManager context:
         EntityManager em = EMF.getEM();
@@ -655,77 +557,12 @@ public class PermissionManagerServlet extends HttpServlet {
             LOG.debug("No existing permission with id = " + idPermission + "\n Redirecting to /permission");
             request.getSession(true).setAttribute("redirectErrorMessage", "Le service n'a pas su récupérer la permission en vue de la supprimer");
             MyLogUtil.exitMethod(this, new Exception());
-            // On sait pas envoyer vers la methode doGet vu que c est une POST request qu'on a, getRequestDispatcher ne modifie pas la methode de la requete donc ça restera un POST
-            // Si on fait un sendRedirect qui permet de modifier un POST en GET, alors on perdre le errorMessage mis en request attribute
-            // Donc le mieux c'est d'envoyer vers la page details.jsp malgré qu'on ne les ai pas, faire un if error not empty on l affiche, else on affiche la table de details
+
             response.sendRedirect(request.getContextPath()+"/permission");
         }
     }
 
 
 
-
-
 }
 
-
-
-
-
-
-/*
-
-    // Je r�cup�re les voitures pr�sentes dans la base de donn�e
-    List<Voiture> listVoitures = null;
-
-		try {
-                VoitureService serviceVoiture = new VoitureService(em); ok
-                listVoitures = serviceVoiture.findAllVoitures(); ok
-                } finally {
-                em.clear();
-                em.close();
-                }
-
-                // Je r�cup�re toutes les informations concernant les r�servations pr�sentes
-                // dans la base de donn�e
-
-                // SCHOOLUX on le fera mais le sens de navigation importe : on veut get les permissions à partir des roles  VOIR EN BAS LE CODE DE JSP-MVC-Master
-                // donc on fera un getpermissions(listRoles)
-                List<Reservation> listReservations = getAllAboutReservations(listVoitures);
-
-
-        request.setAttribute("Reservations", listReservations);
-        RequestDispatcher view = getServletContext().getRequestDispatcher("/WEB-INF/ReservationViews/ReservationList.jsp");
-        view.forward(request, response);
-        }
-
-
-
-
-
-      // Les voitures �tant owner au niveau de la relation voiture - r�servation,
-	// je parcours la list des voitures disponibles pour acc�der aux informations de
-	// leurs r�servation
-
-	private List<Reservation> getAllAboutReservations(List<Voiture> listVoitures) {
-		List<Reservation> listRes = new ArrayList<Reservation>();
-		List<Voiture> voituresConcernantReservation = null;
-
-		for (Voiture voiture : listVoitures) {
-			if (!voiture.getReservations().isEmpty()) {
-				voituresConcernantReservation = new ArrayList<Voiture>();
-				voituresConcernantReservation.add(voiture);
-				for (Reservation reservation : voiture.getReservations()) {
-					reservation.setVoitures(voituresConcernantReservation);
-					listRes.add(reservation);
-				}
-			}
-		}
-		return listRes;
-	}
-
-
-
-}}
-
- */

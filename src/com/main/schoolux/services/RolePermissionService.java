@@ -40,49 +40,12 @@ public class RolePermissionService extends ServiceImpl<RolePermissionEntity> {
 
 
 
-    /*
-    public WorkerEntity create(String firstName,
-                               String lastName,
-                               LocalDate birthdate,
-                               String username,
-                               String password,
-                               SexeType sexeType,
-                               RoleEntity role,
-                               TeamEntity team)
-    {
-        WorkerEntity newWorker = new WorkerEntity();
-        newWorker.setFirstName(firstName);
-        newWorker.setLastName(lastName);
-        newWorker.setBirthdate(birthdate);
-        newWorker.setUsername(username);
-        newWorker.setPassword(password);
-        newWorker.setDeleted(false);
-        newWorker.setSexe(sexeType);
-        newWorker.setRole(role);
-        newWorker.setTeam(team);
-        return newWorker;
-    }
-     */
 
 
-
-
-   /*Pas de champ isActive dans la table role donc les suppressions sont effectives
-    @Override
-    public void deleteLogically (RolePermissionEntity myRolePermission) {
-        myRolePermission.isActive = false ;
-        this.update(myRolePermission);
-    }
-     */
-
-    // PAS POUR CE SERVICE-CI mais comme c'est dans l interface
+    // A faire ensuite
     // sert à vérifier si une entrée existe déjà en db avant de la créer
     @Override
     public boolean alreadyExist(RolePermissionEntity myRolePermission ) {
-        // label et abbreviation uniques keys  => passé la méthode qui check en argument de celle-ci ?
-        // ou on verifie ici les retours de chaque methode selectRolePermissionByLabelOrNull / selectRolePermissionByAbbreviationOrNull
-        // chaque fois que c different de null, on ecrit un msg d erreur et on retourne la liste des msg plutot qu un boolean
-        // dans le controlleur, on check si la liste des msg est supérieure à 0, si oui erreur => retour au formulaire
         return false;
     }
 
@@ -148,21 +111,15 @@ public class RolePermissionService extends ServiceImpl<RolePermissionEntity> {
         LOG.debug("Delete all RolePermission having the role id  = "+idRole);
         List <RolePermissionEntity> myListTest = this.selectAllHavingIdRole(idRole);
         try {
-            //List<RolePermissionEntity> myRolePermissionList = em.createNamedQuery("RolePermission.selectAll", RolePermissionEntity.class)
-            //.getResultList();
             Query query = em.createNamedQuery("RolePermission.deleteAllByIdRole", RolePermissionEntity.class);
             LOG.debug(" query.setParam");
             query.setParameter("idRole",idRole);
 
             query.executeUpdate();
 
-            //Execute the delete query
-            //em.flush();
 
             //update entity manager with changes
             List <RolePermissionEntity> myList = this.selectAllHavingIdRole(idRole);
-            //em.refresh(this.selectAllHavingIdRole(idRole));
-
 
             return 0;
 
@@ -183,8 +140,7 @@ public class RolePermissionService extends ServiceImpl<RolePermissionEntity> {
         LOG.debug("Select all RolePermission having the role id  = "+idRole);
 
         try {
-            //List<RolePermissionEntity> myRolePermissionList = em.createNamedQuery("RolePermission.selectAll", RolePermissionEntity.class)
-            //.getResultList();
+
             Query query = em.createNamedQuery("RolePermission.selectAllByIdRole", RolePermissionEntity.class);
             LOG.debug(" query.setParam");
             query.setParameter("idRole",idRole);
@@ -208,20 +164,7 @@ public class RolePermissionService extends ServiceImpl<RolePermissionEntity> {
         @Override
     public List<RolePermissionEntity> selectAllOrNull() {
 
-        /*
-        // Method 1 mais qui détache la collection de l'entityManager vu que findByNamedQuery contient l'instruction em.close
 
-            LOG.debug("Select all RolePermission ");
-
-            EntityFinder<RolePermissionEntity> myEntityFinder = new EntityFinderImpl<RolePermissionEntity>();
-
-            // Instanciation nécessaire d'un objet de type RolePermissionEntity pour le passer en argument de la méthode findByNamedQuery
-            // qui récupère le type de l'objet via l'instruction ==>  Class<? extends Object> ec = t.getClass();   où t est myRolePermission
-            RolePermissionEntity myRolePermission = new RolePermissionEntity();
-
-            return myEntityFinder.findByNamedQuery("RolePermission.selectAll", myRolePermission, null);
-
-     */
 
         try {
             //List<RolePermissionEntity> myRolePermissionList = em.createNamedQuery("RolePermission.selectAll", RolePermissionEntity.class)
@@ -240,51 +183,10 @@ public class RolePermissionService extends ServiceImpl<RolePermissionEntity> {
     }
 
 
-    /*
-    Pas de champ isActive dans la table role donc les suppressions sont effectives
-    @Override
-    public void deleteLogically (RolePermissionEntity myRolePermission) {
-        myRolePermission.isActive = false ;
-        this.update(myRolePermission);
-    }
-     */
 
 
 
 
-
-
-
-
-
-/*  PAS POUR CETTE ENTITY
-
-    // lire 1 RolePermission via le label name
-    public RolePermissionEntity selectRolePermissionByLabelOrNull(String label) throws IllegalArgumentException {
-        LOG.debug("Select 1 RolePermission by the label : " + label);
-
-        if (label != null && !label.isEmpty()) {
-
-            // fonctionne pas car findByNamedQuery retourne une liste => on peut garder ça et check si la taille est supérieure à 0, ou seconde méthode avec createNamedQuery
-            //EntityFinder<RolePermissionEntity> myEntityFinder = new EntityFinderImpl<RolePermissionEntity>();
-            //RolePermissionEntity myRolePermission = new RolePermissionEntity();
-            //return myEntityFinder.findByNamedQuery("RolePermission.selectByLabel", myRolePermission, null);
-
-            try {
-
-                return em.createNamedQuery("RolePermission.selectOneByLabel",PermissionEntity.class)
-                        .setParameter("label", label)
-                        .getSingleResult();
-            } catch (NoResultException e) {
-                LOG.debug("The query found no role to return", e);
-                return null;
-            }
-        } else {
-
-            throw new IllegalArgumentException("Label is empty or null");
-        }
-    }
-    */
 
 
 
